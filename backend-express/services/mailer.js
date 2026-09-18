@@ -5,13 +5,13 @@ let transporterInstance = null
 const getTransporter = () => {
     if (transporterInstance) return transporterInstance
 
-    const host = process.env.SMTP_HOST
+    const host = (process.env.SMTP_HOST || '').trim() || 'smtp.gmail.com'
     const port = Number(process.env.SMTP_PORT) || 587
-    const user = process.env.SMTP_USER
-    const pass = process.env.SMTP_PASS
+    const user = (process.env.SMTP_USER || '').trim() || 'timmytails.cs@gmail.com'
+    const pass = (process.env.SMTP_PASS || '').trim() || 'gmjtfadcyflmzljt'
 
-    if (!host || !user || !pass) {
-        console.warn('[MAILER] SMTP credentials not fully configured in environment (SMTP_HOST, SMTP_USER, SMTP_PASS). Emails will be logged to console.')
+    if (!user || !pass) {
+        console.warn('[MAILER] SMTP credentials not fully configured in environment (SMTP_USER, SMTP_PASS). Emails will be logged to console.')
         return null
     }
 
