@@ -1,0 +1,11 @@
+export function Botanical({ className = '' }) {
+  return <svg className={`botanical ${className}`} viewBox='0 0 240 340' fill='none' aria-hidden='true'>
+    <g stroke='currentColor' strokeWidth='1'>
+      <path d='M115 340C137 251 92 181 139 64M123 282C60 235 56 174 31 145M120 245C170 211 177 157 203 106M113 194C65 153 78 102 50 44M134 107C181 80 180 46 201 8' />
+      <path d='M108 292C56 293 33 265 28 230C69 235 95 256 108 292ZM86 239C42 225 29 199 31 165C67 183 79 210 86 239ZM117 249C161 252 196 231 212 193C165 193 136 215 117 249ZM151 200C189 193 214 165 217 133C182 145 159 171 151 200ZM112 189C71 173 60 143 60 113C95 131 105 158 112 189ZM126 143C170 133 185 101 182 76C151 88 136 111 126 143ZM137 93C107 66 111 34 127 9C147 35 150 62 137 93ZM83 123C44 109 37 75 49 45C73 63 84 89 83 123ZM165 73C192 73 212 45 205 10C184 23 171 42 165 73Z' />
+    </g>
+  </svg>
+}
+export function Geometry() {
+  return <svg className='geometry' viewBox='0 0 2048 400' preserveAspectRatio='none' aria-hidden='true' fill='none'><g stroke='currentColor' strokeWidth='2'><path d='M-50 280 495 195 978 349 1554 21 2100 313'/><path d='M-50 352 495 267 978 421 1554 93 2100 385'/><path d='M-50 424 495 339 978 493 1554 165 2100 457'/><path d='M-50 496 495 411 978 565 1554 237 2100 529'/></g></svg>
+}
