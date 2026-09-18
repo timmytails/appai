@@ -15,10 +15,16 @@ const getTransporter = () => {
         return null
     }
 
+    const isGmail = host.includes('gmail.com') || host.includes('google')
+
     transporterInstance = nodemailer.createTransport({
-        host,
-        port,
-        secure: port === 465,
+        service: isGmail ? 'gmail' : undefined,
+        host: isGmail ? undefined : host,
+        port: isGmail ? undefined : port,
+        secure: isGmail ? true : port === 465,
+        connectionTimeout: 8000,
+        greetingTimeout: 8000,
+        socketTimeout: 10000,
         auth: {
             user,
             pass
@@ -429,12 +435,17 @@ const sendOtpEmail = async ({ to, name, code, purpose }) => {
     }
 
     try {
-        const info = await transporter.sendMail({
-            from: getSenderAddress(),
-            to,
-            subject,
-            html
-        })
+        const info = await Promise.race([
+            transporter.sendMail({
+                from: getSenderAddress(),
+                to,
+                subject,
+                html
+            }),
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Email delivery timed out after 8 seconds')), 8000)
+            )
+        ])
         console.log(`[MAILER] OTP email delivered to ${to}, messageId:`, info.messageId)
         return { delivered: true, messageId: info.messageId }
     } catch (error) {

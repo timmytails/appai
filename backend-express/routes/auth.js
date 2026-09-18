@@ -150,7 +150,7 @@ const verifyGoogleCredential = async (credential) => {
 }
 
 const OTP_TTL_MS = 10 * 60 * 1000
-const OTP_REQUEST_COOLDOWN_MS = 5 * 60 * 1000
+const OTP_REQUEST_COOLDOWN_MS = 60 * 1000
 
 const normalizePhone = (value) => {
     let digits = String(value || '').replace(/\D/g, '')
@@ -203,7 +203,7 @@ const hasRequiredAddress = (address) =>
 
 const otpRequestLimiter = rateLimit({
     windowMs: OTP_REQUEST_COOLDOWN_MS,
-    max: 1,
+    max: 2,
     standardHeaders: true,
     legacyHeaders: false,
     skipFailedRequests: true,
@@ -220,12 +220,12 @@ const otpRequestLimiter = rateLimit({
         const resetTime = req.rateLimit?.resetTime
         const retryAfter = resetTime instanceof Date
             ? Math.max(1, Math.ceil((resetTime.getTime() - Date.now()) / 1000))
-            : 300
+            : 60
 
         res.status(429).json({
             success: false,
             message:
-                'An OTP was already requested. Please wait 5 minutes before requesting another code.',
+                'An OTP was recently requested. Please wait 60 seconds before requesting another code.',
             retryAfter
         })
     }
