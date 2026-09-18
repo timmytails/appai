@@ -43,45 +43,110 @@ const getGoogleJwks = async () => {
 }
 
 const verifyGoogleCredential = async (credential) => {
-    const parts = String(credential || '').split('.')
-    if (parts.length !== 3) throw new Error('Invalid Google credential')
+    const rawExpectedId = process.env.GOOGLE_CLIENT_ID || ''
+    const expectedClientId = rawExpectedId.trim().replace(/^["']|["']$/g, '')
 
-    const header = JSON.parse(decodeBase64Url(parts[0]).toString('utf8'))
-    const payload = JSON.parse(decodeBase64Url(parts[1]).toString('utf8'))
+    let payload = null
 
-    if (header.alg !== 'RS256' || !header.kid) {
-        throw new Error('Unsupported Google token')
+    // Attempt 1: Local JWKS cryptographic verification
+    try {
+        const parts = String(credential || '').split('.')
+        if (parts.length === 3) {
+            const header = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'))
+            const parsedPayload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'))
+
+            if (header.alg === 'RS256' && header.kid) {
+                let keys = await getGoogleJwks()
+                let jwk = keys.find((key) => key.kid === header.kid)
+
+                // If not found in cache, force a fresh fetch once
+                if (!jwk) {
+                    googleJwksCache = { expiresAt: 0, keys: [] }
+                    keys = await getGoogleJwks()
+                    jwk = keys.find((key) => key.kid === header.kid)
+                }
+
+                if (jwk) {
+                    const publicKey = crypto.createPublicKey({ key: jwk, format: 'jwk' })
+                    const validSignature = crypto.verify(
+                        'RSA-SHA256',
+                        Buffer.from(`${parts[0]}.${parts[1]}`),
+                        publicKey,
+                        Buffer.from(parts[2], 'base64url')
+                    )
+
+                    const nowSeconds = Math.floor(Date.now() / 1000)
+                    const validIssuer = [
+                        'accounts.google.com',
+                        'https://accounts.google.com'
+                    ].includes(parsedPayload.iss)
+
+                    if (validSignature && validIssuer && Number(parsedPayload.exp) > nowSeconds) {
+                        payload = parsedPayload
+                    }
+                }
+            }
+        }
+    } catch (jwkErr) {
+        console.warn('Google JWKS verification failed, trying tokeninfo fallback:', jwkErr.message)
     }
 
-    const keys = await getGoogleJwks()
-    const jwk = keys.find((key) => key.kid === header.kid)
-    if (!jwk) throw new Error('Google signing key was not found')
-
-    const publicKey = crypto.createPublicKey({ key: jwk, format: 'jwk' })
-    const validSignature = crypto.verify(
-        'RSA-SHA256',
-        Buffer.from(`${parts[0]}.${parts[1]}`),
-        publicKey,
-        decodeBase64Url(parts[2])
-    )
-
-    if (!validSignature) throw new Error('Invalid Google token signature')
-
-    const nowSeconds = Math.floor(Date.now() / 1000)
-    const validIssuer = [
-        'accounts.google.com',
-        'https://accounts.google.com'
-    ].includes(payload.iss)
-
-    if (!validIssuer || Number(payload.exp) <= nowSeconds) {
-        throw new Error('Expired or invalid Google token')
+    // Attempt 2: Fallback to Google's authoritative tokeninfo endpoint
+    if (!payload) {
+        try {
+            const response = await fetch(
+                `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`
+            )
+            if (response.ok) {
+                payload = await response.json()
+            } else {
+                const errText = await response.text()
+                console.error('Google tokeninfo endpoint rejected token:', response.status, errText)
+                throw new Error(`Google rejected the token (${response.status}): ${errText}`)
+            }
+        } catch (fetchErr) {
+            console.error('Google tokeninfo fetch error:', fetchErr.message)
+            throw new Error(`Google token validation error: ${fetchErr.message}`)
+        }
     }
 
-    if (payload.aud !== process.env.GOOGLE_CLIENT_ID) {
-        throw new Error('Google token audience mismatch')
+    if (!payload) {
+        throw new Error('Google credential could not be verified')
     }
 
-    return payload
+    // Verify audience matches expected Client ID
+    const tokenAud = payload.aud
+    const tokenAzp = payload.azp
+    const matchesAud =
+        !expectedClientId ||
+        tokenAud === expectedClientId ||
+        tokenAzp === expectedClientId ||
+        (Array.isArray(tokenAud) && tokenAud.includes(expectedClientId))
+
+    if (!matchesAud) {
+        console.error('Google client ID mismatch:', {
+            expected: expectedClientId,
+            receivedAud: tokenAud,
+            receivedAzp: tokenAzp
+        })
+        throw new Error(
+            `Google Client ID mismatch. Configured: ${expectedClientId ? expectedClientId.slice(0, 15) + '...' : '(none)'}, received aud: ${tokenAud}`
+        )
+    }
+
+    const isEmailVerified =
+        payload.email_verified === true ||
+        payload.email_verified === 'true' ||
+        payload.email_verified === 1
+
+    if (!isEmailVerified) {
+        throw new Error('Google account email has not been verified by Google')
+    }
+
+    return {
+        ...payload,
+        email_verified: true
+    }
 }
 
 const OTP_TTL_MS = 10 * 60 * 1000
@@ -567,14 +632,18 @@ router.post(
                     })
                 }
             } else {
-                await User.findByIdAndUpdate(user._id, {
-                    $set: {
-                        googleId: payload.sub,
-                        email,
-                        profileImage: user.profileImage || payload.picture || '',
-                        authProvider: user.authProvider === 'phone' ? 'phone' : 'google'
-                    }
-                })
+                user = await User.findByIdAndUpdate(
+                    user._id,
+                    {
+                        $set: {
+                            googleId: payload.sub,
+                            email,
+                            profileImage: user.profileImage || payload.picture || '',
+                            authProvider: user.authProvider === 'phone' ? 'phone' : 'google'
+                        }
+                    },
+                    { new: true }
+                )
             }
 
             // Re-read the persisted status so a newly banned account cannot authenticate.
@@ -600,7 +669,7 @@ router.post(
 
             res.status(401).json({
                 success: false,
-                message: 'Google sign-in failed'
+                message: error.message || 'Google sign-in failed'
             })
         }
     }

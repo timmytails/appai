@@ -56,6 +56,13 @@ export default function GoogleSignInButton({
     const containerRef = useRef(null)
     const wrapperRef = useRef(null)
     const lastWidthRef = useRef(0)
+    const onCredentialRef = useRef(onCredential)
+    const disabledRef = useRef(disabled)
+
+    useEffect(() => {
+        onCredentialRef.current = onCredential
+        disabledRef.current = disabled
+    })
 
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
@@ -115,8 +122,8 @@ export default function GoogleSignInButton({
                 window.google.accounts.id.initialize({
                     client_id: clientId,
                     callback: (response) => {
-                        if (response?.credential && !disabled) {
-                            onCredential(response.credential)
+                        if (response?.credential && !disabledRef.current) {
+                            onCredentialRef.current?.(response.credential)
                         }
                     },
                     ux_mode: 'popup'
@@ -139,7 +146,7 @@ export default function GoogleSignInButton({
             active = false
             resizeObserver?.disconnect()
         }
-    }, [clientId, disabled, onCredential, text])
+    }, [clientId, text])
 
     if (!clientId) {
         return (
