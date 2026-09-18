@@ -1,12 +1,41 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle2, ShieldCheck } from 'lucide-react'
+import { CheckCircle2, ChevronDown, Loader2, Search, ShieldCheck, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { getErrorMessage } from '../utils/api'
 import { consumeReturnTo } from '../utils/authRouting'
 import { normalizePhilippinePhone } from '../utils/phone'
 import PhoneField from '../components/PhoneField'
+
+const BULACAN_CODE = '031400000'
+const BULACAN_PROVINCES = [{ code: BULACAN_CODE, name: 'Bulacan' }]
+
+const BULACAN_CITIES_FALLBACK = [
+  { code: '031401000', name: 'Angat' },
+  { code: '031402000', name: 'Balagtas' },
+  { code: '031403000', name: 'Baliuag' },
+  { code: '031404000', name: 'Bocaue' },
+  { code: '031405000', name: 'Bulakan' },
+  { code: '031406000', name: 'Bustos' },
+  { code: '031407000', name: 'Calumpit' },
+  { code: '031408000', name: 'Doña Remedios Trinidad' },
+  { code: '031409000', name: 'Guiguinto' },
+  { code: '031410000', name: 'City of Malolos' },
+  { code: '031411000', name: 'Marilao' },
+  { code: '031412000', name: 'City of Meycauayan' },
+  { code: '031413000', name: 'Norzagaray' },
+  { code: '031414000', name: 'Obando' },
+  { code: '031415000', name: 'Pandi' },
+  { code: '031416000', name: 'Paombong' },
+  { code: '031417000', name: 'Plaridel' },
+  { code: '031418000', name: 'Pulilan' },
+  { code: '031419000', name: 'City of San Jose del Monte' },
+  { code: '031420000', name: 'San Ildefonso' },
+  { code: '031421000', name: 'San Miguel' },
+  { code: '031422000', name: 'San Rafael' },
+  { code: '031423000', name: 'Santa Maria' }
+]
 
 const emptyAddress = { street: '', barangay: '', city: '', province: 'Bulacan' }
 
@@ -20,6 +49,37 @@ export default function CompleteProfile() {
     const [otpTimer, setOtpTimer] = useState(0)
     const [sendingOtp, setSendingOtp] = useState(false)
     const [submitting, setSubmitting] = useState(false)
+
+    // Cascading Address Dropdowns - locked to Bulacan
+    const [provinces] = useState(BULACAN_PROVINCES)
+    const [cities, setCities] = useState([])
+    const [barangays, setBarangays] = useState([])
+
+    const [selectedProvinceCode, setSelectedProvinceCode] = useState(BULACAN_CODE)
+    const [selectedCityCode, setSelectedCityCode] = useState('')
+
+    const [loadingCities, setLoadingCities] = useState(false)
+    const [loadingBarangays, setLoadingBarangays] = useState(false)
+
+    // Fetch Bulacan Cities on mount
+    useEffect(() => {
+        let active = true
+        setLoadingCities(true)
+        fetchCities(BULACAN_CODE)
+            .then((data) => {
+                if (active) setCities(data)
+            })
+            .catch((err) => {
+                console.error(err)
+                toast.error('Could not load Bulacan cities list')
+            })
+            .finally(() => {
+                if (active) setLoadingCities(false)
+            })
+        return () => {
+            active = false
+        }
+    }, [])
 
     useEffect(() => {
         if (otpTimer <= 0) return
@@ -41,7 +101,79 @@ export default function CompleteProfile() {
 
     const normalizedPhone = useMemo(() => normalizePhilippinePhone(form.phone), [form.phone])
     const updatePhone = (e) => { setForm((c) => ({ ...c, phone: e.target.value })); setOtp(''); setOtpSent(false); setOtpTimer(0) }
-    const updateAddress = (e) => setForm((c) => ({ ...c, address: { ...c.address, [e.target.name]: e.target.value } }))
+    
+    const updateAddressField = (field, value) => {
+        setForm((c) => ({
+            ...c,
+            address: { ...c.address, [field]: value }
+        }))
+    }
+
+    // Hierarchy Step 1: Province Change (locked to Bulacan)
+    const handleProvinceChange = (item) => {
+        const newProvinceCode = item.code
+        const newProvinceName = item.name
+
+        setSelectedProvinceCode(newProvinceCode)
+        setSelectedCityCode('')
+        setCities([])
+        setBarangays([])
+
+        setForm((c) => ({
+            ...c,
+            address: {
+                ...c.address,
+                province: newProvinceName,
+                city: '',
+                barangay: ''
+            }
+        }))
+
+        if (!newProvinceCode) return
+
+        setLoadingCities(true)
+        fetchCities(newProvinceCode)
+            .then((data) => setCities(data))
+            .catch((err) => {
+                console.error(err)
+                toast.error('Could not load cities for the selected province')
+            })
+            .finally(() => setLoadingCities(false))
+    }
+
+    // Hierarchy Step 2: City Change (fetches barangays)
+    const handleCityChange = (item) => {
+        const newCityCode = item.code
+        const newCityName = item.name
+
+        setSelectedCityCode(newCityCode)
+        setBarangays([])
+
+        setForm((c) => ({
+            ...c,
+            address: {
+                ...c.address,
+                city: newCityName,
+                barangay: ''
+            }
+        }))
+
+        if (!newCityCode) return
+
+        setLoadingBarangays(true)
+        fetchBarangays(newCityCode)
+            .then((data) => setBarangays(data))
+            .catch((err) => {
+                console.error(err)
+                toast.error('Could not load barangays for the selected city')
+            })
+            .finally(() => setLoadingBarangays(false))
+    }
+
+    // Hierarchy Step 3: Barangay Change
+    const handleBarangayChange = (item) => {
+        updateAddressField('barangay', item.name)
+    }
 
     const requestOtp = async () => {
         if (sendingOtp || (otpSent && otpTimer > 0)) return
@@ -63,6 +195,10 @@ export default function CompleteProfile() {
     const submit = async (e) => {
         e.preventDefault()
         if (!normalizedPhone) { toast.error('Enter a valid mobile number'); return }
+        if (!form.address.province) { toast.error('Please select Province'); return }
+        if (!form.address.city) { toast.error('Please select City / Municipality'); return }
+        if (!form.address.barangay) { toast.error('Please select Barangay'); return }
+        if (!form.address.street.trim()) { toast.error('Please enter Street / House Number'); return }
         if (!otpSent || otp.length !== 6) { toast.error('Enter the 6-digit verification code sent to your email'); return }
         setSubmitting(true)
         try {
@@ -98,20 +234,38 @@ export default function CompleteProfile() {
                     </div>
 
                     <h1 className='font-serif text-3xl font-bold text-[var(--tt-ink)]'>Complete Your Profile</h1>
-                    <p className='mt-1 text-sm text-[var(--tt-ink-soft)]'>
+                    <p className='mt-2 text-sm text-[var(--tt-ink-soft)]'>
                         Your Google account is connected. Please fill in your contact details and verify your email to complete registration.
                     </p>
 
-                    <form onSubmit={submit} className='mt-6 space-y-4'>
+                    <form onSubmit={submit} className='mt-8 space-y-6'>
                         <div className='grid gap-4 sm:grid-cols-2'>
-                            <Field label='First Name' name='firstName' value={form.firstName} onChange={(e) => setForm((c) => ({ ...c, firstName: e.target.value }))} />
-                            <Field label='Last Name'  name='lastName'  value={form.lastName}  onChange={(e) => setForm((c) => ({ ...c, lastName:  e.target.value }))} />
+                            <Field
+                                label='First Name'
+                                name='firstName'
+                                value={form.firstName}
+                                onChange={(e) => setForm((c) => ({ ...c, firstName: e.target.value }))}
+                            />
+                            <Field
+                                label='Last Name'
+                                name='lastName'
+                                value={form.lastName}
+                                onChange={(e) => setForm((c) => ({ ...c, lastName: e.target.value }))}
+                            />
                         </div>
 
+                        {/* Email and Phone in a 2-column grid */}
                         <div className='grid gap-4 sm:grid-cols-2'>
                             <label className='block'>
-                                <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Email Address</span>
-                                <input value={user?.email || ''} readOnly className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-[var(--tt-canvas)] px-3.5 text-sm text-[var(--tt-ink-soft)] cursor-not-allowed outline-none' />
+                                <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+                                    Email Address
+                                </span>
+                                <input
+                                    type='email'
+                                    value={user?.email || ''}
+                                    disabled
+                                    className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-gray-50 px-3.5 text-sm font-medium text-[var(--tt-ink-soft)] opacity-80 cursor-not-allowed'
+                                />
                                 <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>Managed by your Google account.</span>
                             </label>
 
@@ -170,17 +324,72 @@ export default function CompleteProfile() {
                             )}
                         </div>
 
-                        {/* Address Block */}
-                        <div className='border-t border-[var(--tt-brand)] pt-5'>
-                            <h2 className='font-serif text-lg font-bold text-[var(--tt-ink)]'>Home Address</h2>
-                            <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>Required for grooming appointment confirmation.</p>
+                        {/* Cascading Philippine Address Section (Fixed to Bulacan) */}
+                        <div className='border-t border-[var(--tt-brand)]/20 pt-5'>
+                            <div className='flex items-center gap-2'>
+                                <h2 className='font-serif text-lg font-bold text-[var(--tt-ink)]'>Home Address</h2>
+                                <span className='text-[10px] text-[#cf7c54]'>✦</span>
+                            </div>
+                            <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>Used for appointment record & verification (Bulacan only).</p>
+
                             <div className='mt-4 space-y-4'>
-                                <Field label='Street / House Number' name='street' value={form.address.street} onChange={updateAddress} placeholder='e.g. 123 Grooming Street' autoComplete='street-address' />
+                                {/* Row 1: Province & City / Municipality */}
                                 <div className='grid gap-4 sm:grid-cols-2'>
-                                    <Field label='Barangay' name='barangay' value={form.address.barangay} onChange={updateAddress} />
-                                    <Field label='City'     name='city'     value={form.address.city}     onChange={updateAddress} autoComplete='address-level2' />
+                                    <AddressSelect
+                                        label='Province'
+                                        options={provinces}
+                                        value={form.address.province}
+                                        onChange={handleProvinceChange}
+                                        placeholder='Select Province'
+                                        searchPlaceholder='Search province...'
+                                    />
+
+                                    <AddressSelect
+                                        label='City / Municipality'
+                                        options={cities}
+                                        value={form.address.city}
+                                        onChange={handleCityChange}
+                                        placeholder={
+                                            !selectedProvinceCode
+                                                ? 'Select Province First'
+                                                : loadingCities
+                                                ? 'Loading cities...'
+                                                : 'Select City / Municipality'
+                                        }
+                                        disabled={!selectedProvinceCode || loadingCities}
+                                        loading={loadingCities}
+                                        searchPlaceholder='Search city or municipality...'
+                                    />
                                 </div>
-                                <Field label='Province' name='province' value={form.address.province || 'Bulacan'} onChange={updateAddress} autoComplete='address-level1' />
+
+                                {/* Row 2: Barangay & Street / House Number */}
+                                <div className='grid gap-4 sm:grid-cols-2'>
+                                    <AddressSelect
+                                        label='Barangay'
+                                        options={barangays}
+                                        value={form.address.barangay}
+                                        onChange={handleBarangayChange}
+                                        placeholder={
+                                            !selectedCityCode
+                                                ? 'Select City / Municipality First'
+                                                : loadingBarangays
+                                                ? 'Loading barangays...'
+                                                : 'Select Barangay'
+                                        }
+                                        disabled={!selectedCityCode || loadingBarangays}
+                                        loading={loadingBarangays}
+                                        searchPlaceholder='Search barangay...'
+                                    />
+
+                                    <Field
+                                        label='Street / House Number'
+                                        name='street'
+                                        value={form.address.street}
+                                        onChange={(e) => updateAddressField('street', e.target.value)}
+                                        placeholder='House no., street, subdivision...'
+                                        autoComplete='street-address'
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -215,4 +424,252 @@ function Field({ label, required = true, ...props }) {
             />
         </label>
     )
+}
+
+/* ==========================================================================
+   INTERNAL SEARCHABLE DROPDOWN COMPONENT
+========================================================================== */
+function AddressSelect({
+  label,
+  options = [],
+  value = '',
+  onChange,
+  placeholder = 'Select...',
+  disabled = false,
+  loading = false,
+  required = true,
+  searchPlaceholder = 'Search...'
+}) {
+  const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const containerRef = useRef(null)
+  const searchInputRef = useRef(null)
+  const id = useId()
+
+  useEffect(() => {
+    if (!open) return
+    const onMouseDown = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (open) {
+      setSearch('')
+      setTimeout(() => searchInputRef.current?.focus(), 40)
+    }
+  }, [open])
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return options
+    const query = search.toLowerCase()
+    return options.filter((item) => item.name.toLowerCase().includes(query))
+  }, [options, search])
+
+  const handleSelect = (item) => {
+    onChange(item)
+    setOpen(false)
+  }
+
+  const handleClear = (e) => {
+    e.stopPropagation()
+    onChange({ code: '', name: '' })
+  }
+
+  return (
+    <div className='relative' ref={containerRef}>
+      <label htmlFor={id} className='mb-1.5 flex items-center gap-1'>
+        <span className='block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+          {label}
+        </span>
+        {required && <span className='text-[var(--tt-brand)]'>*</span>}
+      </label>
+
+      <button
+        id={id}
+        type='button'
+        disabled={disabled || loading}
+        onClick={() => setOpen((prev) => !prev)}
+        className={`flex h-12 w-full items-center justify-between rounded-md border px-3.5 text-left text-sm transition-all outline-none ${
+          disabled
+            ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[#a59a8f]'
+            : open
+            ? 'border-[#d1a85b] bg-white ring-2 ring-[#d1a85b]/20'
+            : 'border-[rgba(210,143,119,0.35)] bg-white text-[#24211e] hover:border-[#a47d44]'
+        }`}
+        aria-haspopup='listbox'
+        aria-expanded={open}
+      >
+        <span className={`truncate ${!value ? 'text-[#a59a8f]' : 'text-[#24211e]'}`}>
+          {loading ? (
+            <span className='flex items-center gap-2 italic text-[#82746b]'>
+              <Loader2 size={14} className='animate-spin text-[#d1a85b]' />
+              Loading options...
+            </span>
+          ) : (
+            value || placeholder
+          )}
+        </span>
+
+        <span className='ml-2 flex shrink-0 items-center gap-1 text-[#82746b]'>
+          {value && !disabled && !loading && (
+            <span
+              role='button'
+              tabIndex={0}
+              onClick={handleClear}
+              onKeyDown={(e) => e.key === 'Enter' && handleClear(e)}
+              className='grid h-5 w-5 place-items-center rounded-full hover:bg-[rgba(210,143,119,0.15)] hover:text-[#24211e]'
+              title='Clear'
+            >
+              <X size={12} />
+            </span>
+          )}
+          <ChevronDown
+            size={16}
+            className={`transition-transform duration-200 ${open ? 'rotate-180 text-[#a47d44]' : ''}`}
+          />
+        </span>
+      </button>
+
+      {open && !disabled && !loading && (
+        <div
+          className='absolute left-0 top-full z-50 mt-1.5 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white shadow-xl transition-all'
+          role='listbox'
+        >
+          <div className='flex items-center border-b border-[rgba(210,143,119,0.2)] bg-[#fdf4ef]/80 px-3 py-2'>
+            <Search size={14} className='mr-2 text-[#a47d44]' />
+            <input
+              ref={searchInputRef}
+              type='text'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={searchPlaceholder}
+              className='w-full bg-transparent text-xs text-[#24211e] placeholder:text-[#a59a8f] outline-none'
+            />
+            {search && (
+              <button type='button' onClick={() => setSearch('')} className='text-[#82746b] hover:text-[#24211e]'>
+                <X size={12} />
+              </button>
+            )}
+          </div>
+
+          <div className='max-h-56 overflow-y-auto divide-y divide-[rgba(210,143,119,0.1)] py-1'>
+            {filtered.length > 0 ? (
+              filtered.map((item) => {
+                const isSelected = item.name.toLowerCase() === value.toLowerCase()
+                return (
+                  <button
+                    key={item.code}
+                    type='button'
+                    role='option'
+                    aria-selected={isSelected}
+                    onClick={() => handleSelect(item)}
+                    className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs transition-colors ${
+                      isSelected
+                        ? 'bg-[#fdf4ef] font-semibold text-[#a47d44]'
+                        : 'text-[#24211e] hover:bg-[#fdf4ef] hover:text-[#a47d44]'
+                    }`}
+                  >
+                    <span>{item.name}</span>
+                    {isSelected && <span className='text-[10px] text-[#d1a85b]'>✦</span>}
+                  </button>
+                )
+              })
+            ) : (
+              <div className='px-4 py-6 text-center text-xs text-[#82746b]'>
+                No locations match &ldquo;{search}&rdquo;
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ==========================================================================
+   PHILIPPINE ADDRESS (PSGC) API & RESILIENT CACHE HELPER
+========================================================================== */
+const API_BASE = 'https://psgc.gitlab.io/api'
+const memoryCache = new Map()
+
+function getCached(key) {
+  if (memoryCache.has(key)) return memoryCache.get(key)
+  try {
+    const sessionVal = sessionStorage.getItem(`psgc_${key}`)
+    if (sessionVal) {
+      const parsed = JSON.parse(sessionVal)
+      memoryCache.set(key, parsed)
+      return parsed
+    }
+  } catch { /* Session storage fallback */ }
+  return null
+}
+
+function setCache(key, data) {
+  memoryCache.set(key, data)
+  try {
+    sessionStorage.setItem(`psgc_${key}`, JSON.stringify(data))
+  } catch { /* Session storage fallback */ }
+}
+
+async function fetchCities(provinceCode = BULACAN_CODE) {
+  const code = provinceCode || BULACAN_CODE
+  const cacheKey = `cities_${code}`
+  const cached = getCached(cacheKey)
+  if (cached) return cached
+
+  try {
+    const res = await fetch(`${API_BASE}/provinces/${code}/cities-municipalities.json`)
+    if (!res.ok) throw new Error('Failed to fetch cities')
+    const data = await res.json()
+
+    const formatted = data.map((c) => ({ code: String(c.code), name: c.name }))
+    formatted.sort((a, b) => a.name.localeCompare(b.name))
+
+    setCache(cacheKey, formatted)
+    return formatted
+  } catch (error) {
+    console.warn('Using Bulacan city fallback:', error)
+    return BULACAN_CITIES_FALLBACK
+  }
+}
+
+async function fetchBarangays(cityCode) {
+  if (!cityCode) return []
+  const cacheKey = `barangays_${cityCode}`
+  const cached = getCached(cacheKey)
+  if (cached) return cached
+
+  try {
+    const res = await fetch(`${API_BASE}/cities-municipalities/${cityCode}/barangays.json`)
+    if (!res.ok) throw new Error('Failed to fetch barangays')
+    const data = await res.json()
+
+    const formatted = data.map((b) => ({ code: String(b.code), name: b.name }))
+    formatted.sort((a, b) => a.name.localeCompare(b.name))
+
+    setCache(cacheKey, formatted)
+    return formatted
+  } catch (error) {
+    console.warn('Using barangay fallback:', error)
+    return [
+      { code: '031403001', name: 'Bagong Nayon' },
+      { code: '031403004', name: 'Concepcion' },
+      { code: '031403013', name: 'Poblacion' },
+      { code: '031403014', name: 'Sabang' },
+      { code: '031403022', name: 'Subic' }
+    ]
+  }
 }
