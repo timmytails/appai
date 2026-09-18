@@ -1,0 +1,64 @@
+services:
+  - type: web
+    name: timmytails-backend
+    runtime: node
+    region: singapore
+    rootDir: backend-express
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: TEXTBEE_API_KEY
+        sync: false
+      - key: TEXTBEE_DEVICE_ID
+        sync: false
+      - key: TEXTBEE_LOG_ONLY
+        value: false
+      - key: MAX_BOOKING_DAYS
+        value: 90
+      - key: BOOKING_LEAD_MINUTES
+        value: 30
+      - key: BOOKING_SLOT_INTERVAL_MINUTES
+        value: 30
+      - key: BOOKING_OPEN_TIME
+        value: "09:00"
+      - key: BOOKING_CLOSE_TIME
+        value: "24:00"
+      - key: BOOKING_CLOSED_DAYS
+        value: 0
+      - key: CUSTOM_LORA_INFERENCE_URL
+        sync: false
+      - key: CUSTOM_LORA_MODEL_NAME
+        value: timmy-tails-lora-v1.5
+      - key: CUSTOM_LORA_STRENGTH
+        value: 0.70
+      - key: CUSTOM_LORA_STEPS
+        value: 25
+      - key: CUSTOM_LORA_GUIDANCE
+        value: 7.5
