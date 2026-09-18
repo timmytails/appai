@@ -8,7 +8,7 @@ import { consumeReturnTo } from '../utils/authRouting'
 import { normalizePhilippinePhone } from '../utils/phone'
 import PhoneField from '../components/PhoneField'
 
-const emptyAddress = { street: '', barangay: '', city: '', province: '' }
+const emptyAddress = { street: '', barangay: '', city: '', province: 'Bulacan' }
 
 export default function CompleteProfile() {
     const { user, sendCompleteProfileOtp, completeProfile, logout } = useAuth()
@@ -52,7 +52,7 @@ export default function CompleteProfile() {
             setForm((c) => ({ ...c, phone: data.phone || normalizedPhone }))
             setOtpSent(true)
             setOtpTimer(60)
-            toast.success('Verification code sent to your mobile number')
+            toast.success(`Verification code sent to ${user?.email || 'your email'}`)
         } catch (error) {
             toast.error(getErrorMessage(error))
         } finally {
@@ -63,7 +63,7 @@ export default function CompleteProfile() {
     const submit = async (e) => {
         e.preventDefault()
         if (!normalizedPhone) { toast.error('Enter a valid mobile number'); return }
-        if (!otpSent || otp.length !== 6) { toast.error('Verify your mobile number using the 6-digit OTP'); return }
+        if (!otpSent || otp.length !== 6) { toast.error('Enter the 6-digit verification code sent to your email'); return }
         setSubmitting(true)
         try {
             await completeProfile({ ...form, phone: normalizedPhone, otp })
@@ -99,7 +99,7 @@ export default function CompleteProfile() {
 
                     <h1 className='font-serif text-3xl font-bold text-[var(--tt-ink)]'>Complete Your Profile</h1>
                     <p className='mt-1 text-sm text-[var(--tt-ink-soft)]'>
-                        Your Google account is connected. Please fill in your contact details and verify your mobile number.
+                        Your Google account is connected. Please fill in your contact details and verify your email to complete registration.
                     </p>
 
                     <form onSubmit={submit} className='mt-6 space-y-4'>
@@ -108,14 +108,25 @@ export default function CompleteProfile() {
                             <Field label='Last Name'  name='lastName'  value={form.lastName}  onChange={(e) => setForm((c) => ({ ...c, lastName:  e.target.value }))} />
                         </div>
 
-                        <label className='block'>
-                            <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Email Address</span>
-                            <input value={user?.email || ''} readOnly className='h-10 w-full rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3.5 text-sm text-[var(--tt-ink-soft)] cursor-not-allowed' />
-                            <span className='mt-1 block text-xs text-[var(--tt-ink-soft)]'>Managed by your Google account.</span>
-                        </label>
+                        <div className='grid gap-4 sm:grid-cols-2'>
+                            <label className='block'>
+                                <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Email Address</span>
+                                <input value={user?.email || ''} readOnly className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-[var(--tt-canvas)] px-3.5 text-sm text-[var(--tt-ink-soft)] cursor-not-allowed outline-none' />
+                                <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>Managed by your Google account.</span>
+                            </label>
 
-                        <div>
-                            <PhoneField label='Mobile Number' name='phone' value={form.phone} onChange={updatePhone} placeholder='917 123 4567' />
+                            <div>
+                                <label className='block'>
+                                    <span className='mb-1.5 flex items-center gap-1'>
+                                        <span className='block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+                                            Mobile Number
+                                        </span>
+                                        <span className='text-[var(--tt-brand)]'>*</span>
+                                    </span>
+                                    <PhoneField label='' name='phone' value={form.phone} onChange={updatePhone} placeholder='917 123 4567' />
+                                </label>
+                                <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>Used for appointment updates & SMS reminders.</span>
+                            </div>
                         </div>
 
                         {/* OTP Block */}
@@ -126,9 +137,9 @@ export default function CompleteProfile() {
                                         {otpSent ? <CheckCircle2 size={18} /> : <ShieldCheck size={18} />}
                                     </span>
                                     <div>
-                                        <p className='font-semibold text-[var(--tt-ink)] text-sm'>Mobile Phone Verification</p>
+                                        <p className='font-semibold text-[var(--tt-ink)] text-sm'>Email Verification</p>
                                         <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>
-                                            {otpSent ? (otpTimer > 0 ? `Code sent to ${form.phone}. Resend available in ${otpTimer}s.` : `A verification code was sent to ${form.phone}.`) : 'Request an OTP code before saving.'}
+                                            {otpSent ? (otpTimer > 0 ? `Code sent to ${user?.email || 'your email'}. Resend available in ${otpTimer}s.` : `A verification code was sent to ${user?.email || 'your email'}.`) : `We will send a 6-digit verification code to ${user?.email || 'your email'}.`}
                                         </p>
                                     </div>
                                 </div>
@@ -169,13 +180,13 @@ export default function CompleteProfile() {
                                     <Field label='Barangay' name='barangay' value={form.address.barangay} onChange={updateAddress} />
                                     <Field label='City'     name='city'     value={form.address.city}     onChange={updateAddress} autoComplete='address-level2' />
                                 </div>
-                                <Field label='Province' name='province' value={form.address.province} onChange={updateAddress} autoComplete='address-level1' />
+                                <Field label='Province' name='province' value={form.address.province || 'Bulacan'} onChange={updateAddress} autoComplete='address-level1' />
                             </div>
                         </div>
 
                         <button
                             disabled={submitting || !otpSent || otp.length !== 6}
-                            className='h-10 w-full rounded-lg bg-[var(--tt-brand)] px-5 font-bold text-[var(--tt-canvas)] transition hover:bg-[var(--tt-brand-strong)] disabled:opacity-60 text-sm'
+                            className='h-12 w-full rounded-md bg-[#262626] px-5 font-bold text-white transition hover:bg-[#3d3d3d] disabled:opacity-60 text-sm'
                         >
                             {submitting ? 'Saving Profile...' : 'Verify & Save Profile'}
                         </button>
@@ -199,7 +210,7 @@ function Field({ label, required = true, ...props }) {
             <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>{label}</span>
             <input
                 required={required}
-                className='h-10 w-full rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3.5 text-sm font-medium text-[var(--tt-ink)] outline-none transition focus:border-[var(--tt-brand)] focus:ring-2 focus:ring-[var(--tt-brand)]/20 placeholder:text-[var(--tt-muted)]'
+                className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-3.5 text-sm font-medium text-[#24211e] outline-none transition focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 placeholder:text-[var(--tt-muted)]'
                 {...props}
             />
         </label>

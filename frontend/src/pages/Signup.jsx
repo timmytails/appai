@@ -195,12 +195,17 @@ export default function Signup() {
       return
     }
 
+    if (!form.email.trim()) {
+      toast.error('Please enter your Email Address')
+      return
+    }
+
     setSubmitting(true)
     try {
       await sendRegisterOtp({
         firstName: form.firstName,
         lastName: form.lastName,
-        email: form.email.trim() || undefined,
+        email: form.email.trim(),
         phone: normalizedPhone,
         address: form.address,
         password: form.password
@@ -208,7 +213,7 @@ export default function Signup() {
       setForm((c) => ({ ...c, phone: normalizedPhone }))
       setStep('otp')
       setOtpTimer(60)
-      toast.success('Verification code sent')
+      toast.success('Verification code sent to your email')
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -229,7 +234,7 @@ export default function Signup() {
         password: form.password
       })
       setOtpTimer(60)
-      toast.success('New verification code sent')
+      toast.success('New verification code sent to your email')
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -433,23 +438,34 @@ export default function Signup() {
 
                 <div className='grid gap-4 sm:grid-cols-2'>
                   <Field
-                    label='Email Address (Optional)'
+                    label='Email Address'
                     name='email'
                     type='email'
-                    required={false}
+                    required={true}
                     value={form.email}
                     onChange={update}
-                    help='Enables email visit reminders and receipts.'
+                    help='A 6-digit verification code will be sent to this email.'
                   />
-                  <label className='block'>
-                    <span className='mb-1.5 flex items-center gap-1'>
-                      <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
-                        Mobile Number
+                  <div>
+                    <label className='block'>
+                      <span className='mb-1.5 flex items-center gap-1'>
+                        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                          Mobile Number
+                        </span>
+                        <span className='text-[#cf7c54]'>*</span>
                       </span>
-                      <span className='text-[#cf7c54]'>*</span>
+                      <PhoneField
+                        label=''
+                        name='phone'
+                        value={form.phone}
+                        onChange={update}
+                        placeholder='917 123 4567'
+                      />
+                    </label>
+                    <span className='mt-1 block text-[11px] text-[#82746b]'>
+                      Used for appointment updates and SMS reminders.
                     </span>
-                    <PhoneField name='phone' value={form.phone} onChange={update} />
-                  </label>
+                  </div>
                 </div>
 
                 {/* Cascading Philippine Address Section */}
@@ -560,7 +576,7 @@ export default function Signup() {
             /* Step 2: OTP Verification */
             <form onSubmit={verifyOtp} className='mt-8 space-y-4'>
               <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[#675728] shadow-xs'>
-                Enter the six-digit code sent to <strong className='font-semibold text-[#24211e]'>{form.phone}</strong> to confirm and activate your companion registry.
+                Enter the six-digit code sent to <strong className='font-semibold text-[#24211e]'>{form.email}</strong> to confirm and activate your companion registry.
               </div>
 
               <Field
