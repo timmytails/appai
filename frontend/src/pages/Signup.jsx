@@ -10,6 +10,9 @@ import { consumeReturnTo, peekReturnTo, rememberReturnTo, resolvePostLoginRoute 
 import GoogleSignInButton from '../features/auth/components/GoogleSignInButton'
 import { Botanical } from '../components/editorial/Decorations'
 
+const BULACAN_CODE = '031400000'
+const BULACAN_PROVINCES = [{ code: BULACAN_CODE, name: 'Bulacan' }]
+
 const initialForm = {
   firstName: '',
   lastName: '',
@@ -17,7 +20,7 @@ const initialForm = {
   phone: '',
   password: '',
   confirmPassword: '',
-  address: { street: '', barangay: '', city: '', province: '' }
+  address: { street: '', barangay: '', city: '', province: 'Bulacan' }
 }
 
 export default function Signup() {
@@ -27,12 +30,12 @@ export default function Signup() {
   const [step, setStep] = useState('details')
   const [submitting, setSubmitting] = useState(false)
 
-  // Address Dropdown States
-  const [provinces, setProvinces] = useState([])
+  // Address Dropdown States - locked to Bulacan
+  const [provinces, setProvinces] = useState(BULACAN_PROVINCES)
   const [cities, setCities] = useState([])
   const [barangays, setBarangays] = useState([])
 
-  const [selectedProvinceCode, setSelectedProvinceCode] = useState('')
+  const [selectedProvinceCode, setSelectedProvinceCode] = useState(BULACAN_CODE)
   const [selectedCityCode, setSelectedCityCode] = useState('')
 
   const [loadingProvinces, setLoadingProvinces] = useState(false)
@@ -43,20 +46,20 @@ export default function Signup() {
     warmupBackendServer()
   }, [])
 
-  // Load Philippine Provinces on Mount
+  // Load Bulacan Cities on Mount
   useEffect(() => {
     let active = true
-    setLoadingProvinces(true)
-    fetchProvinces()
+    setLoadingCities(true)
+    fetchCities(BULACAN_CODE)
       .then((data) => {
-        if (active) setProvinces(data)
+        if (active) setCities(data)
       })
       .catch((err) => {
         console.error(err)
-        toast.error('Could not load provinces list')
+        toast.error('Could not load Bulacan cities list')
       })
       .finally(() => {
-        if (active) setLoadingProvinces(false)
+        if (active) setLoadingCities(false)
       })
     return () => {
       active = false
@@ -841,48 +844,44 @@ function setCache(key, data) {
   } catch { /* Session storage is optional; keep the in-memory cache available. */ }
 }
 
+const BULACAN_CITIES_FALLBACK = [
+  { code: '031401000', name: 'Angat' },
+  { code: '031402000', name: 'Balagtas' },
+  { code: '031403000', name: 'Baliuag' },
+  { code: '031404000', name: 'Bocaue' },
+  { code: '031405000', name: 'Bulakan' },
+  { code: '031406000', name: 'Bustos' },
+  { code: '031407000', name: 'Calumpit' },
+  { code: '031408000', name: 'Doña Remedios Trinidad' },
+  { code: '031409000', name: 'Guiguinto' },
+  { code: '031410000', name: 'City of Malolos' },
+  { code: '031411000', name: 'Marilao' },
+  { code: '031412000', name: 'City of Meycauayan' },
+  { code: '031413000', name: 'Norzagaray' },
+  { code: '031414000', name: 'Obando' },
+  { code: '031415000', name: 'Pandi' },
+  { code: '031416000', name: 'Paombong' },
+  { code: '031417000', name: 'Plaridel' },
+  { code: '031418000', name: 'Pulilan' },
+  { code: '031419000', name: 'City of San Jose del Monte' },
+  { code: '031420000', name: 'San Ildefonso' },
+  { code: '031421000', name: 'San Miguel' },
+  { code: '031422000', name: 'San Rafael' },
+  { code: '031423000', name: 'Santa Maria' }
+]
+
 async function fetchProvinces() {
-  const cacheKey = 'provinces_all'
-  const cached = getCached(cacheKey)
-  if (cached) return cached
-
-  try {
-    const res = await fetch(`${API_BASE}/provinces.json`)
-    if (!res.ok) throw new Error('Failed to fetch provinces')
-    const data = await res.json()
-
-    const formatted = data.map((p) => ({ code: String(p.code), name: p.name }))
-    formatted.push({ code: NCR_CODE, name: 'Metro Manila (NCR)' })
-    formatted.sort((a, b) => a.name.localeCompare(b.name))
-
-    setCache(cacheKey, formatted)
-    return formatted
-  } catch (error) {
-    console.warn('Using province fallback:', error)
-    return [
-      { code: '031400000', name: 'Bulacan' },
-      { code: '042100000', name: 'Cavite' },
-      { code: '043400000', name: 'Laguna' },
-      { code: NCR_CODE, name: 'Metro Manila (NCR)' },
-      { code: '035400000', name: 'Pampanga' },
-      { code: '045800000', name: 'Rizal' }
-    ].sort((a, b) => a.name.localeCompare(b.name))
-  }
+  return BULACAN_PROVINCES
 }
 
-async function fetchCities(provinceCode) {
-  if (!provinceCode) return []
-  const cacheKey = `cities_${provinceCode}`
+async function fetchCities(provinceCode = BULACAN_CODE) {
+  const code = provinceCode || BULACAN_CODE
+  const cacheKey = `cities_${code}`
   const cached = getCached(cacheKey)
   if (cached) return cached
 
   try {
-    const url =
-      provinceCode === NCR_CODE
-        ? `${API_BASE}/regions/${NCR_CODE}/cities-municipalities.json`
-        : `${API_BASE}/provinces/${provinceCode}/cities-municipalities.json`
-
-    const res = await fetch(url)
+    const res = await fetch(`${API_BASE}/provinces/${code}/cities-municipalities.json`)
     if (!res.ok) throw new Error('Failed to fetch cities')
     const data = await res.json()
 
@@ -892,12 +891,8 @@ async function fetchCities(provinceCode) {
     setCache(cacheKey, formatted)
     return formatted
   } catch (error) {
-    console.warn('Using city fallback:', error)
-    return [
-      { code: '031403000', name: 'Baliuag' },
-      { code: '031410000', name: 'City of Malolos' },
-      { code: '031418000', name: 'Pulilan' }
-    ]
+    console.warn('Using Bulacan city fallback:', error)
+    return BULACAN_CITIES_FALLBACK
   }
 }
 
