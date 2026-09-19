@@ -1,4 +1,12 @@
+const dns = require('dns')
 const mongoose = require('mongoose')
+
+// Force Google Public DNS for reliable mongodb+srv Atlas resolution
+try {
+    dns.setServers(['8.8.8.8', '8.8.4.4'])
+} catch (dnsErr) {
+    console.warn('Custom DNS set failed, using system default:', dnsErr.message)
+}
 
 const connectDB = async () => {
     try {

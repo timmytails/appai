@@ -410,12 +410,20 @@ router.post(
                 }
             )
 
-            await sendOtpEmail({
+            const mailResult = await sendOtpEmail({
                 to: email,
                 name: req.body.firstName,
                 code,
                 purpose: 'signup'
             })
+
+            if (!mailResult?.delivered) {
+                console.error('[AUTH] Failed to deliver signup OTP email:', mailResult?.error)
+                return res.status(500).json({
+                    success: false,
+                    message: mailResult?.error || 'Failed to send verification code email. Please try again.'
+                })
+            }
 
             res.json({
                 success: true,
@@ -817,12 +825,20 @@ router.post(
                 }
             )
 
-            await sendOtpEmail({
+            const mailResult = await sendOtpEmail({
                 to: req.user.email,
                 name: req.user.firstName,
                 code,
                 purpose: 'complete_profile'
             })
+
+            if (!mailResult?.delivered) {
+                console.error('[AUTH] Failed to deliver complete_profile OTP email:', mailResult?.error)
+                return res.status(500).json({
+                    success: false,
+                    message: mailResult?.error || 'Failed to send verification code email. Please try again.'
+                })
+            }
 
             res.json({
                 success: true,
@@ -1276,12 +1292,20 @@ router.post(
                 }
             )
 
-            await sendOtpEmail({
+            const mailResult = await sendOtpEmail({
                 to: email,
                 name: user.firstName,
                 code,
                 purpose: 'reset_password'
             })
+
+            if (!mailResult?.delivered) {
+                console.error('[AUTH] Failed to deliver reset_password OTP email:', mailResult?.error)
+                return res.status(500).json({
+                    success: false,
+                    message: mailResult?.error || 'Failed to send reset code email. Please try again.'
+                })
+            }
 
             const [localPart, domain] = email.split('@')
             const maskedEmail = localPart.length > 2

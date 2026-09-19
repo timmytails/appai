@@ -2,13 +2,15 @@ const nodemailer = require('nodemailer')
 
 let transporterInstance = null
 
+const cleanEnv = (val) => String(val || '').trim().replace(/^['"]|['"]$/g, '')
+
 const getTransporter = () => {
     if (transporterInstance) return transporterInstance
 
-    const host = (process.env.SMTP_HOST || '').trim() || 'smtp.gmail.com'
-    const port = Number(process.env.SMTP_PORT) || 587
-    const user = (process.env.SMTP_USER || '').trim() || 'timmytails.cs@gmail.com'
-    const pass = (process.env.SMTP_PASS || '').trim() || 'gmjtfadcyflmzljt'
+    const host = cleanEnv(process.env.SMTP_HOST) || 'smtp.gmail.com'
+    const port = Number(cleanEnv(process.env.SMTP_PORT)) || 587
+    const user = cleanEnv(process.env.SMTP_USER) || 'timmytails.cs@gmail.com'
+    const pass = cleanEnv(process.env.SMTP_PASS) || 'gmjtfadcyflmzljt'
 
     if (!user || !pass) {
         console.warn('[MAILER] SMTP credentials not fully configured in environment (SMTP_USER, SMTP_PASS). Emails will be logged to console.')
@@ -22,9 +24,11 @@ const getTransporter = () => {
         host: isGmail ? undefined : host,
         port: isGmail ? undefined : port,
         secure: isGmail ? true : port === 465,
-        connectionTimeout: 8000,
-        greetingTimeout: 8000,
-        socketTimeout: 10000,
+        pool: true,
+        maxConnections: 3,
+        connectionTimeout: 15000,
+        greetingTimeout: 15000,
+        socketTimeout: 20000,
         auth: {
             user,
             pass
@@ -35,7 +39,12 @@ const getTransporter = () => {
 }
 
 const getSenderAddress = () => {
-    return process.env.SMTP_FROM || `"Timmy Tails Pet Grooming" <${process.env.SMTP_USER || 'noreply@timmytails.com'}>`
+    let from = cleanEnv(process.env.SMTP_FROM)
+    if (from.startsWith('"') && from.endsWith('"') && from.slice(1, -1).includes('"')) {
+        from = from.slice(1, -1)
+    }
+    const user = cleanEnv(process.env.SMTP_USER) || 'timmytails.cs@gmail.com'
+    return from || `"Timmy Tails Pet Grooming" <${user}>`
 }
 
 /**
@@ -443,14 +452,14 @@ const sendOtpEmail = async ({ to, name, code, purpose }) => {
                 html
             }),
             new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Email delivery timed out after 8 seconds')), 8000)
+                setTimeout(() => reject(new Error('Email delivery timed out after 20 seconds')), 20000)
             )
         ])
         console.log(`[MAILER] OTP email delivered to ${to}, messageId:`, info.messageId)
         return { delivered: true, messageId: info.messageId }
     } catch (error) {
-        console.error(`[MAILER] Error sending OTP email to ${to}:`, error)
-        return { delivered: false, error: error.message }
+        console.error(`[MAILER] Error sending OTP email to ${to}:`, error.message || error)
+        return { delivered: false, error: error.message || 'Email delivery timed out' }
     }
 }
 

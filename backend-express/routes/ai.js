@@ -107,11 +107,13 @@ const readJsonFile = (filePath) => {
 }
 
 const loadGoogleCredentials = () => {
-    const rawJson =
+    const rawJson = String(
         process.env.GOOGLE_SERVICE_ACCOUNT_JSON || ''
+    ).trim().replace(/^['"]|['"]$/g, '')
 
-    const base64Json =
+    const base64Json = String(
         process.env.GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 || ''
+    ).trim().replace(/^['"]|['"]$/g, '')
 
     if (rawJson || base64Json) {
         const json = rawJson || Buffer.from(
