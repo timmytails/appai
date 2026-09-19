@@ -1,6 +1,15 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { sendAppointmentReminderTodayEmail, sendAppointmentConfirmedEmail } = require('../services/mailer')
+const {
+    sendAppointmentReminderTodayEmail,
+    sendAppointmentConfirmedEmail,
+    sendAppointmentCancelledEmail,
+    sendAppointmentRescheduledEmail,
+    sendAppointmentCompletedEmail,
+    sendWelcomeEmail,
+    sendOtpEmail,
+    closeTransporter
+} = require('../services/mailer')
 const Appointment = require('../models/Appointment')
 
 test('Appointment model includes reminder fields', () => {
@@ -26,7 +35,6 @@ test('sendAppointmentReminderTodayEmail includes required note and appointment d
         ownerName: 'Juan Dela Cruz'
     }
 
-    // In dev / test without SMTP, it logs and skips gracefully
     const result = await sendAppointmentReminderTodayEmail({
         to: 'juan@example.com',
         name: 'Juan',
@@ -60,6 +68,20 @@ test('sendAppointmentConfirmedEmail works for same-day booking', async () => {
     assert.ok(result, 'Result should be returned')
 })
 
+test('mailer exports all required email notification functions', async () => {
+    assert.equal(typeof sendAppointmentCancelledEmail, 'function')
+    assert.equal(typeof sendAppointmentRescheduledEmail, 'function')
+    assert.equal(typeof sendAppointmentCompletedEmail, 'function')
+    assert.equal(typeof sendWelcomeEmail, 'function')
+    assert.equal(typeof sendOtpEmail, 'function')
+
+    const welcomeResult = await sendWelcomeEmail({ to: 'juan@example.com', name: 'Juan' })
+    assert.ok(welcomeResult, 'Welcome email should return result')
+
+    const otpResult = await sendOtpEmail({ to: 'juan@example.com', name: 'Juan', code: '123456', purpose: 'signup' })
+    assert.ok(otpResult, 'OTP email should return result')
+})
+
 test('all route modules load cleanly without syntax or duplicate declaration errors', () => {
     assert.doesNotThrow(() => {
         require('../routes/appointments')
@@ -70,4 +92,6 @@ test('all route modules load cleanly without syntax or duplicate declaration err
         require('../routes/contact')
         require('../routes/admin')
     })
+    closeTransporter()
 })
+

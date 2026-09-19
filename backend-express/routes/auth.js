@@ -486,18 +486,19 @@ router.post(
         }
 
         try {
-            const query = { purpose: 'signup' }
+            let otpRequest = null
+
             if (email) {
-                query.email = email
-            } else {
-                query.phone = phone
+                otpRequest = await OtpRequest.findOne({ purpose: 'signup', email })
             }
-
-            let otpRequest = await OtpRequest.findOne(query)
-
-            // Fallback lookup if not found by primary key
             if (!otpRequest && phone) {
                 otpRequest = await OtpRequest.findOne({ purpose: 'signup', phone })
+            }
+            if (!otpRequest && email) {
+                otpRequest = await OtpRequest.findOne({ purpose: 'signup', 'payload.email': email })
+            }
+            if (!otpRequest && phone) {
+                otpRequest = await OtpRequest.findOne({ purpose: 'signup', 'payload.phone': phone })
             }
 
             if (
@@ -556,8 +557,8 @@ router.post(
             const user = await User.create({
                 firstName: payload.firstName,
                 lastName: payload.lastName,
-                phone,
-                email: payload.email || undefined,
+                phone: registeredPhone,
+                email: registeredEmail || undefined,
                 password: payload.password,
                 address: buildAddress(payload.address),
                 homeAddress:
@@ -569,13 +570,17 @@ router.post(
 
             await OtpRequest.deleteOne({ _id: otpRequest._id })
 
-            if (user.email) {
-                sendWelcomeEmail({
-                    to: user.email,
-                    name: user.firstName
-                }).catch((emailErr) => {
-                    console.error('Welcome email dispatch error:', emailErr.message)
-                })
+            if (user.email && typeof sendWelcomeEmail === 'function') {
+                try {
+                    sendWelcomeEmail({
+                        to: user.email,
+                        name: user.firstName
+                    }).catch((emailErr) => {
+                        console.error('Welcome email dispatch error:', emailErr.message)
+                    })
+                } catch (welcomeErr) {
+                    console.warn('[AUTH] Could not trigger welcome email:', welcomeErr.message)
+                }
             }
 
             res.status(201).json({
@@ -655,13 +660,17 @@ router.post(
                     profileCompleted: false
                 })
 
-                if (email) {
-                    sendWelcomeEmail({
-                        to: email,
-                        name: user.firstName
-                    }).catch((emailErr) => {
-                        console.error('Google welcome email dispatch error:', emailErr.message)
-                    })
+                if (email && typeof sendWelcomeEmail === 'function') {
+                    try {
+                        sendWelcomeEmail({
+                            to: email,
+                            name: user.firstName
+                        }).catch((emailErr) => {
+                            console.error('Google welcome email dispatch error:', emailErr.message)
+                        })
+                    } catch (welcomeErr) {
+                        console.warn('[AUTH] Could not trigger Google welcome email:', welcomeErr.message)
+                    }
                 }
             } else {
                 user = await User.findByIdAndUpdate(
@@ -968,16 +977,21 @@ router.patch(
 
             let otpRequest = await OtpRequest.findOne({
                 purpose: 'complete_profile',
-                email: req.user.email,
                 'payload.userId': String(req.user._id)
             })
+
+            if (!otpRequest && req.user.email) {
+                otpRequest = await OtpRequest.findOne({
+                    purpose: 'complete_profile',
+                    email: req.user.email
+                })
+            }
 
             if (!otpRequest && phone) {
                 otpRequest = await OtpRequest.findOne({
                     purpose: 'profile_phone',
                     phone,
-                    'payload.userId': String(req.user._id),
-                    'payload.action': 'complete_profile'
+                    'payload.userId': String(req.user._id)
                 })
             }
 

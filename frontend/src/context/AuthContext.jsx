@@ -45,8 +45,18 @@ export function AuthProvider({ children }) {
         return saveSession(data, setUser)
     }
 
-    const register = async (phone, otp) => {
-        const { data } = await authApi.register({ phone, otp })
+    const register = async (phoneOrPayload, otp, email) => {
+        let payload = {}
+        if (typeof phoneOrPayload === 'object' && phoneOrPayload !== null) {
+            payload = phoneOrPayload
+        } else {
+            payload = {
+                phone: phoneOrPayload,
+                otp,
+                email: email || undefined
+            }
+        }
+        const { data } = await authApi.register(payload)
         return saveSession(data, setUser)
     }
 

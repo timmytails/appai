@@ -253,8 +253,12 @@ export default function Signup() {
     e.preventDefault()
     setSubmitting(true)
     try {
-      const data = await register(normalizePhilippinePhone(form.phone), otp)
-      toast.success('Account created')
+      const data = await register({
+        phone: normalizePhilippinePhone(form.phone),
+        email: form.email.trim(),
+        otp
+      })
+      toast.success('Account created successfully!')
       routeAfterAuth(data.user)
     } catch (error) {
       toast.error(getErrorMessage(error))

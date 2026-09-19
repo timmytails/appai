@@ -306,7 +306,7 @@ export default function CompleteProfile() {
                                                 ? (otpTimer > 0
                                                     ? `Code sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}. Resend available in ${otpTimer}s.`
                                                     : `A verification code was sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}.`)
-                                                : `We will send a 6-digit verification code to verify your mobile number.`}
+                                                : `We will send a 6-digit verification code to your email (${user?.email || 'registered email'}) to verify and complete your profile.`}
                                         </p>
                                     </div>
                                 </div>
