@@ -58,13 +58,6 @@ export default function CustomerHeader() {
 
         {/* Right Utilities & Actions */}
         <div className='flex items-center gap-2 sm:gap-3'>
-          <Link
-            to='/book'
-            className='hidden sm:inline-flex min-h-10 items-center justify-center rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-semibold text-white shadow-xs transition hover:bg-[#514b42]'
-          >
-            Book appointment
-          </Link>
-
           <NotificationBell />
 
           {/* User Profile Pill & Dropdown */}
