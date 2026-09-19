@@ -410,25 +410,49 @@ router.post(
                 }
             )
 
-            const mailResult = await sendOtpEmail({
-                to: email,
-                name: req.body.firstName,
-                code,
-                purpose: 'signup'
-            })
+            let emailDelivered = false
+            try {
+                const mailResult = await sendOtpEmail({
+                    to: email,
+                    name: req.body.firstName,
+                    code,
+                    purpose: 'signup'
+                })
+                emailDelivered = Boolean(mailResult?.delivered)
+            } catch (mailErr) {
+                console.warn('[AUTH] Signup email delivery failed:', mailErr.message)
+            }
 
-            if (!mailResult?.delivered) {
-                console.error('[AUTH] Failed to deliver signup OTP email:', mailResult?.error)
+            let smsDelivered = false
+            const signupPhone = req.body.phone ? normalizePhone(req.body.phone) : null
+            if (!emailDelivered && signupPhone) {
+                try {
+                    console.log(`[AUTH] Email failed; sending signup OTP via TextBee SMS to ${signupPhone}...`)
+                    const smsResult = await sendOtp({
+                        phone: signupPhone,
+                        code,
+                        purpose: 'signup'
+                    })
+                    smsDelivered = Boolean(smsResult?.delivered)
+                } catch (smsErr) {
+                    console.error('[AUTH] Signup SMS fallback failed:', smsErr.message)
+                }
+            }
+
+            if (!emailDelivered && !smsDelivered) {
                 return res.status(500).json({
                     success: false,
-                    message: mailResult?.error || 'Failed to send verification code email. Please try again.'
+                    message: 'Unable to deliver verification code. Please try again in a few moments.'
                 })
             }
 
             res.json({
                 success: true,
-                message: 'Verification code sent to your email address',
-                email
+                message: emailDelivered
+                    ? 'Verification code sent to your email address'
+                    : `Verification code sent via SMS to ${signupPhone}`,
+                email,
+                channel: emailDelivered ? 'email' : 'sms'
             })
         } catch (error) {
             console.error('Send signup OTP error:', error)
@@ -825,25 +849,49 @@ router.post(
                 }
             )
 
-            const mailResult = await sendOtpEmail({
-                to: req.user.email,
-                name: req.user.firstName,
-                code,
-                purpose: 'complete_profile'
-            })
+            let emailDelivered = false
+            try {
+                const mailResult = await sendOtpEmail({
+                    to: req.user.email,
+                    name: req.user.firstName,
+                    code,
+                    purpose: 'complete_profile'
+                })
+                emailDelivered = Boolean(mailResult?.delivered)
+            } catch (mailErr) {
+                console.warn('[AUTH] Complete profile email delivery failed:', mailErr.message)
+            }
 
-            if (!mailResult?.delivered) {
-                console.error('[AUTH] Failed to deliver complete_profile OTP email:', mailResult?.error)
+            let smsDelivered = false
+            if (!emailDelivered && phone) {
+                try {
+                    console.log(`[AUTH] Email blocked/failed on Render; sending OTP via TextBee SMS to ${phone}...`)
+                    const smsResult = await sendOtp({
+                        phone,
+                        code,
+                        purpose: 'profile_phone'
+                    })
+                    smsDelivered = Boolean(smsResult?.delivered)
+                } catch (smsErr) {
+                    console.error('[AUTH] Complete profile SMS fallback failed:', smsErr.message)
+                }
+            }
+
+            if (!emailDelivered && !smsDelivered) {
                 return res.status(500).json({
                     success: false,
-                    message: mailResult?.error || 'Failed to send verification code email. Please try again.'
+                    message: 'Unable to deliver verification code via email or SMS. Please try again.'
                 })
             }
 
             res.json({
                 success: true,
-                message: `Verification code sent to ${req.user.email}`,
-                email: req.user.email
+                message: emailDelivered
+                    ? `Verification code sent to ${req.user.email}`
+                    : `Verification code sent via SMS to ${phone}`,
+                email: req.user.email,
+                phone: phone || undefined,
+                channel: emailDelivered ? 'email' : 'sms'
             })
         } catch (error) {
             console.error('Complete profile OTP error:', error)
