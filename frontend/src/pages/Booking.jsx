@@ -248,9 +248,9 @@ export default function Booking() {
         ),
         [styles, activePetType]
     )
-    const selectedStyle = compatibleStyles.find((style) => style.id === selectedStyleId)
-    const selectedSlot = slots.find((slot) => slot.startTime === selectedTime)
     const aiEnabled = Boolean(selectedService?.supportsAiPreview)
+    const selectedStyle = aiEnabled ? compatibleStyles.find((style) => style.id === selectedStyleId) : null
+    const selectedSlot = slots.find((slot) => slot.startTime === selectedTime)
     const bookingSteps = aiEnabled
         ? [
             { id: 1, label: 'Pet & service' },
@@ -266,10 +266,15 @@ export default function Booking() {
     const currentStepIndex = Math.max(0, bookingSteps.findIndex((step) => step.id === mobileStep))
 
     useEffect(() => {
-        if (!aiEnabled && mobileStep === 2) {
-            setMobileStep(3)
+        if (!aiEnabled) {
+            if (mobileStep === 2) {
+                setMobileStep(3)
+            }
+            if (selectedStyleId) {
+                setSelectedStyleId('')
+            }
         }
-    }, [aiEnabled, mobileStep])
+    }, [aiEnabled, mobileStep, selectedStyleId])
 
     useEffect(() => {
         Promise.allSettled([
@@ -548,7 +553,11 @@ export default function Booking() {
         setSlots([])
         setRecommendations([])
 
-        if (activePet?.photoUrl) {
+        const targetService = services.find((s) => s.id === serviceId)
+        if (!targetService?.supportsAiPreview) {
+            setSelectedStyleId('')
+            resetStyleGallery({ clearPhoto: false })
+        } else if (activePet?.photoUrl) {
             resetStyleGallery({ clearPhoto: false })
             setPhotoPreview((prev) => prev || activePet.photoUrl)
             setPhotoDataUrl((prev) => prev || activePet.photoUrl)
@@ -1241,14 +1250,14 @@ export default function Booking() {
                 petAgeMonths: activePet?.ageMonths !== undefined && activePet?.ageMonths !== '' ? Number(activePet.ageMonths) : null,
                 vaccinated: activePet?.vaccinated !== false && activePet?.vaccinated !== 'no' && activePet?.vaccinated !== 'false',
                 serviceId: selectedService.id,
-                haircutStyle: selectedStyle?.id || null,
-                aiPreviewUsed: Boolean(generatedPreview),
-                aiPreviewId: generatedPreviewMeta?.previewId || null,
-                aiPreviewImage: generatedPreviewMeta?.previewId
-                    ? null
-                    : generatedPreview || null,
-                aiPreviewModel: generatedPreviewMeta?.model || null,
-                aiPreviewSourceHash: generatedPreviewMeta?.sourcePhotoHash || photoHash || null,
+                haircutStyle: aiEnabled ? (selectedStyle?.id || null) : null,
+                aiPreviewUsed: Boolean(aiEnabled && generatedPreview),
+                aiPreviewId: aiEnabled ? (generatedPreviewMeta?.previewId || null) : null,
+                aiPreviewImage: (aiEnabled && !generatedPreviewMeta?.previewId)
+                    ? (generatedPreview || null)
+                    : null,
+                aiPreviewModel: aiEnabled ? (generatedPreviewMeta?.model || null) : null,
+                aiPreviewSourceHash: aiEnabled ? (generatedPreviewMeta?.sourcePhotoHash || photoHash || null) : null,
                 date: selectedDate,
                 time: selectedTime,
                 ownerName: `${user.firstName} ${user.lastName}`.trim(),
@@ -1361,7 +1370,7 @@ export default function Booking() {
                     <div className='mb-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-[var(--tt-border)] py-3 text-xs text-[var(--tt-muted)]'>
                         {activePet?.name && <span><strong className='font-semibold text-[var(--tt-ink)]'>{activePet.name}</strong>{activePet.breed ? ` · ${activePet.breed}` : ''}</span>}
                         {selectedService && <span><strong className='font-semibold text-[var(--tt-ink)]'>{selectedService.name}</strong> · ₱{Number(selectedService.price || 0).toLocaleString('en-PH')}</span>}
-                        {selectedStyle && <span>{selectedStyle.name}</span>}
+                        {aiEnabled && selectedStyle && <span>{selectedStyle.name}</span>}
                     </div>
                 )}
 
@@ -1565,7 +1574,7 @@ export default function Booking() {
                                 </div>
 
                                 <div className='space-y-4'>
-                                    {generatedPreview && (
+                                    {aiEnabled && generatedPreview && (
                                         <figure className='overflow-hidden border border-[var(--tt-border)] bg-white'>
                                             <div className='aspect-[4/3] bg-[var(--tt-canvas)]'><img src={generatedPreview} alt={`${selectedStyle?.name || 'Style'} preview`} className='h-full w-full object-contain' /></div>
                                             <figcaption className='border-t border-[var(--tt-border)] px-4 py-3 text-xs text-[var(--tt-muted)]'>{selectedStyle?.name} reference</figcaption>

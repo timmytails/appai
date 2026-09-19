@@ -1161,17 +1161,14 @@ router.post(
                 })
         }
 
-        if (
-            style &&
-            !service.supportsAiPreview
-        ) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message:
-                        'A haircut style cannot be added to this service'
-                })
+        if (!service.supportsAiPreview) {
+            style = null
+            req.body.haircutStyle = null
+            req.body.aiPreviewUsed = false
+            req.body.aiPreviewId = null
+            req.body.aiPreviewImage = null
+            req.body.aiPreviewModel = null
+            req.body.aiPreviewSourceHash = null
         }
 
         try {
