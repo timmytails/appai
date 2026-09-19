@@ -27,6 +27,7 @@ export default function Signup() {
   const [form, setForm] = useState(initialForm)
   const [otp, setOtp] = useState('')
   const [otpTimer, setOtpTimer] = useState(0)
+  const [otpChannel, setOtpChannel] = useState('')
   const [step, setStep] = useState('details')
   const [submitting, setSubmitting] = useState(false)
 
@@ -202,7 +203,7 @@ export default function Signup() {
 
     setSubmitting(true)
     try {
-      await sendRegisterOtp({
+      const data = await sendRegisterOtp({
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email.trim(),
@@ -211,9 +212,12 @@ export default function Signup() {
         password: form.password
       })
       setForm((c) => ({ ...c, phone: normalizedPhone }))
+      const channel = data?.channel || 'sms'
+      setOtpChannel(channel)
       setStep('otp')
       setOtpTimer(60)
-      toast.success('Verification code sent to your email')
+      const destination = channel === 'sms' ? normalizedPhone : form.email.trim()
+      toast.success(data?.message || `Verification code sent via ${channel.toUpperCase()} to ${destination}`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -225,7 +229,7 @@ export default function Signup() {
     if (otpTimer > 0 || submitting) return
     setSubmitting(true)
     try {
-      await sendRegisterOtp({
+      const data = await sendRegisterOtp({
         firstName: form.firstName,
         lastName: form.lastName,
         email: form.email.trim() || undefined,
@@ -233,8 +237,11 @@ export default function Signup() {
         address: form.address,
         password: form.password
       })
+      const channel = data?.channel || otpChannel || 'sms'
+      setOtpChannel(channel)
       setOtpTimer(60)
-      toast.success('New verification code sent to your email')
+      const destination = channel === 'sms' ? form.phone : form.email.trim()
+      toast.success(data?.message || `New verification code sent via ${channel.toUpperCase()} to ${destination}`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -576,7 +583,11 @@ export default function Signup() {
             /* Step 2: OTP Verification */
             <form onSubmit={verifyOtp} className='mt-8 space-y-4'>
               <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[#675728] shadow-xs'>
-                Enter the six-digit code sent to <strong className='font-semibold text-[#24211e]'>{form.email}</strong> to confirm and activate your companion registry.
+                Enter the six-digit code sent via {otpChannel === 'sms' ? 'SMS' : 'email'} to{' '}
+                <strong className='font-semibold text-[#24211e]'>
+                  {otpChannel === 'sms' ? (form.phone || 'your phone number') : (form.email || 'your email')}
+                </strong>{' '}
+                to confirm and activate your account.
               </div>
 
               <Field
