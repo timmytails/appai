@@ -27,7 +27,7 @@ export default function Signup() {
   const [form, setForm] = useState(initialForm)
   const [otp, setOtp] = useState('')
   const [otpTimer, setOtpTimer] = useState(0)
-  const [otpChannel, setOtpChannel] = useState('')
+  const [otpChannel, setOtpChannel] = useState('email')
   const [step, setStep] = useState('details')
   const [submitting, setSubmitting] = useState(false)
 
@@ -212,12 +212,11 @@ export default function Signup() {
         password: form.password
       })
       setForm((c) => ({ ...c, phone: normalizedPhone }))
-      const channel = data?.channel || 'sms'
+      const channel = data?.channel || 'email'
       setOtpChannel(channel)
       setStep('otp')
       setOtpTimer(60)
-      const destination = channel === 'sms' ? normalizedPhone : form.email.trim()
-      toast.success(data?.message || `Verification code sent via ${channel.toUpperCase()} to ${destination}`)
+      toast.success(data?.message || `Verification code sent to your Gmail (${form.email.trim()})`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -237,11 +236,10 @@ export default function Signup() {
         address: form.address,
         password: form.password
       })
-      const channel = data?.channel || otpChannel || 'sms'
+      const channel = data?.channel || otpChannel || 'email'
       setOtpChannel(channel)
       setOtpTimer(60)
-      const destination = channel === 'sms' ? form.phone : form.email.trim()
-      toast.success(data?.message || `New verification code sent via ${channel.toUpperCase()} to ${destination}`)
+      toast.success(data?.message || `New verification code sent to your Gmail (${form.email.trim()})`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -415,17 +413,17 @@ export default function Signup() {
           <div>
             <div className='flex items-center gap-2'>
               <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>
-                {step === 'details' ? 'Sanctuary Registry' : 'Mobile Verification'}
+                {step === 'details' ? 'Sanctuary Registry' : 'Email Verification (Gmail)'}
               </span>
               <span className='text-xs text-[#cf7c54]'>✦</span>
             </div>
             <h1 className='mt-2 font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
-              {step === 'details' ? 'Create your account.' : 'Verify your number.'}
+              {step === 'details' ? 'Create your account.' : 'Verify your email.'}
             </h1>
             <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
               {step === 'details'
-                ? 'Register with Google or verify your mobile number to begin scheduling rituals.'
-                : `We have sent a six-digit verification code to ${form.phone}.`}
+                ? 'Register with Google or your email address to begin scheduling grooming appointments.'
+                : `We have sent a six-digit verification code to your Gmail address (${form.email}).`}
             </p>
           </div>
 
@@ -578,7 +576,7 @@ export default function Signup() {
                       <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Sending code…
                     </>
                   ) : (
-                    'Send Verification Code'
+                    'Send Verification Code to Gmail'
                   )}
                 </button>
               </form>
@@ -587,9 +585,9 @@ export default function Signup() {
             /* Step 2: OTP Verification */
             <form onSubmit={verifyOtp} className='mt-8 space-y-4'>
               <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[#675728] shadow-xs'>
-                Enter the six-digit code sent via {otpChannel === 'sms' ? 'SMS' : 'email'} to{' '}
+                Enter the six-digit verification code sent to your Gmail address{' '}
                 <strong className='font-semibold text-[#24211e]'>
-                  {otpChannel === 'sms' ? (form.phone || 'your phone number') : (form.email || 'your email')}
+                  {form.email || 'your email'}
                 </strong>{' '}
                 to confirm and activate your account.
               </div>

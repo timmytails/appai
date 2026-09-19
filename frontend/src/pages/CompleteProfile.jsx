@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle2, ChevronDown, Loader2, Search, ShieldCheck, X } from 'lucide-react'
+import { CheckCircle2, ChevronDown, Loader2, Mail, Search, ShieldCheck, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { getErrorMessage } from '../utils/api'
@@ -47,7 +47,7 @@ export default function CompleteProfile() {
     const [otp, setOtp] = useState('')
     const [otpSent, setOtpSent] = useState(false)
     const [otpTimer, setOtpTimer] = useState(0)
-    const [otpChannel, setOtpChannel] = useState('')
+    const [otpChannel, setOtpChannel] = useState('email')
     const [sendingOtp, setSendingOtp] = useState(false)
     const [submitting, setSubmitting] = useState(false)
 
@@ -178,17 +178,16 @@ export default function CompleteProfile() {
 
     const requestOtp = async () => {
         if (sendingOtp || (otpSent && otpTimer > 0)) return
-        if (!normalizedPhone) { toast.error('Enter a valid mobile number using +63 or 09 format'); return }
         setSendingOtp(true)
         try {
-            const data = await sendCompleteProfileOtp(normalizedPhone)
-            setForm((c) => ({ ...c, phone: data?.phone || normalizedPhone }))
+            const data = await sendCompleteProfileOtp(normalizedPhone || undefined)
+            if (data?.phone) setForm((c) => ({ ...c, phone: data.phone }))
             setOtpSent(true)
             setOtpTimer(60)
-            const channel = data?.channel || 'sms'
+            const channel = data?.channel || 'email'
             setOtpChannel(channel)
-            const destination = channel === 'sms' ? (data?.phone || normalizedPhone) : (data?.email || user?.email || 'your email')
-            toast.success(data?.message || `Verification code sent via ${channel === 'sms' ? 'SMS' : 'email'} to ${destination}`)
+            const targetEmail = user?.email || data?.email || 'your Gmail'
+            toast.success(data?.message || `Verification code sent to your Gmail (${targetEmail})`)
         } catch (error) {
             toast.error(getErrorMessage(error))
         } finally {
@@ -204,7 +203,7 @@ export default function CompleteProfile() {
         if (!form.address.barangay) { toast.error('Please select Barangay'); return }
         if (!form.address.street.trim()) { toast.error('Please enter Street / House Number'); return }
         if (!otpSent || otp.length !== 6) {
-            toast.error(otpChannel === 'sms' ? 'Enter the 6-digit verification code sent via SMS to your mobile phone' : 'Enter the 6-digit verification code sent to your email')
+            toast.error('Enter the 6-digit verification code sent to your Gmail address')
             return
         }
         setSubmitting(true)
@@ -295,18 +294,18 @@ export default function CompleteProfile() {
                             <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
                                 <div className='flex items-start gap-3'>
                                     <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg ${otpSent ? 'bg-[#E4F1EA] text-[#216245]' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'}`}>
-                                        {otpSent ? <CheckCircle2 size={18} /> : <ShieldCheck size={18} />}
+                                        {otpSent ? <CheckCircle2 size={18} /> : <Mail size={18} />}
                                     </span>
                                     <div>
                                         <p className='font-semibold text-[var(--tt-ink)] text-sm'>
-                                            {otpChannel === 'sms' ? 'Mobile Verification (SMS)' : otpChannel === 'email' ? 'Email Verification' : 'Account Verification'}
+                                            Email Verification (Gmail)
                                         </p>
                                         <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>
                                             {otpSent
                                                 ? (otpTimer > 0
-                                                    ? `Code sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}. Resend available in ${otpTimer}s.`
-                                                    : `A verification code was sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}.`)
-                                                : `We will send a 6-digit verification code to your email (${user?.email || 'registered email'}) to verify and complete your profile.`}
+                                                    ? `Verification code sent to your Gmail (${user?.email || 'your email'}). Resend available in ${otpTimer}s.`
+                                                    : `A verification code was sent to your Gmail (${user?.email || 'your email'}).`)
+                                                : `We will send a 6-digit verification code to your Gmail address (${user?.email || 'registered email'}) to verify your account.`}
                                         </p>
                                     </div>
                                 </div>
@@ -316,7 +315,7 @@ export default function CompleteProfile() {
                                     disabled={sendingOtp || (otpSent && otpTimer > 0)}
                                     className='shrink-0 rounded-lg border border-[var(--tt-border)] px-3.5 py-1.5 text-xs font-bold text-[var(--tt-brand)] transition hover:bg-[var(--tt-brand-strong)]/10 disabled:opacity-60'
                                 >
-                                    {sendingOtp ? 'Sending...' : otpSent ? (otpTimer > 0 ? `Resend (${otpTimer}s)` : 'Resend OTP') : 'Send OTP'}
+                                    {sendingOtp ? 'Sending...' : otpSent ? (otpTimer > 0 ? `Resend (${otpTimer}s)` : 'Resend Code') : 'Send OTP to Gmail'}
                                 </button>
                             </div>
 
