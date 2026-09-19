@@ -96,15 +96,16 @@ export default function Header() {
                 <button
                   type='button'
                   onClick={() => setAccountOpen((current) => !current)}
-                  className='inline-flex min-h-11 items-center gap-2 border border-transparent px-3 text-xs font-semibold text-[var(--tt-ink)] transition hover:border-[var(--tt-border)] hover:bg-white'
+                  className='flex min-h-10 items-center gap-2 rounded-full border border-[var(--tt-border)] bg-white/80 py-1.5 pl-2 pr-3.5 text-xs font-medium text-[var(--tt-ink)] shadow-xs transition hover:border-[var(--tt-gold)] hover:bg-white'
+                  aria-label='Account menu'
                   aria-haspopup='menu'
                   aria-expanded={accountOpen}
                 >
-                  <span className='grid h-7 w-7 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm'>
+                  <span className='grid h-7 w-7 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm transition-transform duration-300'>
                     {(user.firstName?.[0] || 'A').toUpperCase()}
                   </span>
-                  <span className='hidden xl:inline'>{accountLabel}</span>
-                  <ChevronDown size={13} />
+                  <span className='hidden xl:inline'>{user?.role === 'admin' ? 'Admin' : (user?.firstName || 'Account')}</span>
+                  <ChevronDown size={13} className={`transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {accountOpen && (
