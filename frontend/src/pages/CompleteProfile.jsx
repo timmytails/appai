@@ -47,6 +47,7 @@ export default function CompleteProfile() {
     const [otp, setOtp] = useState('')
     const [otpSent, setOtpSent] = useState(false)
     const [otpTimer, setOtpTimer] = useState(0)
+    const [otpChannel, setOtpChannel] = useState('')
     const [sendingOtp, setSendingOtp] = useState(false)
     const [submitting, setSubmitting] = useState(false)
 
@@ -181,10 +182,13 @@ export default function CompleteProfile() {
         setSendingOtp(true)
         try {
             const data = await sendCompleteProfileOtp(normalizedPhone)
-            setForm((c) => ({ ...c, phone: data.phone || normalizedPhone }))
+            setForm((c) => ({ ...c, phone: data?.phone || normalizedPhone }))
             setOtpSent(true)
             setOtpTimer(60)
-            toast.success(`Verification code sent to ${user?.email || 'your email'}`)
+            const channel = data?.channel || 'sms'
+            setOtpChannel(channel)
+            const destination = channel === 'sms' ? (data?.phone || normalizedPhone) : (data?.email || user?.email || 'your email')
+            toast.success(data?.message || `Verification code sent via ${channel === 'sms' ? 'SMS' : 'email'} to ${destination}`)
         } catch (error) {
             toast.error(getErrorMessage(error))
         } finally {
@@ -199,7 +203,10 @@ export default function CompleteProfile() {
         if (!form.address.city) { toast.error('Please select City / Municipality'); return }
         if (!form.address.barangay) { toast.error('Please select Barangay'); return }
         if (!form.address.street.trim()) { toast.error('Please enter Street / House Number'); return }
-        if (!otpSent || otp.length !== 6) { toast.error('Enter the 6-digit verification code sent to your email'); return }
+        if (!otpSent || otp.length !== 6) {
+            toast.error(otpChannel === 'sms' ? 'Enter the 6-digit verification code sent via SMS to your mobile phone' : 'Enter the 6-digit verification code sent to your email')
+            return
+        }
         setSubmitting(true)
         try {
             await completeProfile({ ...form, phone: normalizedPhone, otp })
@@ -291,9 +298,15 @@ export default function CompleteProfile() {
                                         {otpSent ? <CheckCircle2 size={18} /> : <ShieldCheck size={18} />}
                                     </span>
                                     <div>
-                                        <p className='font-semibold text-[var(--tt-ink)] text-sm'>Email Verification</p>
+                                        <p className='font-semibold text-[var(--tt-ink)] text-sm'>
+                                            {otpChannel === 'sms' ? 'Mobile Verification (SMS)' : otpChannel === 'email' ? 'Email Verification' : 'Account Verification'}
+                                        </p>
                                         <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>
-                                            {otpSent ? (otpTimer > 0 ? `Code sent to ${user?.email || 'your email'}. Resend available in ${otpTimer}s.` : `A verification code was sent to ${user?.email || 'your email'}.`) : `We will send a 6-digit verification code to ${user?.email || 'your email'}.`}
+                                            {otpSent
+                                                ? (otpTimer > 0
+                                                    ? `Code sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}. Resend available in ${otpTimer}s.`
+                                                    : `A verification code was sent via ${otpChannel === 'sms' ? 'SMS' : 'email'} to ${otpChannel === 'sms' ? (form.phone || normalizedPhone) : (user?.email || 'your email')}.`)
+                                                : `We will send a 6-digit verification code to verify your mobile number.`}
                                         </p>
                                     </div>
                                 </div>
