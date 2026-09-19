@@ -266,15 +266,10 @@ export default function Booking() {
     const currentStepIndex = Math.max(0, bookingSteps.findIndex((step) => step.id === mobileStep))
 
     useEffect(() => {
-        if (!aiEnabled) {
-            if (mobileStep === 2) {
-                setMobileStep(3)
-            }
-            if (selectedStyleId) {
-                setSelectedStyleId('')
-            }
+        if (!aiEnabled && mobileStep === 2) {
+            setMobileStep(3)
         }
-    }, [aiEnabled, mobileStep, selectedStyleId])
+    }, [aiEnabled, mobileStep])
 
     useEffect(() => {
         Promise.allSettled([
@@ -1070,6 +1065,7 @@ export default function Booking() {
     // render-local but does not define when this selection effect should rerun.
     /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
+        if (!aiEnabled) return
         if (!selectedStyleId) {
             const topRecommendationId = recommendations[0]?.id
             if (topRecommendationId && stylePreviews[topRecommendationId]?.status === 'ready' && stylePreviews[topRecommendationId]?.generatedImage) {
@@ -1110,7 +1106,7 @@ export default function Booking() {
             })
             setPreviewFromCache(Boolean(activePreview.fromCache))
         }
-    }, [stylePreviews, recommendations, selectedStyleId, compatibleStyles, generatedPreview])
+    }, [aiEnabled, stylePreviews, recommendations, selectedStyleId, compatibleStyles, generatedPreview])
     /* eslint-enable react-hooks/exhaustive-deps */
 
     const validate = () => {

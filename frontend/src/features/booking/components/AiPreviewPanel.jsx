@@ -206,7 +206,7 @@ export default function AiPreviewPanel({
                                     </figure>
                                 </div>
                                 <p className='mt-3 text-[11px] leading-relaxed text-[var(--tt-muted)]'>
-                                    This AI preview is a visual guideline. Scissor lengths and finish will be confirmed with your groomer during consultation.
+                                    This style preview is a visual reference, not a guaranteed final result. Scissor lengths and finish will be confirmed with your groomer during consultation.
                                 </p>
                             </div>
                         )}
