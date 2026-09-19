@@ -375,6 +375,28 @@ export default function Login() {
               Register a companion account
             </Link>
           </p>
+
+          {/* Terms & Privacy Agreement Notice */}
+          <p className='mt-6 border-t border-[rgba(210,143,119,0.2)] pt-4 text-center text-[11px] leading-relaxed text-[#8e857c]'>
+            By signing in, you agree to TimmyTails’{' '}
+            <Link
+              to='/terms-of-service'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='underline underline-offset-2 transition-colors hover:text-[#24211e]'
+            >
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link
+              to='/privacy-policy'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='underline underline-offset-2 transition-colors hover:text-[#24211e]'
+            >
+              Privacy Policy
+            </Link>.
+          </p>
         </div>
       </main>
     </div>

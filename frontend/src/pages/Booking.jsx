@@ -1235,11 +1235,20 @@ export default function Booking() {
                 ? selectedPet
                 : null
             if (petMode === 'new') {
-                const { data } = await petsApi.create(newPet)
-                petRecord = data.pet
-                petId = data.pet._id
-                setPets((current) => [data.pet, ...current])
-                setSelectedPetId(data.pet._id)
+                const existingSamePet = pets.find(
+                    (p) => String(p.name || '').trim().toLowerCase() === String(newPet.name || '').trim().toLowerCase() &&
+                           String(p.type || '').toLowerCase() === String(newPet.type || '').toLowerCase()
+                )
+                if (existingSamePet) {
+                    petRecord = existingSamePet
+                    petId = existingSamePet._id
+                } else {
+                    const { data } = await petsApi.create(newPet)
+                    petRecord = data.pet
+                    petId = data.pet._id
+                    setPets((current) => [data.pet, ...current])
+                    setSelectedPetId(data.pet._id)
+                }
             }
 
             const { data } = await appointmentsApi.create({
@@ -1473,6 +1482,9 @@ export default function Booking() {
                                             <Label>Pet notes (optional)</Label>
                                             <textarea value={newPet.notes} onChange={(event) => setNewPet({ ...newPet, notes: event.target.value })} rows={2} className='field-control min-h-20 py-2.5' placeholder='Handling preferences, coat or skin notes' />
                                         </label>
+                                        <p className='text-[11px] text-[var(--tt-muted)] sm:col-span-2'>
+                                            ✦ This companion will be automatically saved to your registered pets profile for future bookings.
+                                        </p>
                                     </div>
                                 )}
 

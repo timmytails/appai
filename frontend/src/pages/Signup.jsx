@@ -566,6 +566,27 @@ export default function Signup() {
                   />
                 </div>
 
+                <div className='rounded-md border border-[rgba(210,143,119,0.3)] bg-white/70 p-3 text-[11px] leading-relaxed text-[#635b53]'>
+                  By creating an account or continuing with Google, you agree to TimmyTails’{' '}
+                  <Link
+                    to='/terms-of-service'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='font-semibold text-[#24211e] underline underline-offset-2 hover:text-[#a47d44]'
+                  >
+                    Terms of Service
+                  </Link>{' '}
+                  and acknowledge our{' '}
+                  <Link
+                    to='/privacy-policy'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='font-semibold text-[#24211e] underline underline-offset-2 hover:text-[#a47d44]'
+                  >
+                    Privacy Policy
+                  </Link>.
+                </div>
+
                 <button
                   type='submit'
                   disabled={submitting}

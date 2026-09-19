@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ChevronDown, ExternalLink, LogOut, Menu, X } from 'lucide-react'
+import { ChevronDown, Home, LogOut, Menu, X } from 'lucide-react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import NotificationBell from './NotificationBell'
@@ -29,54 +29,51 @@ export default function CustomerHeader() {
     const close = (event) => {
       if (accountRef.current && !accountRef.current.contains(event.target)) setAccountOpen(false)
     }
-    document.addEventListener('mousedown', close)
-    return () => document.removeEventListener('mousedown', close)
+    document.addEventListener('click', close)
+    return () => document.removeEventListener('click', close)
   }, [accountOpen])
 
   const signOut = () => {
     logout()
-    setAccountOpen(false)
-    setMobileOpen(false)
-    navigate('/')
+    navigate('/login')
   }
 
   return (
-    <header className='sticky top-0 z-50 h-[72px] border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/95 backdrop-blur transition-colors duration-300 md:h-[78px]'>
-      <a className='skip-link' href='#main-content'>Skip to content</a>
-      <div className='mx-auto flex h-full max-w-[1440px] items-center gap-4 px-4 sm:px-6 lg:px-10'>
-        <div className='flex flex-1 items-center'>
-          <Link to='/dashboard' className='group flex shrink-0 items-center gap-3' aria-label='TimmyTails customer overview'>
-            <img 
-              src='/logo.png' 
-              alt='TimmyTails' 
-              className='h-11 w-11 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 lg:h-12 lg:w-12' 
-            />
-            <span className='hidden font-serif text-xl font-semibold tracking-tight text-[var(--tt-ink)] sm:block'>TimmyTails</span>
-          </Link>
-        </div>
+    <header className='sticky top-0 z-40 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/90 backdrop-blur-md'>
+      <div className='mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8'>
+        {/* Brand Link */}
+        <Link to='/dashboard' className='flex items-center gap-3 transition-opacity duration-300 hover:opacity-85'>
+          <img src='/logo.png' alt='TimmyTails' className='h-9 w-9 rounded-full object-cover border border-[var(--tt-gold)]/40 shadow-xs' />
+          <span className='font-serif text-2xl font-medium tracking-tight text-[var(--tt-ink)]'>TimmyTails</span>
+        </Link>
 
-        {/* Center Nav Links na may Animated Gold Underline */}
-        <nav className='hidden flex-1 items-stretch justify-center self-stretch lg:flex' aria-label='Customer navigation'>
+        {/* Desktop Navigation */}
+        <nav className='hidden h-[72px] items-center gap-1 lg:flex' aria-label='Customer desktop navigation'>
           {customerLinks.map(([label, to]) => (
-            <NavLink 
-              key={to} 
-              to={to} 
-              end={to === '/dashboard'} 
-              className={({ isActive }) => customerNavClass(isActive)}
-            >
+            <NavLink key={to} to={to} className={({ isActive }) => customerNavClass(isActive)}>
               {label}
             </NavLink>
           ))}
         </nav>
 
-        <div className='flex flex-1 items-center justify-end gap-2'>
+        {/* Right Utilities & Actions */}
+        <div className='flex items-center gap-2 sm:gap-3'>
+          <Link
+            to='/book'
+            className='hidden sm:inline-flex min-h-10 items-center justify-center rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-semibold text-white shadow-xs transition hover:bg-[#514b42]'
+          >
+            Book appointment
+          </Link>
+
           <NotificationBell />
-          {/* User Profile Dropdown Button */}
-          <div className='relative hidden sm:block' ref={accountRef}>
+
+          {/* User Profile Pill & Dropdown */}
+          <div className='relative' ref={accountRef}>
             <button
               type='button'
               onClick={() => setAccountOpen((current) => !current)}
-              className='inline-flex min-h-11 items-center gap-2 border border-transparent px-3 text-xs font-semibold text-[var(--tt-ink)] transition-all duration-300 hover:border-[var(--tt-border)] hover:bg-white active:scale-[0.98]'
+              className='flex min-h-10 items-center gap-2 rounded-full border border-[var(--tt-border)] bg-white/80 py-1.5 pl-2 pr-3.5 text-xs font-medium text-[var(--tt-ink)] shadow-xs transition hover:border-[var(--tt-gold)] hover:bg-white'
+              aria-label='Account menu'
               aria-haspopup='menu'
               aria-expanded={accountOpen}
             >
@@ -104,7 +101,7 @@ export default function CustomerHeader() {
                     </Link>
                   ))}
                   <Link to='/' className='account-item transition-all duration-200 hover:pl-3'>
-                    <ExternalLink size={14} /> Visit website
+                    <Home size={14} /> Back to Home
                   </Link>
                 </div>
                 <button 
@@ -137,7 +134,11 @@ export default function CustomerHeader() {
           <nav className='grid gap-1' aria-label='Customer mobile menu'>
             {customerLinks.map(([label, to]) => <MobileLink key={to} to={to}>{label}</MobileLink>)}
             <div className='my-2 h-px bg-[var(--tt-border)]' />
-            <MobileLink to='/'>Visit website</MobileLink>
+            <MobileLink to='/'>
+              <span className='flex items-center gap-2'>
+                <Home size={16} /> Back to Home
+              </span>
+            </MobileLink>
             <button 
               type='button' 
               onClick={signOut} 
