@@ -8,16 +8,18 @@ const User = require('../models/User')
 const Notification = require('../models/Notification')
 const Pet = require('../models/Pet')
 const { normalizeAccountStatus, persistAccountStatus, toAccountStatusResponse } = require('../services/accountStatus')
+const { getDefaultFirstStage, getStagesForService } = require('../config/serviceStages')
 const {
     sendAppointmentCancelledEmail,
     sendAppointmentConfirmedEmail,
+    sendAppointmentInProgressEmail,
     sendAppointmentCompletedEmail
 } = require('../services/mailer')
 
 const { protect, adminOnly } = require('../middleware/auth')
 
 const TERMINAL_STATUSES = ['completed', 'cancelled']
-const REVENUE_STATUSES = ['confirmed', 'completed']
+const REVENUE_STATUSES = ['confirmed', 'in_progress', 'completed']
 const MANILA_TIME_ZONE = 'Asia/Manila'
 
 const padNumber = (value) => String(value).padStart(2, '0')
@@ -245,6 +247,7 @@ const buildStatusNotification = (
     const statusLabels = {
         pending: 'Pending Review',
         confirmed: 'Confirmed',
+        in_progress: 'In Service',
         completed: 'Completed',
         cancelled: 'Cancelled'
     }
@@ -259,6 +262,9 @@ const buildStatusNotification = (
 
         confirmed:
             `Great news! Your ${appointment.service} booking on ${appointment.date} at ${appointment.time} is confirmed.`,
+
+        in_progress:
+            `Your pet ${appointment.petName} has started their ${appointment.service} grooming session!`,
 
         completed:
             `Your ${appointment.service} service on ${appointment.date} is marked as completed. Thank you for trusting Timmy Tails!`,
@@ -578,7 +584,8 @@ router.get('/stats', async (req, res) => {
                 status: {
                     $in: [
                         'pending',
-                        'confirmed'
+                        'confirmed',
+                        'in_progress'
                     ]
                 }
             }),
@@ -715,6 +722,7 @@ router.get(
             const validStatuses = [
                 'pending',
                 'confirmed',
+                'in_progress',
                 'completed',
                 'cancelled'
             ]
@@ -906,6 +914,7 @@ router.patch(
         const validStatuses = [
             'pending',
             'confirmed',
+            'in_progress',
             'completed',
             'cancelled'
         ]
@@ -977,6 +986,25 @@ router.patch(
                     ? String(req.body.cancellationReason || req.body.reason || '').trim()
                     : existingAppointment.cancellationReason || ''
 
+            let serviceStage = existingAppointment.serviceStage || null
+            let serviceStageKey = existingAppointment.serviceStageKey || null
+            let serviceStageUpdatedAt = existingAppointment.serviceStageUpdatedAt || null
+
+            if (status === 'in_progress' && !serviceStage) {
+                const firstStage = getDefaultFirstStage(existingAppointment.serviceId)
+                serviceStage = firstStage.label
+                serviceStageKey = firstStage.id
+                serviceStageUpdatedAt = new Date()
+            } else if (status === 'completed') {
+                serviceStage = 'Completed'
+                serviceStageKey = 'completed'
+                serviceStageUpdatedAt = new Date()
+            } else if (status === 'cancelled') {
+                serviceStage = null
+                serviceStageKey = null
+                serviceStageUpdatedAt = null
+            }
+
             const appointment =
                 await Appointment.findByIdAndUpdate(
                     req.params.id,
@@ -984,7 +1012,10 @@ router.patch(
                         $set: {
                             status,
                             revenueRecordedAt,
-                            cancellationReason
+                            cancellationReason,
+                            serviceStage,
+                            serviceStageKey,
+                            serviceStageUpdatedAt
                         }
                     },
                     {
@@ -1031,6 +1062,12 @@ router.patch(
                                 name: targetUser?.firstName,
                                 appointment
                             }).catch((emailErr) => console.error('Admin approve email error:', emailErr.message))
+                        } else if (status === 'in_progress') {
+                            sendAppointmentInProgressEmail({
+                                to: customerEmail,
+                                name: targetUser?.firstName,
+                                appointment
+                            }).catch((emailErr) => console.error('Admin in-progress email error:', emailErr.message))
                         } else if (status === 'completed') {
                             sendAppointmentCompletedEmail({
                                 to: customerEmail,
@@ -1062,6 +1099,93 @@ router.patch(
                 message:
                     error.message ||
                     'Unable to update appointment status'
+            })
+        }
+    }
+)
+
+router.patch(
+    '/appointments/:id/stage',
+    async (req, res) => {
+        const serviceStage = String(req.body.serviceStage || '').trim()
+        const serviceStageKey = String(req.body.serviceStageKey || '').trim()
+
+        if (!serviceStage || !serviceStageKey) {
+            return res.status(400).json({
+                success: false,
+                message: 'Service stage and stage key are required'
+            })
+        }
+
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid appointment ID'
+            })
+        }
+
+        try {
+            const existingAppointment = await Appointment.findById(req.params.id)
+            if (!existingAppointment) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Appointment not found'
+                })
+            }
+
+            if (existingAppointment.status === 'cancelled') {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Cannot update stage of a cancelled appointment'
+                })
+            }
+
+            const newStatus = existingAppointment.status === 'completed'
+                ? 'completed'
+                : 'in_progress'
+
+            let revenueRecordedAt = existingAppointment.revenueRecordedAt
+            if (!revenueRecordedAt && REVENUE_STATUSES.includes(newStatus)) {
+                revenueRecordedAt = new Date()
+            }
+
+            const appointment = await Appointment.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $set: {
+                        status: newStatus,
+                        serviceStage,
+                        serviceStageKey,
+                        serviceStageUpdatedAt: new Date(),
+                        revenueRecordedAt
+                    }
+                },
+                { new: true }
+            )
+
+            // Create in-app notification for the customer
+            if (appointment.user && mongoose.isValidObjectId(appointment.user)) {
+                Notification.create({
+                    title: `🐾 ${appointment.petName}'s Grooming Update`,
+                    message: `${appointment.petName} is now at the "${serviceStage}" stage of their ${appointment.service} session!`,
+                    audience: 'user',
+                    targetUser: appointment.user,
+                    type: 'appointment-status',
+                    appointment: appointment._id,
+                    createdBy: req.user._id
+                }).catch((err) => console.error('Stage notification error:', err.message))
+            }
+
+            return res.json({
+                success: true,
+                message: `Service stage updated to "${serviceStage}"`,
+                appointment
+            })
+        } catch (error) {
+            console.error('Update appointment stage error:', error)
+            return res.status(500).json({
+                success: false,
+                message: error.message || 'Unable to update service stage'
             })
         }
     }

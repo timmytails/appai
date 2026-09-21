@@ -77,7 +77,6 @@ export default function AiStylePreviewModal({
     onPhotoChange,
     consent,
     onConsentChange,
-    verificationStatus,
     styles = [],
     recommendations = [],
     stylePreviews = {},

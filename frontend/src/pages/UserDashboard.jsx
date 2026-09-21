@@ -18,6 +18,7 @@ import AppointmentDetailsModal from '../components/AppointmentDetailsModal'
 import ConfirmModal from '../components/ConfirmModal'
 import RescheduleModal from '../components/RescheduleModal'
 import { Botanical } from '../components/editorial/Decorations'
+import { getStagesForService, getStageProgress } from '../utils/serviceStages'
 
 const appointmentDate = (appointment, useEnd = false) => {
   const directValue = useEnd ? appointment.endAt : appointment.startAt
@@ -29,6 +30,7 @@ const appointmentDate = (appointment, useEnd = false) => {
 
 const STATUS = {
   confirmed: { label: 'Approved', className: 'border-[#cdbd86] bg-[#fdf8eb] text-[#675728]' },
+  in_progress: { label: 'In Service', className: 'border-[#b6d5f0] bg-[#eef6fc] text-[#1c5d99]' },
   completed: { label: 'Completed', className: 'border-[rgba(210,143,119,0.3)] bg-[#f7ebe1] text-[#7a6f66]' },
   cancelled: { label: 'Cancelled', className: 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' },
   pending: { label: 'Pending review', className: 'border-[#ead7ca] bg-[#f9eee7] text-[#79584b]' }
@@ -74,7 +76,7 @@ export default function UserDashboard() {
   useEffect(() => { loadData() }, [])
 
   const upcoming = useMemo(() => appointments
-    .filter((appointment) => ['pending', 'confirmed'].includes(appointment.status) && appointmentDate(appointment, true) >= new Date())
+    .filter((appointment) => ['pending', 'confirmed', 'in_progress'].includes(appointment.status) && appointmentDate(appointment, true) >= new Date())
     .sort((a, b) => appointmentDate(a) - appointmentDate(b)), [appointments])
 
   const recentVisits = useMemo(() => appointments
@@ -408,6 +410,8 @@ function NextVisit({ appointment, pets, onOpen }) {
   const pet = appointment.pet || pets.find((item) => item._id === appointment.petId || item.name?.toLowerCase() === appointment.petName?.toLowerCase())
   const status = STATUS[appointment.status] || STATUS.pending
   const isCat = (appointment.petType || pet?.type)?.toLowerCase() === 'cat'
+  const stages = getStagesForService(appointment.serviceId)
+  const progress = getStageProgress(stages, appointment.serviceStageKey)
 
   return (
     <article className='editorial-card-hover group grid overflow-hidden rounded-xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_10px_30px_rgba(50,32,22,0.04)] lg:grid-cols-[1.25fr_0.75fr]'>
@@ -424,8 +428,63 @@ function NextVisit({ appointment, pets, onOpen }) {
           </div>
 
           <h3 className='mt-5 font-serif text-3xl font-medium leading-tight text-[#24211e] sm:text-4xl lg:text-[2.7rem]'>
-            {appointment.petName} is booked for {appointment.service?.toLowerCase()}.
+            {appointment.status === 'in_progress'
+              ? `${appointment.petName} is currently in service for ${appointment.service?.toLowerCase()}.`
+              : `${appointment.petName} is booked for ${appointment.service?.toLowerCase()}.`}
           </h3>
+
+          {/* Live Service Milestone Progress Bar */}
+          {appointment.status === 'in_progress' && (
+            <div className='mt-6 rounded-xl border border-[#b6d5f0] bg-gradient-to-br from-[#f0f7fd] to-[#e4f0fa] p-4 text-[#1c5d99] shadow-xs'>
+              <div className='flex items-center justify-between text-xs font-semibold'>
+                <span className='flex items-center gap-1.5 uppercase tracking-wider text-[#18538a]'>
+                  <span className='relative flex h-2.5 w-2.5'>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75'></span>
+                    <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-[#1d4ed8]'></span>
+                  </span>
+                  Live Grooming Milestone
+                </span>
+                <span className='font-mono font-bold text-[#1d4ed8]'>
+                  Step {progress.currentStep} of {progress.totalSteps}
+                </span>
+              </div>
+
+              <div className='mt-2 flex items-baseline justify-between gap-2'>
+                <p className='font-serif text-lg font-bold text-[#0f345a]'>
+                  {appointment.serviceStage || stages[0]?.label || 'Service in progress'}
+                </p>
+                <span className='text-xs font-bold text-[#2563eb]'>{progress.percentage}%</span>
+              </div>
+
+              <div className='mt-2 h-2 w-full overflow-hidden rounded-full bg-[#cbdff2]'>
+                <div
+                  className='h-full rounded-full bg-gradient-to-r from-[#3b82f6] to-[#1d4ed8] transition-all duration-700 ease-out'
+                  style={{ width: `${progress.percentage}%` }}
+                />
+              </div>
+
+              <div className='mt-3 flex flex-wrap gap-1.5'>
+                {stages.map((stg, i) => {
+                  const isDone = i < progress.currentStep - 1
+                  const isCurrent = i === progress.currentStep - 1
+                  return (
+                    <span
+                      key={stg.id}
+                      className={`rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider transition ${
+                        isCurrent
+                          ? 'bg-[#1d4ed8] text-white shadow-xs'
+                          : isDone
+                          ? 'bg-[#d0e4f7] text-[#1c5d99]'
+                          : 'bg-white/60 text-[#8ba3bd]'
+                      }`}
+                    >
+                      {stg.shortLabel || stg.label}
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           <div className='mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#635b53]'>
             <span className='inline-flex items-center gap-2'>
@@ -615,6 +674,12 @@ function VisitRow({ appointment, onOpen }) {
           <span className={`border px-2 py-0.5 text-[8px] font-bold uppercase tracking-[1px] ${status.className}`}>
             {status.label}
           </span>
+          {appointment.status === 'in_progress' && appointment.serviceStage && (
+            <span className='inline-flex items-center gap-1 rounded-full border border-[#b6d5f0] bg-[#eef6fc] px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.5px] text-[#1c5d99]'>
+              <span className='h-1 w-1 animate-pulse rounded-full bg-[#1c5d99]' />
+              {appointment.serviceStage}
+            </span>
+          )}
         </div>
         <p className='mt-1 truncate text-xs text-[#82746b]'>
           {appointment.service} · {formatTimeRange(appointment.time, appointment.endTime)}

@@ -196,7 +196,7 @@ export default function Booking() {
     const [stylesLoading, setStylesLoading] = useState(false)
     const [previewVersion, setPreviewVersion] = useState('')
     const [recommendations, setRecommendations] = useState([])
-    const [recommendationsLoading, setRecommendationsLoading] = useState(false)
+    const [_recommendationsLoading, setRecommendationsLoading] = useState(false)
     const [pets, setPets] = useState([])
     const [petMode, setPetMode] = useState('existing')
     const [selectedPetId, setSelectedPetId] = useState('')
@@ -1001,7 +1001,7 @@ export default function Booking() {
         startPersonalizedGallery([styleId], { forceRefresh: true })
     }
 
-    const retryFailedStylePreviews = () => {
+    const _retryFailedStylePreviews = () => {
         if (galleryBusyRef.current) return
 
         const nextStyleId = getNextFailedStyleId({
@@ -1034,7 +1034,7 @@ export default function Booking() {
             compatibleStyles.map((style) => style.id).join(',')
         ].join('|')
         : ''
-    const hasStyleFailures = Object.values(
+    const _hasStyleFailures = Object.values(
         stylePreviews
     ).some((preview) => preview.status === 'error')
 

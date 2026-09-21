@@ -21,7 +21,6 @@ export default function AiPreviewPanel({
     onConsentChange,
     verificationStatus,
     galleryGenerating,
-    galleryMessage,
     onRegenerateSelected
 }) {
     const styleName = selectedStyle?.name || selectedStyleName || ''

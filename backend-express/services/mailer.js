@@ -738,6 +738,66 @@ const sendAppointmentRescheduledEmail = async ({ to, name, appointment }) => {
 }
 
 /**
+ * Send in-progress appointment email when pet starts grooming
+ */
+const sendAppointmentInProgressEmail = async ({ to, name, appointment }) => {
+    if (!to) return { delivered: false, skipped: true }
+
+    const clientName = name || appointment.ownerName || 'Valued Customer'
+    const petName = appointment.petName || 'your pet'
+    const serviceName = appointment.service || 'grooming session'
+    const subject = `🐾 ${petName}'s ${serviceName} has started at Timmy Tails!`
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Service Started</title></head>
+<body style="margin:0;padding:0;background-color:#F8F7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#261C14;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#F8F7F4;padding:30px 15px;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
+        <tr>
+          <td style="background-color:#1D5B96;padding:26px 24px;text-align:center;">
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <p style="margin:6px 0 0 0;color:#E6F0FA;font-size:13px;">Service In Progress</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:28px 24px;">
+            <p style="margin:0 0 16px 0;font-size:15px;color:#261C14;">Hello <strong>${clientName}</strong>,</p>
+            <p style="margin:0 0 16px 0;font-size:14px;color:#4A3B32;line-height:1.6;">
+              Great news! Our grooming team has just started working with <strong>${petName}</strong> for their <strong>${serviceName}</strong>${appointment.haircutStyle ? ` (${appointment.haircutStyle})` : ''}.
+            </p>
+            <div style="background-color:#F0F7FD;border-left:4px solid #1D5B96;padding:14px 18px;border-radius:6px;margin:18px 0;">
+              <p style="margin:0 0 6px 0;font-size:14px;color:#1D5B96;font-weight:700;">✂️ Status: In Service</p>
+              <p style="margin:0;font-size:13px;color:#33506B;">We are taking wonderful care of ${petName}. We will notify you as soon as the grooming session is completed and ready for pickup!</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#FAF7F2;padding:16px 24px;text-align:center;font-size:12px;color:#8C7A6D;border-top:1px solid #E5D6C5;">
+            <p style="margin:0;">© ${new Date().getFullYear()} Timmy Tails Pet Grooming Salon • Baliuag City, Bulacan</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+`
+
+    return sendMailViaHttpOrSmtp({
+        to,
+        name: clientName,
+        subject,
+        html,
+        text: `Our grooming team has started ${petName}'s ${serviceName} session at Timmy Tails! We will notify you once done.`
+    })
+}
+
+/**
  * Send completed appointment thank-you email
  */
 const sendAppointmentCompletedEmail = async ({ to, name, appointment }) => {
@@ -800,6 +860,7 @@ module.exports = {
     sendAppointmentConfirmedEmail,
     sendAppointmentCancelledEmail,
     sendAppointmentRescheduledEmail,
+    sendAppointmentInProgressEmail,
     sendAppointmentCompletedEmail,
     sendWelcomeEmail,
     sendOtpEmail,

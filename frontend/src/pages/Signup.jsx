@@ -32,14 +32,14 @@ export default function Signup() {
   const [submitting, setSubmitting] = useState(false)
 
   // Address Dropdown States - locked to Bulacan
-  const [provinces, setProvinces] = useState(BULACAN_PROVINCES)
+  const [provinces] = useState(BULACAN_PROVINCES)
   const [cities, setCities] = useState([])
   const [barangays, setBarangays] = useState([])
 
   const [selectedProvinceCode, setSelectedProvinceCode] = useState(BULACAN_CODE)
   const [selectedCityCode, setSelectedCityCode] = useState('')
 
-  const [loadingProvinces, setLoadingProvinces] = useState(false)
+  const [loadingProvinces] = useState(false)
   const [loadingCities, setLoadingCities] = useState(false)
   const [loadingBarangays, setLoadingBarangays] = useState(false)
 
@@ -920,7 +920,7 @@ const BULACAN_CITIES_FALLBACK = [
   { code: '031423000', name: 'Santa Maria' }
 ]
 
-async function fetchProvinces() {
+async function _fetchProvinces() {
   return BULACAN_PROVINCES
 }
 

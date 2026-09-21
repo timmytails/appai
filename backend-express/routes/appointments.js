@@ -79,7 +79,8 @@ const CLOSED_DAYS = new Set(
 
 const ACTIVE_BOOKING_STATUSES = [
     'pending',
-    'confirmed'
+    'confirmed',
+    'in_progress'
 ]
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
@@ -1752,6 +1753,16 @@ router.delete(
                     })
             }
 
+            if (!isAdmin && appointment.status === 'in_progress') {
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message:
+                            'This appointment is currently in service and cannot be cancelled online. Please consult the grooming staff directly.'
+                    })
+            }
+
             appointment.status =
                 'cancelled'
 
@@ -1872,10 +1883,12 @@ router.patch(
                 })
             }
 
-            if (['completed', 'cancelled'].includes(appointment.status)) {
+            if (['completed', 'cancelled', 'in_progress'].includes(appointment.status)) {
                 return res.status(400).json({
                     success: false,
-                    message: `Cannot reschedule a ${appointment.status} appointment.`
+                    message: appointment.status === 'in_progress'
+                        ? 'Cannot reschedule an appointment that is currently in service.'
+                        : `Cannot reschedule a ${appointment.status} appointment.`
                 })
             }
 

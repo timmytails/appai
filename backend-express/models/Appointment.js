@@ -152,8 +152,22 @@ const appointmentSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['pending', 'confirmed', 'completed', 'cancelled'],
+            enum: ['pending', 'confirmed', 'in_progress', 'completed', 'cancelled'],
             default: 'pending'
+        },
+        serviceStage: {
+            type: String,
+            default: null,
+            trim: true
+        },
+        serviceStageKey: {
+            type: String,
+            default: null,
+            trim: true
+        },
+        serviceStageUpdatedAt: {
+            type: Date,
+            default: null
         },
         cancellationReason: {
             type: String,

@@ -53,6 +53,7 @@ import {
 
 import { useAuth } from '../context/AuthContext'
 import { getAccountStatusLabel, mergePersistedCustomerStatus } from '../utils/customerStatus'
+import { getStagesForService } from '../utils/serviceStages'
 import ConfirmModal from '../components/ConfirmModal'
 import AdminCancelModal from '../components/AdminCancelModal'
 
@@ -64,6 +65,10 @@ const STATUS_META = {
     confirmed: {
         label: 'Approved',
         badge: 'bg-[#E4F1EA] text-[#216245] ring-1 ring-[#C9E1D3]'
+    },
+    in_progress: {
+        label: 'In Service',
+        badge: 'bg-[#EBF3FC] text-[#1E568F] ring-1 ring-[#BED6EE]'
     },
     completed: {
         label: 'Completed',
@@ -136,6 +141,10 @@ const BOOKING_FILTERS = [
     {
         id: 'confirmed',
         label: 'Approved'
+    },
+    {
+        id: 'in_progress',
+        label: 'In Service'
     },
     {
         id: 'completed',
@@ -759,6 +768,19 @@ export default function Admin() {
             }
         }
 
+    const handleStageUpdate = async (appointment, stage) => {
+        setUpdatingId(appointment._id)
+        try {
+            await adminApi.updateServiceStage(appointment._id, stage.label, stage.id)
+            toast.success(`Service stage updated: ${stage.label}`)
+            await loadData(true)
+        } catch (error) {
+            toast.error(getErrorMessage(error))
+        } finally {
+            setUpdatingId(null)
+        }
+    }
+
     const handleLogout = () => {
         logout()
         navigate('/')
@@ -864,7 +886,7 @@ export default function Admin() {
                 )}
 
                 {activeTab === 'bookings' && (
-                    <BookingsView appointments={filteredAppointments} filter={bookingFilter} onFilter={setBookingFilter} search={search} onSearch={setSearch} selected={selectedBooking} onSelect={setSelectedBookingId} updatingId={updatingId} onStatusUpdate={handleStatusUpdate} />
+                    <BookingsView appointments={filteredAppointments} filter={bookingFilter} onFilter={setBookingFilter} search={search} onSearch={setSearch} selected={selectedBooking} onSelect={setSelectedBookingId} updatingId={updatingId} onStatusUpdate={handleStatusUpdate} onStageUpdate={handleStageUpdate} />
                 )}
 
                 {activeTab === 'schedule' && (
@@ -872,6 +894,7 @@ export default function Admin() {
                         appointments={appointments}
                         weekAnchor={weekAnchor}
                         onStatusUpdate={handleStatusUpdate}
+                        onStageUpdate={handleStageUpdate}
                         updatingId={updatingId}
                         onPrevious={() => { const next = new Date(weekAnchor); next.setDate(next.getDate() - 7); setWeekAnchor(next) }}
                         onNext={() => { const next = new Date(weekAnchor); next.setDate(next.getDate() + 7); setWeekAnchor(next) }}
@@ -1097,7 +1120,8 @@ function BookingsView({
     selected,
     onSelect,
     updatingId,
-    onStatusUpdate
+    onStatusUpdate,
+    onStageUpdate
 }) {
     return (
         <div className='space-y-4'>
@@ -1146,6 +1170,12 @@ function BookingsView({
                                         <p className='font-serif text-lg font-bold text-[var(--tt-ink)]'>{appointment.petName}</p>
                                         <span className='text-xs text-[var(--tt-muted)]'>({appointment.breed})</span>
                                         <StatusBadge status={appointment.status} />
+                                        {appointment.status === 'in_progress' && appointment.serviceStage && (
+                                            <span className='inline-flex items-center gap-1 rounded-full bg-[#EBF3FC] px-2.5 py-0.5 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
+                                                <span className='h-1.5 w-1.5 rounded-full bg-[#1E568F] animate-pulse' />
+                                                {appointment.serviceStage}
+                                            </span>
+                                        )}
                                     </div>
                                     <p className='mt-1 text-xs font-medium text-[var(--tt-ink-soft)]'>
                                         Customer: <strong className='text-[var(--tt-ink)]'>{getOwnerName(appointment)}</strong>
@@ -1184,6 +1214,7 @@ function BookingsView({
                     appointment={selected}
                     updating={updatingId === selected._id}
                     onStatusUpdate={onStatusUpdate}
+                    onStageUpdate={onStageUpdate}
                     onClose={() => onSelect(null)}
                 />
             )}
@@ -1195,6 +1226,7 @@ function BookingDetailModal({
     appointment,
     updating,
     onStatusUpdate,
+    onStageUpdate,
     onClose
 }) {
     const [preview, setPreview] = useState(null)
@@ -1353,13 +1385,71 @@ function BookingDetailModal({
                     </div>
                 )}
 
+                {/* Live Service Progress Stepper (Milestones) */}
+                {['in_progress', 'confirmed'].includes(appointment.status) && onStageUpdate && (
+                    <div className='rounded-sm border border-[#BED6EE] bg-[#F4F9FD] p-4 space-y-3'>
+                        <div className='flex flex-wrap items-center justify-between gap-2'>
+                            <div>
+                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#1D5B96]'>
+                                    Live Service Progress ({appointment.service})
+                                </p>
+                                <p className='text-sm font-bold text-[var(--tt-ink)]'>
+                                    Current Stage: <span className='text-[#1D5B96]'>{appointment.serviceStage || 'Not started'}</span>
+                                </p>
+                            </div>
+                            {appointment.status === 'in_progress' && (
+                                <span className='inline-flex items-center gap-1.5 rounded-full bg-[#EBF3FC] px-2.5 py-1 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
+                                    <span className='h-2 w-2 rounded-full bg-[#1E568F] animate-pulse' />
+                                    In Service
+                                </span>
+                            )}
+                        </div>
+
+                        <p className='text-[11px] text-[var(--tt-ink-soft)]'>
+                            Click any milestone below to update the live progress for <strong>{appointment.petName}</strong>:
+                        </p>
+
+                        <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
+                            {getStagesForService(appointment.serviceId).map((stage, idx, allStages) => {
+                                const currentIdx = allStages.findIndex((s) => s.id === appointment.serviceStageKey || s.label === appointment.serviceStage)
+                                const isCurrent = currentIdx !== -1 && currentIdx === idx
+                                const isPast = currentIdx !== -1 && idx < currentIdx
+
+                                return (
+                                    <button
+                                        key={stage.id}
+                                        type='button'
+                                        disabled={updating || isCurrent}
+                                        onClick={() => onStageUpdate(appointment, stage)}
+                                        className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
+                                            isCurrent
+                                                ? 'bg-[#1E568F] text-white border-[#1E568F] shadow-xs'
+                                                : isPast
+                                                ? 'bg-[#EBF3FC] text-[#1E568F] border-[#BED6EE] hover:bg-[#DDEBFA]'
+                                                : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#1E568F] hover:text-[#1E568F]'
+                                        } disabled:opacity-85`}
+                                    >
+                                        <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
+                                            <span className='font-mono font-bold'>Step {idx + 1}</span>
+                                            {isPast && <span>✓ Done</span>}
+                                            {isCurrent && <span className='font-bold'>● Active</span>}
+                                        </div>
+                                        <p className='font-bold text-xs leading-snug'>{stage.label}</p>
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+                )}
+
                 {/* Update Status Actions */}
                 <div className='border-t border-[var(--tt-border)] pt-4'>
                     <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)] mb-2.5'>Update Booking Status</p>
-                    <div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
+                    <div className='grid grid-cols-2 sm:grid-cols-5 gap-2'>
                         {[
                             { key: 'pending', label: 'Set Pending', activeLabel: 'Pending' },
                             { key: 'confirmed', label: 'Approve', activeLabel: 'Approved' },
+                            { key: 'in_progress', label: 'Start Service', activeLabel: 'In Service' },
                             { key: 'completed', label: 'Complete', activeLabel: 'Completed' },
                             { key: 'cancelled', label: 'Cancel', activeLabel: 'Cancelled' }
                         ].map(({ key, label, activeLabel }) => {
@@ -1369,7 +1459,7 @@ function BookingDetailModal({
                                     key={key}
                                     disabled={updating || isCurrent}
                                     onClick={() => onStatusUpdate(appointment, key)}
-                                    className={`rounded-sm px-3.5 py-2.5 text-xs font-bold transition text-center ${
+                                    className={`rounded-sm px-3 py-2.5 text-xs font-bold transition text-center ${
                                         isCurrent
                                             ? 'bg-[var(--tt-ink)] text-white shadow-xs cursor-default'
                                             : 'border border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[var(--tt-brand-strong)] hover:text-[var(--tt-brand-strong)] active:scale-[0.98]'
@@ -1439,6 +1529,7 @@ function ScheduleView({
     onNext,
     onToday,
     onStatusUpdate,
+    onStageUpdate,
     updatingId
 }) {
     const [selectedAppointmentSelection, setSelectedAppointment] = useState(null)
@@ -1457,12 +1548,14 @@ function ScheduleView({
     ]
 
     const totalCount = appointments.filter((a) => a.status !== 'cancelled').length
-    const approvedCount = appointments.filter((a) => ['confirmed', 'completed'].includes(a.status)).length
+    const approvedCount = appointments.filter((a) => a.status === 'confirmed').length
+    const inProgressCount = appointments.filter((a) => a.status === 'in_progress').length
     const pendingCount = appointments.filter((a) => a.status === 'pending').length
 
     const activeAppointments = appointments.filter((appointment) => {
         if (appointment.status === 'cancelled') return false
-        if (statusFilter === 'confirmed') return ['confirmed', 'completed'].includes(appointment.status)
+        if (statusFilter === 'confirmed') return appointment.status === 'confirmed'
+        if (statusFilter === 'in_progress') return appointment.status === 'in_progress'
         if (statusFilter === 'pending') return appointment.status === 'pending'
         return true
     })
@@ -1542,6 +1635,17 @@ function ScheduleView({
                             }`}
                         >
                             Approved · {approvedCount}
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => setStatusFilter('in_progress')}
+                            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                                statusFilter === 'in_progress'
+                                    ? 'bg-[#1E568F] text-white shadow-xs'
+                                    : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
+                            }`}
+                        >
+                            In Service · {inProgressCount}
                         </button>
                         <button
                             type='button'
@@ -1652,7 +1756,15 @@ function ScheduleView({
                                                                 <p className='truncate font-bold text-[var(--tt-ink)]'>
                                                                     {appointment.petName}
                                                                 </p>
-                                                                <span className={`inline-block h-2 w-2 rounded-full shrink-0 ${appointment.status === 'confirmed' ? 'bg-[var(--tt-brand-strong)]' : appointment.status === 'completed' ? 'bg-[var(--tt-ink-soft)]' : 'bg-[var(--tt-accent)]'}`} />
+                                                                <span className={`inline-block h-2 w-2 rounded-full shrink-0 ${
+                                                                    appointment.status === 'confirmed'
+                                                                        ? 'bg-[var(--tt-brand-strong)]'
+                                                                        : appointment.status === 'in_progress'
+                                                                        ? 'bg-[#1E568F]'
+                                                                        : appointment.status === 'completed'
+                                                                        ? 'bg-[var(--tt-ink-soft)]'
+                                                                        : 'bg-[var(--tt-accent)]'
+                                                                }`} />
                                                             </div>
 
                                                             <p className='truncate text-[10px] text-[var(--tt-brand)]'>
@@ -1826,25 +1938,91 @@ function ScheduleView({
                                 </div>
                             )}
 
+                            {/* Live Service Progress Stepper (Milestones) */}
+                            {['in_progress', 'confirmed'].includes(selectedAppointment.status) && onStageUpdate && (
+                                <div className='rounded-sm border border-[#BED6EE] bg-[#F4F9FD] p-4 space-y-3'>
+                                    <div className='flex flex-wrap items-center justify-between gap-2'>
+                                        <div>
+                                            <p className='text-[10px] font-bold uppercase tracking-wider text-[#1D5B96]'>
+                                                Live Service Progress ({selectedAppointment.service})
+                                            </p>
+                                            <p className='text-sm font-bold text-[var(--tt-ink)]'>
+                                                Current Stage: <span className='text-[#1D5B96]'>{selectedAppointment.serviceStage || 'Not started'}</span>
+                                            </p>
+                                        </div>
+                                        {selectedAppointment.status === 'in_progress' && (
+                                            <span className='inline-flex items-center gap-1.5 rounded-full bg-[#EBF3FC] px-2.5 py-1 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
+                                                <span className='h-2 w-2 rounded-full bg-[#1E568F] animate-pulse' />
+                                                In Service
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <p className='text-[11px] text-[var(--tt-ink-soft)]'>
+                                        Click any milestone below to update live progress for <strong>{selectedAppointment.petName}</strong>:
+                                    </p>
+
+                                    <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
+                                        {getStagesForService(selectedAppointment.serviceId).map((stage, idx, allStages) => {
+                                            const currentIdx = allStages.findIndex((s) => s.id === selectedAppointment.serviceStageKey || s.label === selectedAppointment.serviceStage)
+                                            const isCurrent = currentIdx !== -1 && currentIdx === idx
+                                            const isPast = currentIdx !== -1 && idx < currentIdx
+
+                                            return (
+                                                <button
+                                                    key={stage.id}
+                                                    type='button'
+                                                    disabled={updatingId === selectedAppointment._id || isCurrent}
+                                                    onClick={() => onStageUpdate(selectedAppointment, stage)}
+                                                    className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
+                                                        isCurrent
+                                                            ? 'bg-[#1E568F] text-white border-[#1E568F] shadow-xs'
+                                                            : isPast
+                                                            ? 'bg-[#EBF3FC] text-[#1E568F] border-[#BED6EE] hover:bg-[#DDEBFA]'
+                                                            : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#1E568F] hover:text-[#1E568F]'
+                                                    } disabled:opacity-85`}
+                                                >
+                                                    <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
+                                                        <span className='font-mono font-bold'>Step {idx + 1}</span>
+                                                        {isPast && <span>✓ Done</span>}
+                                                        {isCurrent && <span className='font-bold'>● Active</span>}
+                                                    </div>
+                                                    <p className='font-bold text-xs leading-snug'>{stage.label}</p>
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Actions / Status Update */}
                             {onStatusUpdate && (
                                 <div className='border-t border-[var(--tt-border)] pt-4'>
                                     <p className='text-xs font-bold text-[var(--tt-brand)] mb-3'>Update Appointment Status:</p>
-                                    <div className='grid grid-cols-3 gap-2'>
+                                    <div className='grid grid-cols-2 sm:grid-cols-4 gap-2'>
                                         <button
                                             type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'confirmed'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'confirmed')}
-                                            className={`rounded-sm px-3 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'confirmed' ? 'bg-[var(--tt-brand-strong)] text-[var(--tt-canvas)]' : 'border border-[var(--tt-border)] bg-white text-[var(--tt-brand-strong)] hover:bg-[var(--tt-canvas)]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'confirmed' ? 'bg-[var(--tt-brand-strong)] text-[var(--tt-canvas)]' : 'border border-[var(--tt-border)] bg-white text-[var(--tt-brand-strong)] hover:bg-[var(--tt-canvas)]'}`}
                                         >
                                             Approve
                                         </button>
 
                                         <button
                                             type='button'
+                                            disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'in_progress'}
+                                            onClick={() => onStatusUpdate(selectedAppointment, 'in_progress')}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'in_progress' ? 'bg-[#1E568F] text-white' : 'border border-[var(--tt-border)] bg-white text-[#1E568F] hover:bg-[#EBF3FC]'}`}
+                                        >
+                                            Start Service
+                                        </button>
+
+                                        <button
+                                            type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'completed'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'completed')}
-                                            className={`rounded-sm px-3 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'completed' ? 'bg-[var(--tt-ink)] text-[var(--tt-canvas)]' : 'border border-[var(--tt-border)] bg-white text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'completed' ? 'bg-[var(--tt-ink)] text-[var(--tt-canvas)]' : 'border border-[var(--tt-border)] bg-white text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)]'}`}
                                         >
                                             Complete
                                         </button>
@@ -1853,7 +2031,7 @@ function ScheduleView({
                                             type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'cancelled'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'cancelled')}
-                                            className={`rounded-sm px-3 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'cancelled' ? 'bg-[var(--tt-brand)] text-[var(--tt-canvas)]' : 'border border-[var(--tt-border)] bg-white text-[var(--tt-brand)] hover:bg-[var(--tt-canvas)]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'cancelled' ? 'bg-[#9E3E3E] text-white' : 'border border-[var(--tt-border)] bg-white text-[#9E3E3E] hover:bg-[#FBEAEA]'}`}
                                         >
                                             Cancel
                                         </button>

@@ -89,6 +89,7 @@ export const adminApi = {
     getAppointments: (params) => api.get('/admin/appointments', { params }),
     getAppointmentPreview: (id) => api.get(`/admin/appointments/${id}/preview`, { timeout: 30000 }),
     updateStatus: (id, status, cancellationReason) => api.patch(`/admin/appointments/${id}/status`, { status, cancellationReason }),
+    updateServiceStage: (id, serviceStage, serviceStageKey) => api.patch(`/admin/appointments/${id}/stage`, { serviceStage, serviceStageKey }),
     deleteAppointment: (id, cancellationReason) => api.delete(`/admin/appointments/${id}`, { data: { cancellationReason } }),
     getAnalytics: () => api.get('/admin/analytics', { timeout: 25000 }),
     getContacts: () => api.get('/admin/contacts'),

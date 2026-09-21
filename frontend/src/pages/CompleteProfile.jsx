@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CheckCircle2, ChevronDown, Loader2, Mail, Search, ShieldCheck, X } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -47,7 +47,7 @@ export default function CompleteProfile() {
     const [otp, setOtp] = useState('')
     const [otpSent, setOtpSent] = useState(false)
     const [otpTimer, setOtpTimer] = useState(0)
-    const [otpChannel, setOtpChannel] = useState('email')
+    const [_otpChannel, setOtpChannel] = useState('email')
     const [sendingOtp, setSendingOtp] = useState(false)
     const [submitting, setSubmitting] = useState(false)
 

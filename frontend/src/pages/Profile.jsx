@@ -42,7 +42,7 @@ export default function Profile() {
   const [selectedProvinceCode, setSelectedProvinceCode] = useState('')
   const [selectedCityCode, setSelectedCityCode] = useState('')
 
-  const [loadingProvinces, setLoadingProvinces] = useState(false)
+  const [loadingProvinces] = useState(false)
   const [loadingCities, setLoadingCities] = useState(false)
   const [loadingBarangays, setLoadingBarangays] = useState(false)
 
@@ -812,7 +812,7 @@ const BULACAN_CITIES_FALLBACK = [
   { code: '031423000', name: 'Santa Maria' }
 ]
 
-async function fetchProvinces() {
+async function _fetchProvinces() {
   return BULACAN_PROVINCES
 }
 

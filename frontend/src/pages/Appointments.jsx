@@ -21,6 +21,7 @@ import ConfirmModal from '../components/ConfirmModal'
 import RescheduleModal from '../components/RescheduleModal'
 import { canEditAppointmentDate } from '../utils/appointmentEditWindow'
 import { Botanical } from '../components/editorial/Decorations'
+import { getStagesForService, getStageProgress } from '../utils/serviceStages'
 
 const appointmentDate = (appointment, useEnd = false) => {
   const directValue = useEnd ? appointment.endAt : appointment.startAt
@@ -32,6 +33,7 @@ const appointmentDate = (appointment, useEnd = false) => {
 
 const STATUS = {
   confirmed: { label: 'Approved', className: 'border-[#cdbd86] bg-[#fdf8eb] text-[#675728]' },
+  in_progress: { label: 'In Service', className: 'border-[#b6d5f0] bg-[#eef6fc] text-[#1c5d99]' },
   completed: { label: 'Completed', className: 'border-[rgba(210,143,119,0.3)] bg-[#f7ebe1] text-[#7a6f66]' },
   cancelled: { label: 'Cancelled', className: 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' },
   pending: { label: 'Pending review', className: 'border-[#ead7ca] bg-[#f9eee7] text-[#79584b]' }
@@ -60,7 +62,7 @@ export default function Appointments() {
       appointments
         .filter(
           (appointment) =>
-            ['pending', 'confirmed'].includes(appointment.status) &&
+            ['pending', 'confirmed', 'in_progress'].includes(appointment.status) &&
             appointmentDate(appointment, true) >= new Date()
         )
         .sort((a, b) => appointmentDate(a) - appointmentDate(b)),
@@ -358,6 +360,12 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               <span className={`inline-block border px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-[1px] ${status.className}`}>
                 {status.label}
               </span>
+              {appointment.status === 'in_progress' && appointment.serviceStage && (
+                <span className='inline-flex items-center gap-1.5 rounded-full border border-[#b6d5f0] bg-[#eef6fc] px-2.5 py-0.5 text-[9px] font-bold text-[#1c5d99]'>
+                  <span className='h-1.5 w-1.5 animate-pulse rounded-full bg-[#1c5d99]' />
+                  {appointment.serviceStage}
+                </span>
+              )}
             </div>
 
             <p className='mt-1 text-sm text-[#635b53]'>
@@ -381,6 +389,22 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               )}
             </div>
 
+            {appointment.status === 'in_progress' && (() => {
+              const stages = getStagesForService(appointment.serviceId)
+              const progress = getStageProgress(stages, appointment.serviceStageKey)
+              return (
+                <div className='mt-3 flex items-center gap-2.5 rounded-lg border border-[#b6d5f0] bg-[#f0f7fd] px-3 py-2 text-xs text-[#1c5d99]'>
+                  <span className='relative flex h-2 w-2 shrink-0'>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75'></span>
+                    <span className='relative inline-flex h-2 w-2 rounded-full bg-[#1d4ed8]'></span>
+                  </span>
+                  <span className='font-medium text-[#0f345a]'>
+                    Live Milestone: <strong className='text-[#1d4ed8]'>{appointment.serviceStage || stages[0]?.label}</strong> · Step {progress.currentStep} of {progress.totalSteps}
+                  </span>
+                </div>
+              )
+            })()}
+
             {appointment.status === 'cancelled' && appointment.cancellationReason && (
               <p className='mt-2.5 max-w-xl text-xs italic leading-relaxed text-[#934b4b]'>
                 Cancellation reason: &ldquo;{appointment.cancellationReason}&rdquo;
@@ -399,7 +423,7 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
           </div>
 
           <div className='flex items-center gap-2'>
-            {onReschedule && editable && (
+            {onReschedule && editable && appointment.status !== 'in_progress' && (
               <button
                 type='button'
                 onClick={onReschedule}
@@ -410,7 +434,7 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               </button>
             )}
 
-            {onCancel && (
+            {onCancel && appointment.status !== 'in_progress' && (
               <button
                 type='button'
                 onClick={onCancel}

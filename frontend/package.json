@@ -9,9 +9,9 @@
     "lint": "eslint .",
     "test": "node --test tests/*.test.js",
     "preview": "vite preview",
-    "backend:start": "npm --prefix backend-express start",
-    "backend:dev": "npm --prefix backend-express run dev",
-    "backend:test": "npm --prefix backend-express test",
+    "backend:start": "npm --prefix ../backend-express start",
+    "backend:dev": "npm --prefix ../backend-express run dev",
+    "backend:test": "npm --prefix ../backend-express test",
     "test:all": "npm test && npm run backend:test"
   },
   "dependencies": {
