@@ -201,12 +201,13 @@ export default function Home() {
           transform: translateY(-1px);
         }
 
+        .bloom-btn-accent,
         .bloom-btn-gold {
           min-width: 180px;
           height: 52px;
           padding: 0 26px;
-          background: linear-gradient(105deg, #caa63f 0%, #f2d875 48%, #e1bd55 100%);
-          color: #151515 !important;
+          background: #cf7c54;
+          color: #ffffff !important;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -216,15 +217,30 @@ export default function Home() {
           font-family: Georgia, 'Times New Roman', serif;
           font-size: 13px;
           font-weight: 600;
-          letter-spacing: 0.01em;
-          border: 1px solid rgba(169, 127, 33, 0.25);
+          letter-spacing: 0.02em;
+          border: 1px solid #bf6a42;
           border-radius: 0;
-          transition: filter 0.2s ease, transform 0.2s ease;
+          box-shadow: 0 6px 18px rgba(207, 124, 84, 0.22);
+          transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
+        .bloom-btn-accent:hover,
         .bloom-btn-gold:hover {
-          filter: brightness(1.04);
+          background: #b85d38;
+          border-color: #a74f2c;
+          color: #ffffff !important;
+          box-shadow: 0 10px 24px rgba(184, 93, 56, 0.32);
           transform: translateY(-1px);
+        }
+
+        .bloom-hero-visual-stage {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .bloom-hero-visual-stage > * {
+          pointer-events: auto;
         }
 
         .bloom-stats {
@@ -1522,6 +1538,54 @@ export default function Home() {
         /* ======================================================
            RESPONSIVE TWEAKS
         ====================================================== */
+        @media (max-width: 1280px) {
+          .bloom-hero-wrapper {
+            min-height: 690px;
+          }
+
+          .bloom-hero-copy {
+            width: 440px;
+          }
+
+          .bloom-title {
+            font-size: 38px;
+          }
+
+          .bloom-description {
+            width: 410px;
+            font-size: 16px;
+          }
+
+          .bloom-middle-rule {
+            left: 450px;
+            width: 200px;
+          }
+
+          .bloom-arch-container {
+            left: 350px;
+            top: 330px;
+            width: 280px;
+            height: 340px;
+          }
+
+          .bloom-visual-col {
+            left: 640px;
+            top: 100px;
+            width: 540px;
+            height: 540px;
+          }
+
+          .bloom-main-circle {
+            width: 540px;
+            height: 540px;
+          }
+
+          .bloom-circle-botanical {
+            width: 320px;
+            right: -80px;
+          }
+        }
+
         @media (max-width: 1100px) {
           .services-luxury-grid,
           .home-why-grid,
@@ -1543,6 +1607,106 @@ export default function Home() {
         }
 
         @media (max-width: 1024px) {
+          .home-hero.bloom-hero-section {
+            min-height: auto;
+            padding: 3.5rem 1.5rem 4rem;
+          }
+
+          .bloom-hero-section::before,
+          .bloom-hero-guide,
+          .bloom-middle-rule {
+            display: none !important;
+          }
+
+          .bloom-hero-wrapper {
+            width: 100%;
+            max-width: 720px;
+            min-height: auto;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 2.75rem;
+          }
+
+          .bloom-hero-copy {
+            position: static;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+
+          .bloom-title {
+            font-size: clamp(2.4rem, 5vw, 3.2rem);
+            max-width: 100%;
+            text-align: center;
+          }
+
+          .bloom-description {
+            width: 100%;
+            max-width: 520px;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 18px;
+            text-align: center;
+          }
+
+          .bloom-button-group {
+            justify-content: center;
+            margin-top: 30px;
+          }
+
+          .bloom-stats {
+            justify-content: center;
+            gap: 56px;
+            margin-top: 36px;
+          }
+
+          .bloom-hero-visual-stage {
+            position: relative !important;
+            inset: auto !important;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            margin: 0 auto;
+            pointer-events: auto !important;
+          }
+
+          .bloom-visual-col {
+            position: absolute !important;
+            left: auto !important;
+            right: 0 !important;
+            top: 0 !important;
+            width: 360px !important;
+            height: 360px !important;
+          }
+
+          .bloom-main-circle {
+            width: 360px !important;
+            height: 360px !important;
+          }
+
+          .bloom-arch-container {
+            position: absolute !important;
+            left: 20px !important;
+            bottom: 0 !important;
+            top: auto !important;
+            width: 220px !important;
+            height: 280px !important;
+            border-radius: 110px 110px 10px 10px !important;
+            z-index: 6 !important;
+          }
+
+          .bloom-circle-botanical {
+            width: 240px;
+            right: -40px;
+            bottom: -15px;
+          }
+
           .home-about-container {
             grid-template-columns: 1fr;
             gap: 3rem;
@@ -1558,7 +1722,136 @@ export default function Home() {
           }
         }
 
+        @media (max-width: 768px) {
+          .home-hero.bloom-hero-section {
+            padding: 2.25rem 1rem 3.5rem;
+          }
+
+          .bloom-hero-wrapper {
+            gap: 2rem;
+          }
+
+          .bloom-title {
+            font-size: clamp(2rem, 7.5vw, 2.65rem);
+            line-height: 1.12;
+          }
+
+          .bloom-description {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-top: 14px;
+            color: #423d38;
+          }
+
+          .bloom-button-group {
+            flex-direction: column;
+            width: 100%;
+            max-width: 340px;
+            gap: 12px;
+            margin-top: 24px;
+          }
+
+          .bloom-btn-dark,
+          .bloom-btn-accent,
+          .bloom-btn-gold {
+            width: 100%;
+            min-width: 0;
+            height: 48px;
+            justify-content: center;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+          }
+
+          .bloom-stats {
+            gap: 36px;
+            margin-top: 24px;
+            width: 100%;
+            justify-content: center;
+          }
+
+          .bloom-stat-item {
+            min-width: 0;
+          }
+
+          .bloom-stat-item strong {
+            font-size: 22px;
+          }
+
+          .bloom-stat-item span {
+            font-size: 12.5px;
+            margin-top: 4px;
+          }
+
+          .bloom-hero-visual-stage {
+            max-width: 340px;
+            height: 290px;
+            margin-top: 0.5rem;
+          }
+
+          .bloom-visual-col {
+            right: 0 !important;
+            top: 0 !important;
+            width: 220px !important;
+            height: 220px !important;
+          }
+
+          .bloom-main-circle {
+            width: 220px !important;
+            height: 220px !important;
+          }
+
+          .bloom-arch-container {
+            left: 8px !important;
+            bottom: 0 !important;
+            width: 165px !important;
+            height: 220px !important;
+            border-radius: 82px 82px 8px 8px !important;
+            box-shadow: 0 14px 30px rgba(61, 38, 26, 0.14) !important;
+          }
+
+          .bloom-circle-botanical {
+            width: 160px;
+            right: -25px;
+            bottom: -10px;
+            opacity: 0.75;
+          }
+
+          .bloom-corner-leaf {
+            width: 140px;
+            left: -35px;
+            bottom: -15px;
+            opacity: 0.25;
+          }
+        }
+
         @media (max-width: 680px) {
+          .feature-strip {
+            padding: 2.25rem 1rem 2.5rem;
+          }
+
+          .feature-strip > .editorial-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 1rem;
+          }
+
+          .feature-anim-item {
+            width: calc(33.333% - 0.8rem);
+            min-width: 86px;
+            max-width: 105px;
+          }
+
+          .feature-icon-wrap svg {
+            width: 36px;
+            height: 36px;
+          }
+
+          .feature-anim-item span {
+            font-size: 11.5px;
+            line-height: 1.25;
+          }
+
           .services-luxury-grid,
           .home-why-grid,
           .steps-cards-grid {
@@ -1570,7 +1863,7 @@ export default function Home() {
           .home-benefits-section,
           .home-steps-section,
           .editorial-marquee-section {
-            padding: 4.5rem 1.25rem;
+            padding: 4rem 1.25rem;
           }
 
           .marquee-card {
@@ -1588,19 +1881,46 @@ export default function Home() {
           }
 
           .home-arch-main {
-            width: 210px;
-            height: 310px;
+            width: 200px;
+            height: 290px;
           }
 
           .home-arch-accent {
-            width: 170px;
-            height: 270px;
-            margin-left: -30px;
+            width: 160px;
+            height: 250px;
+            margin-left: -25px;
           }
 
           .home-why-card,
           .step-editorial-card {
             padding: 2.25rem 1.75rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .bloom-hero-visual-stage {
+            max-width: 300px;
+            height: 260px;
+          }
+
+          .bloom-visual-col {
+            width: 195px !important;
+            height: 195px !important;
+          }
+
+          .bloom-main-circle {
+            width: 195px !important;
+            height: 195px !important;
+          }
+
+          .bloom-arch-container {
+            width: 145px !important;
+            height: 195px !important;
+            border-radius: 72px 72px 8px 8px !important;
+          }
+
+          .feature-anim-item {
+            width: calc(50% - 0.8rem);
           }
         }
       `}</style>
@@ -1632,7 +1952,7 @@ export default function Home() {
                 About Us
               </Link>
 
-              <a className='bloom-btn-gold' href='tel:+639756692647'>
+              <a className='bloom-btn-accent' href='tel:+639756692647'>
                 <Phone size={14} strokeWidth={2} />
                 Book a call
               </a>
@@ -1651,26 +1971,29 @@ export default function Home() {
             </div>
           </div>
 
-          {/* LARGE CENTER ARCH */}
-          <div className='bloom-arch-container'>
-            <img
-              src='/pome-pink-dress.jpg'
-              alt='Pomeranian in pink dress'
-              className='h-full w-full object-cover object-center'
-            />
-          </div>
+          {/* VISUAL COMPOSITION STAGE (ARCH + CIRCLE) */}
+          <div className='bloom-hero-visual-stage'>
+            {/* LARGE CENTER ARCH */}
+            <div className='bloom-arch-container'>
+              <img
+                src='/pome-pink-dress.jpg'
+                alt='Pomeranian in pink dress'
+                className='h-full w-full object-cover object-center'
+              />
+            </div>
 
-          {/* LARGE RIGHT CIRCLE */}
-          <div className='bloom-visual-col'>
-            <div className='bloom-visual-composition'>
-              <div className='bloom-main-circle'>
-                <img
-                  src='/pome-tweed-suit.jpg'
-                  alt='Pomeranian in tweed suit'
-                  className='h-full w-full object-cover object-center'
-                />
+            {/* LARGE RIGHT CIRCLE */}
+            <div className='bloom-visual-col'>
+              <div className='bloom-visual-composition'>
+                <div className='bloom-main-circle'>
+                  <img
+                    src='/pome-tweed-suit.jpg'
+                    alt='Pomeranian in tweed suit'
+                    className='h-full w-full object-cover object-center'
+                  />
+                </div>
+                <Botanical className='bloom-circle-botanical' />
               </div>
-              <Botanical className='bloom-circle-botanical' />
             </div>
           </div>
         </div>

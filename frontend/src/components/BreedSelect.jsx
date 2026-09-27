@@ -42,8 +42,8 @@ export default function BreedSelect({
     }
 
     const defaultLabelClasses = variant === 'mypets' || variant === 'gold'
-        ? 'mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'
-        : 'mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'
+        ? 'mb-1.5 block text-xs font-semibold text-[#635b53]'
+        : 'mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'
 
     const defaultSelectClasses = variant === 'mypets' || variant === 'gold'
         ? 'field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'

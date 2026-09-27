@@ -186,6 +186,30 @@ export default function Booking() {
     useEffect(() => {
         if (refreshUser) refreshUser()
     }, [refreshUser])
+
+    if (user?.role === 'admin') {
+        return (
+            <div className='mx-auto max-w-2xl px-4 py-20 text-center'>
+                <div className='mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#fbeee6] text-[#d28f77] border border-[#d28f77]/30 shadow-sm'>
+                    <Ban size={28} />
+                </div>
+                <h2 className='font-serif text-3xl font-bold text-[var(--tt-ink)]'>Administrator Notice</h2>
+                <p className='mt-3 text-sm text-[var(--tt-muted)] leading-relaxed max-w-md mx-auto'>
+                    Appointment reservations are reserved for salon clients only. As an administrator, you manage appointments and salon schedules directly from the Admin Workspace.
+                </p>
+                <div className='mt-8 flex justify-center gap-3'>
+                    <button
+                        type='button'
+                        onClick={() => navigate('/admin')}
+                        className='inline-flex items-center gap-2 rounded-xl bg-[var(--tt-ink)] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#3d3d3d]'
+                    >
+                        Open Admin Schedule & Bookings
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     const season = getPhilippineSeason()
     const today = useMemo(() => new Date(), [])
     const minDate = useMemo(() => toDateKey(today), [today])
@@ -1343,7 +1367,7 @@ export default function Booking() {
                     <p className='text-[10px] font-bold uppercase tracking-[.2em] text-[var(--tt-gold)]'>Book a grooming visit</p>
                     <div className='mt-3 flex flex-col gap-4 border-b border-[var(--tt-border)] pb-7 lg:flex-row lg:items-end lg:justify-between'>
                         <div>
-                            <h1 className='max-w-3xl font-serif text-[clamp(2.35rem,5vw,4.3rem)] font-normal leading-[.98] tracking-[-.04em] text-[var(--tt-ink)]'>Choose what they need, then pick a time.</h1>
+                            <h1 className='max-w-3xl font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.35rem,5vw,4.3rem)] font-normal leading-[.98] tracking-[-.04em] text-[var(--tt-ink)]'>Choose what they need, then pick a time.</h1>
                         </div>
                         <p className='max-w-sm text-sm leading-6 text-[var(--tt-muted)]'>Your choices are saved as you move through the booking. You can go back before confirming.</p>
                     </div>
@@ -1704,7 +1728,7 @@ function Section({ id, number, title, icon, disabled = false, children }) {
 }
 
 function Label({ children }) {
-    return <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>{children}</span>
+    return <span className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>{children}</span>
 }
 
 function Input({ label, value, onChange, ...props }) {

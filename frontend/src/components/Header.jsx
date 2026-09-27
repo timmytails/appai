@@ -69,9 +69,9 @@ export default function Header() {
       <div className='relative mx-auto flex h-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10'>
         
         {/* LOGO (Kaliwa) */}
-        <Link to='/' className='z-10 flex shrink-0 items-center gap-3' aria-label='TimmyTails home'>
-          <img src='/logo.png' alt='TimmyTails' className='h-11 w-11 rounded-full object-cover transition-transform duration-300 hover:scale-105 md:h-12 md:w-12' />
-          <span className='font-serif text-lg font-semibold tracking-tight text-[var(--tt-ink)] sm:text-xl'>TimmyTails</span>
+        <Link to='/' className='z-10 flex shrink-0 items-center gap-2.5 sm:gap-3 min-w-0' aria-label='TimmyTails home'>
+          <img src='/logo.png' alt='TimmyTails' className='h-9 w-9 sm:h-11 sm:w-11 md:h-12 md:w-12 rounded-full object-cover transition-transform duration-300 hover:scale-105 shrink-0' />
+          <span className='font-serif text-lg font-semibold tracking-tight text-[var(--tt-ink)] sm:text-xl truncate'>TimmyTails</span>
         </Link>
 
         {/* NAVIGATION LINKS (Naka-center nang eksakto sa gitna) */}
@@ -104,14 +104,26 @@ export default function Header() {
                   <span className='grid h-7 w-7 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm transition-transform duration-300'>
                     {(user.firstName?.[0] || 'A').toUpperCase()}
                   </span>
-                  <span className='hidden xl:inline'>{user?.role === 'admin' ? 'Admin' : (user?.firstName || 'Account')}</span>
+                  <span className='hidden xl:inline'>{user?.firstName || 'Account'}</span>
+                  {user?.role === 'admin' && (
+                    <span className='hidden sm:inline-block rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                      Admin
+                    </span>
+                  )}
                   <ChevronDown size={13} className={`transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {accountOpen && (
-                  <div className='absolute right-0 top-[calc(100%+10px)] w-[290px] border border-[var(--tt-border)] bg-white p-3 shadow-[0_20px_50px_rgba(51,51,47,.12)]' role='menu'>
+                  <div className='absolute right-0 top-[calc(100%+10px)] w-[290px] rounded-xl border border-[var(--tt-border)] bg-white p-3 shadow-[0_20px_50px_rgba(51,51,47,.12)]' role='menu'>
                     <div className='border-b border-[var(--tt-border)] px-2 pb-3 pt-1'>
-                      <p className='font-serif text-lg text-[var(--tt-ink)]'>{user.firstName} {user.lastName}</p>
+                      <div className='flex items-center justify-between gap-2'>
+                        <p className='font-serif text-lg text-[var(--tt-ink)] truncate'>{user.firstName} {user.lastName}</p>
+                        {user.role === 'admin' && (
+                          <span className='shrink-0 rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                            Admin
+                          </span>
+                        )}
+                      </div>
                       <p className='mt-1 truncate text-[11px] text-[var(--tt-muted)]'>{user.email || user.phone}</p>
                     </div>
                     <div className='py-2'>
@@ -136,20 +148,31 @@ export default function Header() {
             </Link>
           )}
 
-          <div className='hidden md:block'>
-            <BookButton className='!min-h-11 !px-5 !text-[10px] !tracking-[.14em]'>
-              Book a visit
-            </BookButton>
-          </div>
+          {user?.role === 'admin' ? (
+            <div className='hidden md:block'>
+              <Link
+                to='/admin'
+                className='inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--tt-ink)] px-5 text-[10px] font-bold uppercase tracking-[.14em] text-white shadow-sm transition hover:bg-[#3d3d3d]'
+              >
+                Admin Portal
+              </Link>
+            </div>
+          ) : (
+            <div className='hidden md:block'>
+              <BookButton className='!min-h-11 !px-5 !text-[10px] !tracking-[.14em]'>
+                Book a visit
+              </BookButton>
+            </div>
+          )}
 
           <button
             type='button'
             onClick={() => setMobileOpen((current) => !current)}
-            className='grid h-11 w-11 place-items-center text-[var(--tt-ink)] lg:hidden'
+            className='grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full border border-[var(--tt-border)] bg-white/80 text-[var(--tt-ink)] transition hover:bg-white active:scale-95 lg:hidden'
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </div>

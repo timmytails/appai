@@ -206,5 +206,7 @@ appointmentSchema.index({ ownerEmail: 1 })
 appointmentSchema.index({ status: 1 })
 appointmentSchema.index({ revenueRecordedAt: 1 })
 appointmentSchema.index({ date: 1, reminderSentToday: 1, status: 1 })
+appointmentSchema.index({ date: -1, createdAt: -1 })
+appointmentSchema.index({ status: 1, date: -1, createdAt: -1 })
 
 module.exports = mongoose.model('Appointment', appointmentSchema)

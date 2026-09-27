@@ -13,10 +13,33 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [loadingElapsed, setLoadingElapsed] = useState(0)
 
   const location = useLocation()
   const navigate = useNavigate()
   const { login, googleLogin } = useAuth()
+
+  useEffect(() => {
+    let timer = null
+    if (submitting) {
+      setLoadingElapsed(0)
+      timer = setInterval(() => {
+        setLoadingElapsed((prev) => prev + 1)
+      }, 1000)
+    } else {
+      setLoadingElapsed(0)
+    }
+    return () => {
+      if (timer) clearInterval(timer)
+    }
+  }, [submitting])
+
+  const loadingStatusText = useMemo(() => {
+    if (loadingElapsed < 3) return 'Verifying credentials & securing session…'
+    if (loadingElapsed < 7) return 'Connecting to sanctuary care cloud…'
+    if (loadingElapsed < 22) return 'Waking cloud services (Render free tier wakes on-demand — starting up, ~15–25s)…'
+    return 'Almost ready! Finalizing secure session tokens…'
+  }, [loadingElapsed])
 
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search])
   const urlReason = searchParams.get('reason')
@@ -154,11 +177,7 @@ export default function Login() {
 
         {/* Editorial Text & Sanctuary Pillars */}
         <div className='relative z-10 my-auto max-w-lg py-12'>
-          <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[2px] text-[#d1a85b] backdrop-blur-sm'>
-            <Sparkles size={11} className='text-[#d1a85b]' /> Member Sanctuary Workspace
-          </div>
-
-          <h2 className='mt-6 font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
+          <h2 className='font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
             A quieter place for grooming, care, and the companions you love.
           </h2>
 
@@ -200,7 +219,7 @@ export default function Login() {
         </div>
 
         {/* Footer Notes */}
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-[10px] uppercase tracking-[2px] text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -208,18 +227,13 @@ export default function Login() {
 
       {/* RIGHT AUTHENTICATION FORM */}
       <main className='relative flex min-h-screen items-center justify-center px-6 py-10 sm:px-10 lg:px-14 xl:px-18'>
-        <svg className='pointer-events-none absolute inset-0 z-0 h-full w-full' viewBox='0 0 800 900' fill='none' preserveAspectRatio='none'>
-          <path d='M-50,180 C200,260 400,100 700,220 C900,300 1000,180 1100,240' stroke='#ecdcd0' strokeWidth='1.3' strokeDasharray='5 5' />
-          <path d='M-50,580 C250,650 500,510 750,610' stroke='#f2e2d7' strokeWidth='1.1' strokeDasharray='5 5' />
-        </svg>
-
         <div className='relative z-10 w-full max-w-[430px]'>
           <Link
             to='/'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-xs font-semibold uppercase tracking-[1.5px] text-[#82746b] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
           >
-            <ArrowLeft size={13} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
-            Back to sanctuary home
+            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            Back to home
           </Link>
 
           <div className='mb-7 flex items-center gap-3 lg:hidden'>
@@ -232,11 +246,7 @@ export default function Login() {
           </div>
 
           <div>
-            <div className='flex items-center gap-2'>
-              <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Member Access</span>
-              <span className='text-xs text-[#cf7c54]'>✦</span>
-            </div>
-            <h1 className='mt-2 font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+            <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
               Sign in to your care desk.
             </h1>
             <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
@@ -278,7 +288,7 @@ export default function Login() {
                   </svg>
                 </span>
                 <div>
-                  <h4 className='font-serif text-sm font-semibold uppercase tracking-wide text-[#79584b]'>
+                  <h4 className='font-serif text-sm font-semibold text-[#79584b]'>
                     Google Account Detected
                   </h4>
                   <p className='mt-1 text-xs leading-relaxed text-[#79584b]'>{googleHintMsg}</p>
@@ -290,7 +300,7 @@ export default function Login() {
           {/* Form */}
           <form onSubmit={handleSubmit} className='mt-7 space-y-4'>
             <div>
-              <label className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+              <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
                 Phone Number or Email
               </label>
               <input
@@ -298,15 +308,16 @@ export default function Login() {
                 type='text'
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
+                onFocus={() => warmupBackendServer()}
                 required
                 autoComplete='username'
-                className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 shadow-xs'
               />
             </div>
 
             <div>
               <div className='mb-1.5 flex items-center justify-between'>
-                <label className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                <label className='block text-xs font-semibold text-[#54483e]'>
                   Password
                 </label>
                 <Link
@@ -322,14 +333,15 @@ export default function Login() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => warmupBackendServer()}
                   required
                   autoComplete='current-password'
-                  className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                  className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 shadow-xs'
                 />
                 <button
                   type='button'
                   onClick={() => setShowPassword((p) => !p)}
-                  className='absolute right-3 top-1/2 -translate-y-1/2 text-[#82746b] transition-colors hover:text-[#24211e]'
+                  className='absolute right-3.5 top-1/2 -translate-y-1/2 text-[#82746b] transition-colors hover:text-[#24211e]'
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -340,7 +352,7 @@ export default function Login() {
             <button
               type='submit'
               disabled={submitting}
-              className='mt-2 inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99] disabled:opacity-50'
+              className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
             >
               {submitting ? (
                 <>
@@ -352,8 +364,69 @@ export default function Login() {
             </button>
           </form>
 
+          {/* PROFESSIONAL LOADING OVERLAY */}
+          {submitting && (
+            <div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-[#1c1a18]/75 backdrop-blur-md px-4 transition-all'
+              role='dialog'
+              aria-live='polite'
+              aria-label='Signing into TimmyTails'
+            >
+              <div className='relative w-full max-w-md overflow-hidden rounded-2xl border border-[#d1a85b]/30 bg-[#24211e] p-7 text-center shadow-2xl text-[#f7f1ea]'>
+                {/* Ambient Aura */}
+                <div className='pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-36 w-36 rounded-full bg-[#d1a85b]/15 blur-3xl' />
+
+                {/* Pulsing Brand Emblem */}
+                <div className='relative mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-b from-[#2e2a26] to-[#1c1a18] border border-[#d1a85b]/40 shadow-lg shadow-[#d1a85b]/10'>
+                  <div className='absolute inset-0 rounded-2xl border border-[#d1a85b]/50 animate-ping opacity-25' />
+                  <Scissors size={26} className='text-[#d1a85b] animate-pulse' />
+                </div>
+
+                <h3 className='mt-3 font-serif text-2xl font-medium tracking-tight text-white'>
+                  Welcome Back to TimmyTails
+                </h3>
+
+                <p className='mt-2 min-h-[40px] text-xs leading-relaxed text-[#b5aba0] transition-all duration-300'>
+                  {loadingStatusText}
+                </p>
+
+                {/* Smooth Shimmer Progress Bar */}
+                <div className='relative mt-5 h-2 w-full overflow-hidden rounded-full bg-white/10'>
+                  <div
+                    className='absolute top-0 bottom-0 rounded-full bg-gradient-to-r from-[#d1a85b] via-[#e2c180] to-[#cf7c54]'
+                    style={{
+                      width: loadingElapsed < 3 ? '35%' : loadingElapsed < 12 ? '65%' : loadingElapsed < 25 ? '88%' : '96%',
+                      transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
+                    }}
+                  />
+                  <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse' />
+                </div>
+
+                <div className='mt-5 flex items-center justify-center gap-2 text-[11px] text-[#8e857c]'>
+                  <ShieldCheck size={14} className='text-[#d1a85b]' />
+                  <span>Encrypted session • Verified sanctuary care</span>
+                </div>
+
+                {loadingElapsed >= 20 && (
+                  <div className='mt-4 pt-3 border-t border-white/10'>
+                    <p className='text-[10px] text-[#9c9388] leading-relaxed'>
+                      Render cloud services wake on demand after idling. You will be redirected immediately once the connection completes.
+                    </p>
+                    <button
+                      type='button'
+                      onClick={() => setSubmitting(false)}
+                      className='mt-2.5 text-xs text-[#d1a85b] underline underline-offset-4 hover:text-white transition'
+                    >
+                      Cancel and retry
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Divider */}
-          <div className='my-6 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[2px] text-[#82746b]'>
+          <div className='my-6 flex items-center gap-3 text-xs font-medium text-[#82746b]'>
             <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
             <span>or continue with</span>
             <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />

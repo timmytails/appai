@@ -1013,6 +1013,13 @@ router.post(
             .optional()
     ],
     async (req, res) => {
+        if (req.user?.role === 'admin') {
+            return res.status(403).json({
+                success: false,
+                message: 'Administrators cannot book appointments. Appointment reservations are reserved for salon clients only.'
+            })
+        }
+
         // Enforce the persisted account status. Notifications are communication only.
         const freshUser = await User.findById(req.user._id).select('accountStatus statusReason')
         const isBlockedOrBanned = freshUser && ['booking_blocked', 'banned'].includes(freshUser.accountStatus)
@@ -1141,7 +1148,7 @@ router.post(
                 })
         }
 
-        const style =
+        let style =
             req.body.haircutStyle
                 ? findStyle(
                     req.body

@@ -13,7 +13,7 @@
   --editorial-width:864px; --section-space:90px; --heading-font:Georgia,'Times New Roman',serif; --body-font:Georgia,'Times New Roman',serif;
   color:var(--tt-ink); background:var(--tt-canvas); font-family:Arial,Helvetica,sans-serif; font-synthesis:none; text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
 }
-*{box-sizing:border-box} html{scroll-behavior:smooth;scroll-padding-top:115px} body{margin:0;min-width:320px;min-height:100vh;background:var(--tt-canvas);color:var(--tt-ink)}
+*{box-sizing:border-box} html{scroll-behavior:smooth;scroll-padding-top:115px;overflow-x:hidden} body{margin:0;min-width:320px;min-height:100vh;overflow-x:hidden;background:var(--tt-canvas);color:var(--tt-ink)}
 .font-serif{font-family:var(--heading-font)!important;font-weight:400!important}.font-sans{font-family:Arial,Helvetica,sans-serif!important}
 button,a,input,select,textarea{font:inherit} button,a{-webkit-tap-highlight-color:transparent}button:not(:disabled),a{cursor:pointer}button:disabled{cursor:not-allowed}
 ::selection{color:var(--tt-ink);background:#f0d6c9}:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid #987645;outline-offset:4px}

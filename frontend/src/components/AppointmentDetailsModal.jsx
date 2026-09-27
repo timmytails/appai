@@ -42,7 +42,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
         appointment.status === 'confirmed'
             ? 'border-[#cdbd86] bg-[#f5efd9] text-[#675728]'
             : appointment.status === 'in_progress'
-            ? 'border-[#b6d5f0] bg-[#eef6fc] text-[#1c5d99]'
+            ? 'border-[#bad5c3] bg-[#f1f7f3] text-[#22573d]'
             : appointment.status === 'pending'
             ? 'border-[#ead7ca] bg-[var(--tt-accent-soft)] text-[#79584b]'
             : appointment.status === 'completed'
@@ -57,7 +57,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
             className='fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[var(--tt-ink)]/40 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto'
             onMouseDown={(e) => { if (e.target === e.currentTarget) onClose() }}
         >
-            <div className='w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[var(--tt-canvas)] p-5 sm:p-6 border border-[var(--tt-border)] space-y-4 text-[var(--tt-ink)] pb-safe'>
+            <div className='w-full max-w-lg max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-[var(--tt-canvas)] p-5 sm:p-6 border border-[var(--tt-border)] space-y-4 text-[var(--tt-ink)] pb-safe shadow-2xl'>
                 {/* Header */}
                 <div className='flex items-start justify-between border-b border-[var(--tt-brand)] pb-3.5 gap-3'>
                     <div>
@@ -98,8 +98,8 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                         </span>
                     )}
                     {appointment.status === 'in_progress' && (
-                        <span className='inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1c5d99] bg-[#eef6fc] px-3 py-1.5 rounded-md border border-[#b6d5f0] shrink-0'>
-                            <span className='h-2 w-2 rounded-full bg-[#1c5d99] animate-pulse' />
+                        <span className='inline-flex items-center gap-1.5 text-[11px] font-bold text-[#22573d] bg-[#f1f7f3] px-3 py-1.5 rounded-md border border-[#bad5c3] shrink-0'>
+                            <span className='h-2 w-2 rounded-full bg-[#22573d] animate-pulse' />
                             Session in progress
                         </span>
                     )}
@@ -200,40 +200,40 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                     const activeIndex = currentIdx >= 0 ? currentIdx : 0
 
                     return (
-                        <div className='rounded-xl border border-[#b6d5f0] bg-[#f8fbfe] p-4.5 space-y-4 text-xs shadow-xs'>
-                            <div className='flex items-center justify-between border-b border-[#d8e8f7] pb-3'>
+                        <div className='rounded-xl border border-[#bad5c3] bg-[#f7faf8] p-4.5 space-y-4 text-xs shadow-xs'>
+                            <div className='flex items-center justify-between border-b border-[#d6e7dc] pb-3'>
                                 <div className='flex items-center gap-2.5'>
                                     <span className='relative flex h-2.5 w-2.5'>
-                                        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75'></span>
-                                        <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-[#1d4ed8]'></span>
+                                        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3d7f5c] opacity-75'></span>
+                                        <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-[#22573d]'></span>
                                     </span>
                                     <div>
-                                        <p className='text-[10px] font-bold uppercase tracking-wider text-[#1c5d99]'>
+                                        <p className='text-[10px] font-bold uppercase tracking-wider text-[#22573d]'>
                                             Live Salon Service Tracker
                                         </p>
-                                        <h4 className='font-serif text-base font-bold text-[#0f345a]'>
+                                        <h4 className='font-serif text-base font-bold text-[#143725]'>
                                             {appointment.service} in Progress
                                         </h4>
                                     </div>
                                 </div>
                                 <div className='text-right'>
-                                    <span className='rounded-full bg-[#e3effa] px-2.5 py-1 text-[10px] font-mono font-bold text-[#1c5d99]'>
+                                    <span className='rounded-full bg-[#e6f0ea] px-2.5 py-1 text-[10px] font-mono font-bold text-[#22573d]'>
                                         Step {progress.currentStep} of {progress.totalSteps}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Current Active Milestone Highlight */}
-                            <div className='rounded-lg bg-gradient-to-r from-[#eef6fc] to-[#f3f8fd] border border-[#bedbf5] p-3'>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#1c5d99]'>Current Milestone</p>
-                                <p className='mt-0.5 font-serif text-base font-bold text-[#0f345a]'>
+                            <div className='rounded-lg bg-gradient-to-r from-[#eff6f2] to-[#f5f9f6] border border-[#bad5c3] p-3'>
+                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#22573d]'>Current Milestone</p>
+                                <p className='mt-0.5 font-serif text-base font-bold text-[#143725]'>
                                     {appointment.serviceStage || stages[activeIndex]?.label || 'Underway'}
                                 </p>
-                                <p className='mt-1 text-[11px] text-[#4b6b88] leading-relaxed'>
+                                <p className='mt-1 text-[11px] text-[#426651] leading-relaxed'>
                                     {appointment.petName} is currently receiving this step. Our salon specialists provide gentle, professional care at every stage.
                                 </p>
                                 {appointment.serviceStageUpdatedAt && (
-                                    <p className='mt-2 text-[10px] font-mono text-[#6c8ba8]'>
+                                    <p className='mt-2 text-[10px] font-mono text-[#5f846f]'>
                                         Milestone updated: {new Date(appointment.serviceStageUpdatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </p>
                                 )}
@@ -241,13 +241,13 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                             {/* Progress Bar */}
                             <div className='space-y-1.5'>
-                                <div className='flex justify-between text-[11px] font-semibold text-[#1c5d99]'>
+                                <div className='flex justify-between text-[11px] font-semibold text-[#22573d]'>
                                     <span>Milestone Progress</span>
                                     <span>{progress.percentage}%</span>
                                 </div>
-                                <div className='h-2 w-full overflow-hidden rounded-full bg-[#dbe8f5]'>
+                                <div className='h-2 w-full overflow-hidden rounded-full bg-[#dceade]'>
                                     <div
-                                        className='h-full rounded-full bg-gradient-to-r from-[#3b82f6] to-[#1d4ed8] transition-all duration-700 ease-out'
+                                        className='h-full rounded-full bg-gradient-to-r from-[#3d7f5c] to-[#22573d] transition-all duration-700 ease-out'
                                         style={{ width: `${progress.percentage}%` }}
                                     />
                                 </div>
@@ -255,7 +255,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                             {/* Step-by-Step Milestones List */}
                             <div className='space-y-2 pt-1'>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#637d96]'>Session Steps</p>
+                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#5f7a6b]'>Session Steps</p>
                                 <div className='space-y-1.5'>
                                     {stages.map((stg, idx) => {
                                         const isDone = idx < activeIndex
@@ -267,39 +267,39 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                                                 key={stg.id}
                                                 className={`flex items-center gap-3 rounded-lg border p-2.5 transition ${
                                                     isCurrent
-                                                        ? 'border-[#1d4ed8] bg-white shadow-xs'
+                                                        ? 'border-[#22573d] bg-white shadow-xs'
                                                         : isDone
-                                                        ? 'border-[#d4e4f5] bg-[#f0f6fc] text-[#1c5d99]'
-                                                        : 'border-transparent bg-white/50 text-[#889fb5]'
+                                                        ? 'border-[#cce1d4] bg-[#f2f7f4] text-[#22573d]'
+                                                        : 'border-transparent bg-white/50 text-[#718c7c]'
                                                 }`}
                                             >
                                                 <div className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold ${
                                                     isDone
-                                                        ? 'bg-[#1c5d99] text-white'
+                                                        ? 'bg-[#22573d] text-white'
                                                         : isCurrent
-                                                        ? 'bg-[#1d4ed8] text-white ring-4 ring-[#93c5fd]/40'
-                                                        : 'bg-[#e2eaf2] text-[#889fb5]'
+                                                        ? 'bg-[#22573d] text-white ring-4 ring-[#bad5c3]/40'
+                                                        : 'bg-[#e4ece6] text-[#718c7c]'
                                                 }`}>
                                                     {isDone ? <Check size={13} strokeWidth={2.5} /> : idx + 1}
                                                 </div>
                                                 <div className='min-w-0 flex-1'>
-                                                    <p className={`text-xs ${isCurrent ? 'font-bold text-[#0f345a]' : isDone ? 'font-semibold text-[#1c5d99]' : 'font-medium text-[#889fb5]'}`}>
+                                                    <p className={`text-xs ${isCurrent ? 'font-bold text-[#143725]' : isDone ? 'font-semibold text-[#22573d]' : 'font-medium text-[#718c7c]'}`}>
                                                         {stg.label}
                                                     </p>
                                                 </div>
                                                 <div>
                                                     {isDone && (
-                                                        <span className='rounded-full bg-[#dbeaf8] px-2 py-0.5 text-[9px] font-bold text-[#1c5d99]'>
+                                                        <span className='rounded-full bg-[#dceade] px-2 py-0.5 text-[9px] font-bold text-[#22573d]'>
                                                             Done
                                                         </span>
                                                     )}
                                                     {isCurrent && (
-                                                        <span className='inline-flex items-center gap-1 rounded-full bg-[#1d4ed8] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs animate-pulse'>
+                                                        <span className='inline-flex items-center gap-1 rounded-full bg-[#22573d] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs animate-pulse'>
                                                             In Progress
                                                         </span>
                                                     )}
                                                     {isUpcoming && (
-                                                        <span className='text-[10px] text-[#9bb0c4] font-medium'>
+                                                        <span className='text-[10px] text-[#8aa394] font-medium'>
                                                             Waiting
                                                         </span>
                                                     )}

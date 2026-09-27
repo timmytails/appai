@@ -57,7 +57,7 @@ export default function AdminCancelModal({
                 <form onSubmit={handleSubmit} className='space-y-4'>
                     {/* Reason Input */}
                     <div>
-                        <label className='block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)] mb-1.5'>
+                        <label className='block text-xs font-semibold text-[var(--tt-ink-soft)] mb-1.5'>
                             Reason for Cancellation <span className='text-[#9E3E3E]'>*</span>
                         </label>
                         <textarea
@@ -75,7 +75,7 @@ export default function AdminCancelModal({
 
                     {/* Quick Selection Chips */}
                     <div>
-                        <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-ink-soft)] mb-2'>
+                        <p className='text-xs font-semibold text-[var(--tt-ink-soft)] mb-2'>
                             Quick Reason Suggestions:
                         </p>
                         <div className='flex flex-wrap gap-1.5'>

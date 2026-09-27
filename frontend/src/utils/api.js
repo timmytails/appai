@@ -94,6 +94,7 @@ export const adminApi = {
     getAnalytics: () => api.get('/admin/analytics', { timeout: 25000 }),
     getContacts: () => api.get('/admin/contacts'),
     markContactRead: (id) => api.patch(`/admin/contacts/${id}/read`),
+    replyContact: (id, data) => api.post(`/admin/contacts/${id}/reply`, data),
     deleteContact: (id) => api.delete(`/admin/contacts/${id}`),
     getUsers: () => api.get('/admin/users'),
     updateCustomerStatus: (id, data) => api.patch(`/admin/users/${id}/status`, data),

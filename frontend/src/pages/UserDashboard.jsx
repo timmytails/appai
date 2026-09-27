@@ -30,7 +30,7 @@ const appointmentDate = (appointment, useEnd = false) => {
 
 const STATUS = {
   confirmed: { label: 'Approved', className: 'border-[#cdbd86] bg-[#fdf8eb] text-[#675728]' },
-  in_progress: { label: 'In Service', className: 'border-[#b6d5f0] bg-[#eef6fc] text-[#1c5d99]' },
+  in_progress: { label: 'In Service', className: 'border-[#bad5c3] bg-[#f1f7f3] text-[#22573d]' },
   completed: { label: 'Completed', className: 'border-[rgba(210,143,119,0.3)] bg-[#f7ebe1] text-[#7a6f66]' },
   cancelled: { label: 'Cancelled', className: 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' },
   pending: { label: 'Pending review', className: 'border-[#ead7ca] bg-[#f9eee7] text-[#79584b]' }
@@ -128,23 +128,6 @@ export default function UserDashboard() {
           border-color: rgba(207, 124, 84, 0.4);
         }
 
-        .editorial-card-hover::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 10;
-        }
-
-        .editorial-card-hover:hover::before {
-          opacity: 1;
-        }
-
         /* Gold sliding underline mula sa Header.jsx */
         .gold-underline {
           position: relative;
@@ -212,34 +195,20 @@ export default function UserDashboard() {
         }
       `}</style>
 
-      {/* Decorative Background Curves & Botanicals mula sa Home.jsx */}
-      <svg className='pointer-events-none absolute inset-0 z-0 h-full w-full' viewBox='0 0 1440 900' fill='none' preserveAspectRatio='none'>
-        <path d='M-100,160 C300,240 600,60 980,180 C1250,260 1400,140 1600,200' stroke='#ecdcd0' strokeWidth='1.5' strokeDasharray='5 5' />
-        <path d='M-50,420 C350,500 700,320 1080,460 C1300,540 1450,440 1650,480' stroke='#f2e2d7' strokeWidth='1.2' strokeDasharray='5 5' />
-      </svg>
-      <Botanical className='anim-float-bg pointer-events-none absolute -left-12 top-24 z-0 w-72 text-[#cf7c54] opacity-25' />
-      <Botanical className='anim-float-bg pointer-events-none absolute -right-16 top-[650px] z-0 w-96 rotate-12 -scale-x-100 text-[#d1a85b] opacity-20' />
-
       <div className='relative z-10 mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12 lg:px-8'>
         {/* HERO SECTION: Editorial Sanctuary Welcome */}
-        <header className='relative border-b border-[rgba(210,143,119,0.4)] pb-10'>
+        <header className='relative border-b border-[rgba(210,143,119,0.3)] pb-10'>
           <div className='flex flex-col justify-between gap-8 md:flex-row md:items-end'>
             <div>
-              <div className='flex items-center gap-2'>
-                <span className='inline-block text-[10px] font-bold tracking-[2px] text-[#a47d44]'>
-                  TimmyTails Pet Care
-                </span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-              <h1 className='mt-3 font-serif text-[clamp(2.4rem,5vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.025em] text-[#24211e]'>
+              <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.025em] text-[#24211e]'>
                 Good to see you, <span className='italic'>{user?.firstName}</span>.
               </h1>
-              <p className='mt-4 max-w-xl text-base leading-relaxed text-[#635b53]'>
+              <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[#635b53]'>
                 Here's everything about your pets and upcoming appointments — all in one place.
               </p>
 
               {/* Sanctuary Highlights */}
-              <div className='mt-6 flex flex-wrap items-center gap-8 text-sm'>
+              <div className='mt-5 sm:mt-6 flex flex-wrap items-center gap-5 sm:gap-8 text-sm'>
                 <div className='flex items-center gap-2 transition-transform duration-300 hover:scale-105'>
                   <span className='font-serif text-2xl font-semibold text-[#24211e]'>{pets.length}</span>
                   <span className='text-xs text-[#82746b]'>Registered Pet{pets.length === 1 ? '' : 's'}</span>
@@ -253,10 +222,10 @@ export default function UserDashboard() {
             </div>
 
             {/* CTA Button */}
-            <div className='shrink-0'>
+            <div className='shrink-0 w-full sm:w-auto'>
               <Link
                 to='/booking'
-                className='group inline-flex min-h-[50px] items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-8 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:translate-y-0 active:scale-[0.99]'
+                className='group inline-flex min-h-[46px] sm:min-h-[50px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-8 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:translate-y-0 active:scale-[0.99]'
               >
                 <Plus size={15} className='text-[#d1a85b] transition-transform duration-300 group-hover:rotate-90' /> Book a visit
               </Link>
@@ -270,8 +239,7 @@ export default function UserDashboard() {
         <section className='py-12 lg:py-16'>
           <div className='mb-7 flex items-end justify-between gap-4'>
             <div>
-              <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Coming Up</span>
-              <h2 className='mt-1 font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>What's next for your pet</h2>
+              <h2 className='font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>What's next for your pet</h2>
             </div>
             <Link
               to='/appointments'
@@ -294,8 +262,7 @@ export default function UserDashboard() {
         <section className='border-t border-[rgba(210,143,119,0.35)] py-12 lg:py-16'>
           <div className='mb-8 flex items-end justify-between gap-4'>
             <div>
-              <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Your Pets</span>
-              <h2 className='mt-1 font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>Your registered pets</h2>
+              <h2 className='font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>Your registered pets</h2>
             </div>
             <Link
               to='/my-pets'
@@ -335,8 +302,7 @@ export default function UserDashboard() {
         <section className='border-t border-[rgba(210,143,119,0.35)] py-12 lg:py-16'>
           <div className='grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14'>
             <div>
-              <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Visit History</span>
-              <h2 className='mt-2 font-serif text-3xl font-medium leading-snug tracking-tight text-[#24211e] sm:text-4xl'>
+              <h2 className='font-serif text-3xl font-medium leading-snug tracking-tight text-[#24211e] sm:text-4xl'>
                 Your past visits with us.
               </h2>
               <p className='mt-4 text-sm leading-relaxed text-[#635b53]'>
@@ -412,127 +378,184 @@ function NextVisit({ appointment, pets, onOpen }) {
   const isCat = (appointment.petType || pet?.type)?.toLowerCase() === 'cat'
   const stages = getStagesForService(appointment.serviceId)
   const progress = getStageProgress(stages, appointment.serviceStageKey)
+  const petPhoto = pet?.photoUrl || appointment.petPhotoUrl || appointment.petPhoto
 
   return (
-    <article className='editorial-card-hover group grid overflow-hidden rounded-xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_10px_30px_rgba(50,32,22,0.04)] lg:grid-cols-[1.25fr_0.75fr]'>
-      <div className='flex flex-col justify-between p-7 sm:p-10 lg:min-h-[380px]'>
+    <article className='editorial-card-hover group grid overflow-hidden rounded-2xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_12px_32px_rgba(50,32,22,0.04)] lg:grid-cols-[1.3fr_0.7fr]'>
+      {/* Left Main Content */}
+      <div className='flex flex-col justify-between p-6 sm:p-8 lg:p-10'>
         <div>
-          <div className='flex items-center gap-3'>
-            <span className={`inline-flex border px-3 py-1 text-[9px] font-bold uppercase tracking-[1.5px] transition-transform duration-300 group-hover:scale-105 ${status.className}`}>
+          {/* Status & Date Bar */}
+          <div className='flex flex-wrap items-center gap-2.5 text-xs'>
+            <span className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[1.2px] ${status.className}`}>
               {status.label}
             </span>
-            <span className='text-xs text-[#d1a85b]'>✦</span>
-            <span className='text-[11px] font-bold uppercase tracking-[2px] text-[#a47d44]'>
+            <span className='text-[#82746b]'>•</span>
+            <span className='font-semibold text-[#82746b] tracking-wide'>
               {formatDateLong(appointment.date)}
             </span>
           </div>
 
-          <h3 className='mt-5 font-serif text-3xl font-medium leading-tight text-[#24211e] sm:text-4xl lg:text-[2.7rem]'>
+          {/* Heading */}
+          <h3 className='mt-4 font-serif text-2xl sm:text-3xl lg:text-[2.25rem] font-medium leading-[1.2] text-[#24211e]'>
             {appointment.status === 'in_progress'
-              ? `${appointment.petName} is currently in service for ${appointment.service?.toLowerCase()}.`
-              : `${appointment.petName} is booked for ${appointment.service?.toLowerCase()}.`}
+              ? `${appointment.petName} is currently in service.`
+              : `${appointment.petName}’s upcoming visit.`}
           </h3>
 
-          {/* Live Service Milestone Progress Bar */}
+          <p className='mt-2 text-sm leading-relaxed text-[#635b53]'>
+            Booked for <strong className='font-semibold text-[#24211e]'>{appointment.service}</strong>
+            {appointment.haircutStyle ? ` (${appointment.haircutStyle})` : ''} at Timmy Tails Pet Salon.
+          </p>
+
+          {/* Clean Segmented In-Service Progress Track (No nested boxes or AI badges) */}
           {appointment.status === 'in_progress' && (
-            <div className='mt-6 rounded-xl border border-[#b6d5f0] bg-gradient-to-br from-[#f0f7fd] to-[#e4f0fa] p-4 text-[#1c5d99] shadow-xs'>
-              <div className='flex items-center justify-between text-xs font-semibold'>
-                <span className='flex items-center gap-1.5 uppercase tracking-wider text-[#18538a]'>
-                  <span className='relative flex h-2.5 w-2.5'>
-                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75'></span>
-                    <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-[#1d4ed8]'></span>
+            <div className='mt-7 border-t border-[rgba(210,143,119,0.2)] pt-6'>
+              <div className='flex items-center justify-between text-xs'>
+                <div className='flex items-center gap-2'>
+                  <span className='h-2 w-2 rounded-full bg-[#22573d]' />
+                  <span className='text-[10px] font-bold uppercase tracking-wider text-[#22573d]'>
+                    Current Stage
                   </span>
-                  Live Grooming Milestone
-                </span>
-                <span className='font-mono font-bold text-[#1d4ed8]'>
+                  <span className='text-[#82746b]'>—</span>
+                  <span className='font-serif font-bold text-[#24211e] text-sm'>
+                    {appointment.serviceStage || stages[0]?.label || 'Service in progress'}
+                  </span>
+                </div>
+                <span className='font-mono text-xs font-semibold text-[#82746b]'>
                   Step {progress.currentStep} of {progress.totalSteps}
                 </span>
               </div>
 
-              <div className='mt-2 flex items-baseline justify-between gap-2'>
-                <p className='font-serif text-lg font-bold text-[#0f345a]'>
-                  {appointment.serviceStage || stages[0]?.label || 'Service in progress'}
-                </p>
-                <span className='text-xs font-bold text-[#2563eb]'>{progress.percentage}%</span>
-              </div>
-
-              <div className='mt-2 h-2 w-full overflow-hidden rounded-full bg-[#cbdff2]'>
-                <div
-                  className='h-full rounded-full bg-gradient-to-r from-[#3b82f6] to-[#1d4ed8] transition-all duration-700 ease-out'
-                  style={{ width: `${progress.percentage}%` }}
-                />
-              </div>
-
-              <div className='mt-3 flex flex-wrap gap-1.5'>
+              {/* Segmented Timeline */}
+              <div className='mt-3.5 grid gap-2' style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}>
                 {stages.map((stg, i) => {
                   const isDone = i < progress.currentStep - 1
                   const isCurrent = i === progress.currentStep - 1
                   return (
-                    <span
-                      key={stg.id}
-                      className={`rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider transition ${
+                    <div key={stg.id} className='space-y-1.5'>
+                      <div className={`h-1.5 w-full rounded-full transition-all duration-500 ${
                         isCurrent
-                          ? 'bg-[#1d4ed8] text-white shadow-xs'
+                          ? 'bg-[#22573d]'
                           : isDone
-                          ? 'bg-[#d0e4f7] text-[#1c5d99]'
-                          : 'bg-white/60 text-[#8ba3bd]'
-                      }`}
-                    >
-                      {stg.shortLabel || stg.label}
-                    </span>
+                          ? 'bg-[#89b899]'
+                          : 'bg-[rgba(210,143,119,0.18)]'
+                      }`} />
+                      <p className={`text-[10px] leading-tight transition-colors ${
+                        isCurrent
+                          ? 'font-bold text-[#22573d]'
+                          : isDone
+                          ? 'font-medium text-[#635b53]'
+                          : 'text-[#9c8e84]'
+                      }`}>
+                        {stg.label}
+                      </p>
+                    </div>
                   )
                 })}
               </div>
             </div>
           )}
 
-          <div className='mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#635b53]'>
-            <span className='inline-flex items-center gap-2'>
-              <Clock3 size={16} className='text-[#d1a85b]' /> {formatTimeRange(appointment.time, appointment.endTime)}
+          {/* Quick Details Badges */}
+          <div className='mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[#635b53]'>
+            <span className='inline-flex items-center gap-1.5'>
+              <Clock3 size={15} className='text-[#a47d44]' />
+              <span className='font-medium'>{formatTimeRange(appointment.time, appointment.endTime)}</span>
             </span>
             {appointment.haircutStyle && (
-              <span className='inline-flex items-center gap-2'>
-                <Scissors size={16} className='text-[#d1a85b]' /> {appointment.haircutStyle}
+              <span className='inline-flex items-center gap-1.5'>
+                <Scissors size={15} className='text-[#a47d44]' />
+                <span>{appointment.haircutStyle}</span>
               </span>
             )}
+            <span className='font-mono font-semibold text-[#24211e]'>
+              ₱{Number(appointment.price || appointment.amount || 0).toLocaleString('en-PH')}
+            </span>
           </div>
         </div>
 
-        <button
-          type='button'
-          onClick={onOpen}
-          className='gold-underline group mt-9 inline-flex self-start items-center gap-2 pb-1 text-xs font-semibold text-[#24211e]'
-        >
-          View appointment details <ArrowRight size={13} className='text-[#cf7c54] transition-transform duration-300 group-hover:translate-x-1.5' />
-        </button>
+        {/* Footer Link */}
+        <div className='mt-8 pt-5 border-t border-[rgba(210,143,119,0.2)]'>
+          <button
+            type='button'
+            onClick={onOpen}
+            className='group inline-flex items-center gap-2 text-xs font-bold text-[#24211e] hover:text-[#cf7c54] transition-colors'
+          >
+            View appointment details <ArrowRight size={13} className='text-[#cf7c54] transition-transform duration-300 group-hover:translate-x-1.5' />
+          </button>
+        </div>
       </div>
 
-      {/* Right Arch Window */}
-      <div className='flex items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-8'>
-        <button
-          type='button'
-          onClick={onOpen}
-          className='editorial-arch group/arch h-[300px] w-[230px] bg-[#f5e9dc] shadow-[0_16px_36px_-10px_rgba(71,46,31,0.15)] transition-transform duration-500 hover:scale-[1.03]'
-        >
-          {pet?.photoUrl ? (
-            <img src={pet.photoUrl} alt={pet.name} className='h-full w-full object-cover transition-transform duration-700 group-hover/arch:scale-105' />
-          ) : (
-            <div className='flex h-full flex-col items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-4 text-center'>
-              {isCat ? (
-                <FullBodyCatBotanical className='h-36 w-36 text-[#a47d44]' />
-              ) : (
-                <DogPawBotanical className='h-36 w-36 text-[#cf7c54]' />
-              )}
-              <span className='mt-1 font-serif text-xs italic tracking-wider text-[#82746b]'>
-                {isCat ? 'Feline Guest' : 'Canine Guest'}
+      {/* Right Column: Pet Portrait or Reservation Ticket */}
+      <div className='flex flex-col justify-between border-t border-[rgba(210,143,119,0.2)] bg-[#FAF4ED]/60 p-6 sm:p-8 lg:border-l lg:border-t-0'>
+        {petPhoto ? (
+          <div className='relative flex h-full flex-col justify-between'>
+            <div className='relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[rgba(210,143,119,0.25)] bg-[#f7eee6] shadow-inner sm:aspect-[16/10] lg:aspect-auto lg:h-[220px]'>
+              <img src={petPhoto} alt={appointment.petName} className='h-full w-full object-cover transition-transform duration-700 group-hover:scale-105' />
+            </div>
+            <div className='mt-4 flex items-center justify-between text-xs'>
+              <div>
+                <p className='font-serif text-base font-bold text-[#24211e]'>{appointment.petName}</p>
+                <p className='text-[11px] text-[#82746b]'>{appointment.breed || pet?.breed || 'Companion'} · {isCat ? 'Cat' : 'Dog'}</p>
+              </div>
+              <span className='rounded-full border border-[rgba(210,143,119,0.3)] bg-white px-2.5 py-0.5 text-[10px] font-semibold text-[#82746b]'>
+                Guest Pet
               </span>
             </div>
-          )}
-          {/* Subtle flower accent overlay katulad sa Home.jsx About Media */}
-          <svg className='pointer-events-none absolute bottom-3 left-3 h-6 w-6 text-[#cf7c54] opacity-80 transition-transform duration-500 group-hover/arch:scale-110' viewBox='0 0 24 24' fill='currentColor'>
-            <path d='M12 2a3 3 0 0 0-3 3 3 3 0 0 0 .5 1.6A3 3 0 0 0 6 6a3 3 0 0 0-3 3 3 3 0 0 0 1.6.5A3 3 0 0 0 4 12a3 3 0 0 0 3 3 3 3 0 0 0-.5 1.6A3 3 0 0 0 8 18a3 3 0 0 0 3 3 3 3 0 0 0 .5-1.6A3 3 0 0 0 12 20a3 3 0 0 0 3-3 3 3 0 0 0-.5-1.6A3 3 0 0 0 18 14a3 3 0 0 0 3-3 3 3 0 0 0-1.6-.5A3 3 0 0 0 20 8a3 3 0 0 0-3-3 3 3 0 0 0-.5 1.6A3 3 0 0 0 15 6a3 3 0 0 0-3-4zm0 8a2 2 0 1 1 0 4 2 2 0 0 1 0-4z'/>
-          </svg>
-        </button>
+          </div>
+        ) : (
+          <div className='flex h-full flex-col justify-between'>
+            <div>
+              {/* Pet Monogram Card */}
+              <div className='flex items-center gap-3.5 pb-4 border-b border-[rgba(210,143,119,0.2)]'>
+                <span className='grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-[rgba(210,143,119,0.3)] bg-white font-serif text-xl font-bold text-[#24211e] shadow-xs'>
+                  {appointment.petName ? appointment.petName[0].toUpperCase() : 'P'}
+                </span>
+                <div>
+                  <h4 className='font-serif text-lg font-bold text-[#24211e]'>{appointment.petName}</h4>
+                  <p className='text-xs text-[#82746b]'>{appointment.breed || pet?.breed || 'Companion'} · {isCat ? 'Cat' : 'Dog'}</p>
+                </div>
+              </div>
+
+              {/* Reservation Overview Key-Values */}
+              <div className='mt-4 space-y-2.5 text-xs'>
+                <div className='flex items-center justify-between'>
+                  <span className='text-[#82746b]'>Service</span>
+                  <span className='font-medium text-[#24211e]'>{appointment.service}</span>
+                </div>
+                {appointment.haircutStyle && (
+                  <div className='flex items-center justify-between'>
+                    <span className='text-[#82746b]'>Haircut Style</span>
+                    <span className='font-medium text-[#24211e]'>{appointment.haircutStyle}</span>
+                  </div>
+                )}
+                <div className='flex items-center justify-between'>
+                  <span className='text-[#82746b]'>Salon Station</span>
+                  <span className='font-medium text-[#24211e]'>TimmyTails · Baliuag</span>
+                </div>
+                <div className='flex items-center justify-between pt-1'>
+                  <span className='text-[#82746b]'>Total Amount</span>
+                  <span className='font-mono font-bold text-[#cf7c54] text-sm'>
+                    ₱{Number(appointment.price || appointment.amount || 0).toLocaleString('en-PH')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Reference */}
+            <div className='mt-6 flex items-center justify-between border-t border-[rgba(210,143,119,0.2)] pt-3 text-[11px] text-[#82746b]'>
+              <span>Ref: <span className='font-mono font-medium'>{appointment._id?.slice(-8) || 'N/A'}</span></span>
+              <button
+                type='button'
+                onClick={onOpen}
+                className='font-semibold text-[#cf7c54] hover:underline'
+              >
+                Booking details →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   )
@@ -541,9 +564,8 @@ function NextVisit({ appointment, pets, onOpen }) {
 function EmptyNextVisit() {
   return (
     <div className='editorial-card-hover grid overflow-hidden rounded-xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_10px_30px_rgba(50,32,22,0.04)] lg:grid-cols-[1.2fr_0.8fr]'>
-      <div className='p-8 sm:p-12'>
-        <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>No Upcoming Visit</span>
-        <h3 className='mt-3 font-serif text-3xl font-medium leading-tight text-[#24211e] sm:text-4xl'>
+      <div className='p-6 sm:p-10 lg:p-12'>
+        <h3 className='font-serif text-3xl font-medium leading-tight text-[#24211e] sm:text-4xl'>
           Ready to book their next grooming?
         </h3>
         <p className='mt-4 max-w-lg text-sm leading-relaxed text-[#635b53]'>
@@ -556,9 +578,13 @@ function EmptyNextVisit() {
           <Plus size={14} className='text-[#d1a85b] transition-transform duration-300 group-hover:rotate-90' /> Book a visit
         </Link>
       </div>
-      <div className='flex min-h-[240px] items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-8'>
-        <div className='editorial-arch flex h-[220px] w-[180px] items-center justify-center bg-[#f7ebe1] shadow-[0_12px_28px_rgba(71,46,31,0.08)] transition-transform duration-500 hover:scale-105'>
-          <CalendarDays size={42} strokeWidth={1} className='text-[#a47d44] transition-transform duration-300 hover:scale-110' />
+      <div className='flex min-h-[220px] items-center justify-center border-t border-[rgba(210,143,119,0.2)] bg-[#FAF4ED]/60 p-8 lg:border-l lg:border-t-0'>
+        <div className='flex flex-col items-center justify-center text-center'>
+          <div className='grid h-14 w-14 place-items-center rounded-2xl border border-[rgba(210,143,119,0.35)] bg-white text-[#a47d44] shadow-xs'>
+            <CalendarDays size={26} strokeWidth={1.5} />
+          </div>
+          <p className='mt-3 font-serif text-sm font-semibold text-[#24211e]'>Appointments at a Glance</p>
+          <p className='mt-0.5 text-xs text-[#82746b]'>Your upcoming schedules will appear here</p>
         </div>
       </div>
     </div>
@@ -582,8 +608,8 @@ function CompanionCard({ pet }) {
       to='/my-pets'
       className='editorial-card-hover group block rounded-2xl border border-[rgba(210,143,119,0.35)] bg-white p-5 shadow-[0_8px_24px_rgba(40,26,18,0.03)]'
     >
-      {/* Arch Frame with Botanical Emblem */}
-      <div className='editorial-arch relative mx-auto h-[250px] w-full max-w-[270px] bg-[#f7eee6]'>
+      {/* Photo Frame or Monogram Avatar */}
+      <div className='relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-xl border border-[rgba(210,143,119,0.25)] bg-[#FAF4ED]'>
         {pet.photoUrl ? (
           <img
             src={pet.photoUrl}
@@ -591,30 +617,14 @@ function CompanionCard({ pet }) {
             className='h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105'
           />
         ) : (
-          /* Placeholder kapag walang photo */
-          <div className='relative flex h-full flex-col items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-4 text-center'>
-            {isCat ? (
-              <FullBodyCatBotanical className='h-36 w-36 text-[#a47d44]' />
-            ) : (
-              <DogPawBotanical className='h-36 w-36 text-[#cf7c54]' />
-            )}
-            <span className='mt-1 font-serif text-xs italic tracking-wider text-[#82746b]'>
-              {isCat ? 'Feline Companion' : 'Canine Companion'}
+          <div className='flex h-full flex-col items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-4 text-center'>
+            <span className='grid h-16 w-16 place-items-center rounded-2xl border border-[rgba(210,143,119,0.4)] bg-white font-serif text-2xl font-bold text-[#24211e] shadow-xs transition-transform duration-300 group-hover:scale-110'>
+              {pet.name ? pet.name[0].toUpperCase() : 'P'}
             </span>
+            <p className='mt-3 font-serif text-sm font-semibold text-[#24211e]'>{pet.name}</p>
+            <p className='mt-0.5 text-xs text-[#82746b]'>{pet.breed || (isCat ? 'Cat' : 'Dog')}</p>
           </div>
         )}
-
-        {/* Floating Botanical Species Badge */}
-        <div
-          className='absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(210,143,119,0.5)] bg-[#fdf4ef]/95 shadow-[0_4px_12px_rgba(71,46,31,0.12)] backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-[0_6px_16px_rgba(71,46,31,0.18)]'
-          title={isCat ? 'Cat' : 'Dog'}
-        >
-          {isCat ? (
-            <CatIconMini className='h-6 w-6 text-[#a47d44]' />
-          ) : (
-            <DogPawIconMini className='h-5 w-5 text-[#cf7c54]' />
-          )}
-        </div>
 
         {/* Hover Arrow Indicator */}
         <span className='absolute bottom-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-white/95 text-[#24211e] opacity-0 shadow-md backdrop-blur transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100'>
@@ -623,14 +633,11 @@ function CompanionCard({ pet }) {
       </div>
 
       {/* Pet Information Footer */}
-      <div className='mt-5 flex items-baseline justify-between border-t border-[rgba(210,143,119,0.25)] pt-4'>
+      <div className='mt-4 flex items-baseline justify-between border-t border-[rgba(210,143,119,0.2)] pt-3'>
         <div>
-          <div className='flex items-center gap-2'>
-            <h3 className='font-serif text-lg text-[#24211e] transition-colors duration-300 group-hover:text-[#a47d44]'>
-              {pet.name}
-            </h3>
-            <span className='text-[11px] text-[#cf7c54] transition-transform duration-300 group-hover:scale-125'>✦</span>
-          </div>
+          <h3 className='font-serif text-lg text-[#24211e] transition-colors duration-300 group-hover:text-[#a47d44]'>
+            {pet.name}
+          </h3>
           <p className='mt-0.5 flex items-center gap-1.5 text-xs text-[#82746b]'>
             <span>{isCat ? 'Cat' : 'Dog'}</span>
             <span className='text-[8px] opacity-60'>•</span>
@@ -639,7 +646,7 @@ function CompanionCard({ pet }) {
         </div>
 
         {pet.ageMonths !== undefined && pet.ageMonths !== null && (
-          <span className='rounded-full border border-[rgba(210,143,119,0.35)] bg-[#fdf4ef] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[1.5px] text-[#a47d44] transition-colors duration-300 group-hover:border-[#d1a85b]'>
+          <span className='rounded-full border border-[rgba(210,143,119,0.35)] bg-[#fdf4ef] px-2.5 py-0.5 text-xs font-semibold text-[#82746b] transition-colors duration-300 group-hover:border-[#d1a85b]'>
             {formatAge(pet.ageMonths)}
           </span>
         )}
@@ -675,8 +682,8 @@ function VisitRow({ appointment, onOpen }) {
             {status.label}
           </span>
           {appointment.status === 'in_progress' && appointment.serviceStage && (
-            <span className='inline-flex items-center gap-1 rounded-full border border-[#b6d5f0] bg-[#eef6fc] px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.5px] text-[#1c5d99]'>
-              <span className='h-1 w-1 animate-pulse rounded-full bg-[#1c5d99]' />
+            <span className='inline-flex items-center gap-1 rounded-full border border-[#bad5c3] bg-[#f1f7f3] px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.5px] text-[#22573d]'>
+              <span className='h-1 w-1 animate-pulse rounded-full bg-[#22573d]' />
               {appointment.serviceStage}
             </span>
           )}

@@ -28,10 +28,14 @@ import { appointmentsApi, warmupBackendServer } from './utils/api'
 import BottomNav from './components/BottomNav'
 
 function PublicLayout() {
+    const { user, loading } = useAuth()
+    if (!loading && user?.role === 'admin') {
+        return <Navigate to='/admin' replace />
+    }
     return (
-        <div className='public-shell app-shell min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)] pb-16 md:pb-0'>
+        <div className='public-shell app-shell min-h-screen w-full max-w-full overflow-x-hidden bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)] pb-16 md:pb-0'>
             <Header />
-            <main id='main-content' tabIndex={-1}><Outlet /></main>
+            <main id='main-content' tabIndex={-1} className='w-full max-w-full overflow-x-hidden'><Outlet /></main>
             <Footer />
             <BottomNav mode='public' />
         </div>
@@ -40,17 +44,21 @@ function PublicLayout() {
 
 function GuestUtilityLayout() {
     return (
-        <div className='guest-shell studio-theme app-shell min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)]'>
-            <main id='main-content' tabIndex={-1}><Outlet /></main>
+        <div className='guest-shell studio-theme app-shell min-h-screen w-full max-w-full overflow-x-hidden bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)]'>
+            <main id='main-content' tabIndex={-1} className='w-full max-w-full overflow-x-hidden'><Outlet /></main>
         </div>
     )
 }
 
 function CustomerLayout() {
+    const { user, loading } = useAuth()
+    if (!loading && user?.role === 'admin') {
+        return <Navigate to='/admin' replace />
+    }
     return (
-        <div className='customer-shell studio-theme app-shell min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)] pb-16 md:pb-0'>
+        <div className='customer-shell studio-theme app-shell min-h-screen w-full max-w-full overflow-x-hidden bg-[var(--tt-canvas)] text-[var(--tt-ink)] antialiased selection:bg-[var(--tt-brand)] selection:text-[var(--tt-canvas)] pb-16 md:pb-0'>
             <CustomerHeader />
-            <main id='main-content' tabIndex={-1}><Outlet /></main>
+            <main id='main-content' tabIndex={-1} className='w-full max-w-full overflow-x-hidden'><Outlet /></main>
             <BottomNav mode='customer' />
         </div>
     )

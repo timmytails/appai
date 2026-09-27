@@ -64,11 +64,11 @@ export default function NotificationBell() {
                 id='notification-bell-btn'
                 onClick={() => setOpen((v) => !v)}
                 aria-label={`Notifications${unreadCount ? ` – ${unreadCount} unread` : ''}`}
-                className='relative grid h-11 w-11 place-items-center rounded-sm border border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] transition hover:border-[var(--tt-brand-strong)] hover:text-[var(--tt-brand-strong)] active:scale-95'
+                className='relative grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full border border-[var(--tt-border)] bg-white/90 text-[var(--tt-ink)] shadow-2xs transition hover:border-[var(--tt-gold)] hover:bg-white active:scale-95'
             >
-                <Bell size={18} />
+                <Bell size={17} strokeWidth={1.8} />
                 {unreadCount > 0 && (
-                    <span className='absolute -right-1 -top-1 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-[var(--tt-brand-strong)] px-1 text-[10px] font-bold text-white shadow-xs ring-2 ring-white'>
+                    <span className='absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#24211e] px-1 text-[9px] font-bold text-white shadow-xs ring-2 ring-white'>
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
@@ -78,7 +78,7 @@ export default function NotificationBell() {
             {open && (
                 <div
                     id='notification-panel'
-                    className='fixed left-3 right-3 top-[76px] z-50 rounded-sm border border-[var(--tt-border)] bg-white shadow-[0_20px_50px_rgba(19,35,27,.16)] sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-96'
+                    className='fixed left-3 right-3 top-[68px] z-50 overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-[0_20px_50px_rgba(19,35,27,.16)] sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-96'
                     style={{ animation: 'notifSlide 0.15s ease' }}
                 >
                     {/* Header */}
@@ -124,7 +124,7 @@ export default function NotificationBell() {
                             </div>
                         ) : notifications.length === 0 ? (
                             <div className='flex flex-col items-center gap-2 py-10 text-[var(--tt-muted)]'>
-                                <span className='grid h-12 w-12 place-items-center rounded-sm bg-[var(--tt-canvas)] text-[var(--tt-muted)]'>
+                                <span className='grid h-12 w-12 place-items-center rounded-full bg-[var(--tt-canvas)] text-[var(--tt-muted)]'>
                                     <Bell size={22} strokeWidth={1.5} />
                                 </span>
                                 <p className='text-xs font-bold text-[var(--tt-ink)]'>No notifications yet</p>

@@ -286,16 +286,10 @@ export default function Profile() {
         {/* Editorial Header */}
         <header className='relative border-b border-[rgba(210,143,119,0.4)] pb-10'>
           <div>
-            <div className='flex items-center gap-2'>
-              <span className='inline-block text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>
-                Account &amp; Profile
-              </span>
-              <span className='text-xs text-[#cf7c54]'>✦</span>
-            </div>
-            <h1 className='mt-3 font-serif text-[clamp(2.4rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
+            <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
               Your account, <span className='italic'>profile &amp; details</span>.
             </h1>
-            <p className='mt-4 max-w-xl text-base leading-relaxed text-[#635b53]'>
+            <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[#635b53]'>
               Update your contact info and home address so you can easily receive appointment updates and reminders.
             </p>
           </div>
@@ -317,16 +311,34 @@ export default function Profile() {
                   )}
                 </div>
                 <div className='min-w-0'>
-                  <div className='flex items-center gap-1.5'>
+                  <div className='flex flex-wrap items-center gap-2'>
                     <h2 className='truncate font-serif text-2xl font-medium text-[#24211e]'>
                       {user?.firstName} {user?.lastName}
                     </h2>
+                    {user?.role === 'admin' ? (
+                      <span className='rounded-full bg-[#fbeee6] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#d28f77] border border-[#d28f77]/30'>
+                        Admin Access
+                      </span>
+                    ) : (
+                      <span className='rounded-full bg-[#f0f4ee] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#4d734d] border border-[#4d734d]/20'>
+                        Client Member
+                      </span>
+                    )}
                   </div>
                   <p className='mt-0.5 truncate text-xs text-[#82746b]'>{user?.email || user?.phone}</p>
                 </div>
               </div>
 
-              <div className='mt-6 border-t border-[rgba(210,143,119,0.2)] pt-4'>
+              <div className='mt-6 border-t border-[rgba(210,143,119,0.2)] pt-4 space-y-2'>
+                {user?.role === 'admin' && (
+                  <button
+                    type='button'
+                    onClick={() => navigate('/admin')}
+                    className='inline-flex items-center gap-2 text-xs font-bold text-[#a47d44] transition-colors hover:text-[#24211e] w-full text-left'
+                  >
+                    <ShieldCheck size={15} /> Open Admin Workspace
+                  </button>
+                )}
                 <button
                   type='button'
                   onClick={handleLogout}
@@ -346,9 +358,10 @@ export default function Profile() {
               eyebrow='Account Owner'
               description='Your registered name and contact details for your TimmyTails account.'
             >
-              <div className='grid gap-4 sm:grid-cols-2'>
+              <div className='grid gap-4 sm:grid-cols-3'>
                 <ReadOnlyField label='First Name' value={user?.firstName || ''} />
                 <ReadOnlyField label='Last Name' value={user?.lastName || ''} />
+                <ReadOnlyField label='Access Role' value={user?.role === 'admin' ? 'Administrator' : 'Client Member'} />
               </div>
 
               <div className='mt-4'>
@@ -376,7 +389,7 @@ export default function Profile() {
             >
               <label className='block'>
                 <span className='mb-1.5 flex items-center gap-1'>
-                  <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                  <span className='block text-xs font-semibold text-[#54483e]'>
                     Mobile Number
                   </span>
                   <span className='text-[#cf7c54]'>*</span>
@@ -534,16 +547,11 @@ export default function Profile() {
   )
 }
 
-function AccountSection({ title, eyebrow, description, children }) {
+function AccountSection({ title, description, children }) {
   return (
     <section className='rounded-2xl border border-[rgba(210,143,119,0.3)] bg-white/70 p-6 sm:p-8 shadow-[0_4px_16px_rgba(40,26,18,0.02)] backdrop-blur-sm'>
       <div className='mb-6'>
-        {eyebrow && (
-          <span className='block text-[10px] font-bold uppercase tracking-[2.5px] text-[#a47d44]'>
-            {eyebrow}
-          </span>
-        )}
-        <h3 className='mt-1 font-serif text-2xl sm:text-3xl font-medium tracking-tight text-[#24211e]'>
+        <h3 className='font-serif text-2xl sm:text-3xl font-medium tracking-tight text-[#24211e]'>
           {title}
         </h3>
         {description && <p className='mt-1.5 max-w-xl text-xs leading-relaxed text-[#635b53]'>{description}</p>}
@@ -556,7 +564,7 @@ function AccountSection({ title, eyebrow, description, children }) {
 function ReadOnlyField({ label, value }) {
   return (
     <label className='block'>
-      <span className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+      <span className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
         {label}
       </span>
       <input
@@ -572,7 +580,7 @@ function Field({ label, help, required = true, className = '', ...props }) {
   return (
     <label className='block'>
       <span className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+        <span className='block text-xs font-semibold text-[#54483e]'>
           {label}
         </span>
         {required && <span className='text-[#cf7c54]'>*</span>}
@@ -651,7 +659,7 @@ function AddressSelect({
   return (
     <div className='relative' ref={containerRef}>
       <label htmlFor={id} className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+        <span className='block text-xs font-semibold text-[#54483e]'>
           {label}
         </span>
         {required && <span className='text-[#cf7c54]'>*</span>}

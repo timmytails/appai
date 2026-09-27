@@ -159,11 +159,7 @@ export default function ForgotPassword() {
 
         {/* Editorial Text & Security Pillars */}
         <div className='relative z-10 my-auto max-w-lg py-12'>
-          <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[2px] text-[#d1a85b] backdrop-blur-sm'>
-            <Sparkles size={11} className='text-[#d1a85b]' /> Security &amp; Credential Recovery
-          </div>
-
-          <h2 className='mt-6 font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
+          <h2 className='font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
             Restoring safe access to your sanctuary desk.
           </h2>
 
@@ -205,7 +201,7 @@ export default function ForgotPassword() {
         </div>
 
         {/* Footer Notes */}
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-[10px] uppercase tracking-[2px] text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -213,20 +209,14 @@ export default function ForgotPassword() {
 
       {/* RIGHT AUTHENTICATION FORM */}
       <main className='relative flex min-h-screen items-center justify-center px-6 py-10 sm:px-10 lg:px-14 xl:px-18'>
-        {/* Background Subtle Guides */}
-        <svg className='pointer-events-none absolute inset-0 z-0 h-full w-full' viewBox='0 0 800 900' fill='none' preserveAspectRatio='none'>
-          <path d='M-50,180 C200,260 400,100 700,220 C900,300 1000,180 1100,240' stroke='#ecdcd0' strokeWidth='1.3' strokeDasharray='5 5' />
-          <path d='M-50,580 C250,650 500,510 750,610' stroke='#f2e2d7' strokeWidth='1.1' strokeDasharray='5 5' />
-        </svg>
-
         <div className='relative z-10 w-full max-w-[430px]'>
           {/* Back link */}
           <Link
             to='/login'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-xs font-semibold uppercase tracking-[1.5px] text-[#82746b] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
           >
-            <ArrowLeft size={13} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
-            Back to Sign In
+            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            Back to sign in
           </Link>
 
           {/* Mobile Logo */}
@@ -242,11 +232,7 @@ export default function ForgotPassword() {
           {/* ================= STEP 1: REQUEST OTP ================= */}
           {step === 'request' && (
             <div>
-              <div className='flex items-center gap-2'>
-                <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Security Recovery</span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-              <h1 className='mt-2 font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+              <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
                 Forgot password?
               </h1>
               <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
@@ -255,7 +241,7 @@ export default function ForgotPassword() {
 
               <form onSubmit={requestOtp} className='mt-7 space-y-4'>
                 <div>
-                  <label className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
                     Phone Number or Email
                   </label>
                   <input
@@ -273,7 +259,7 @@ export default function ForgotPassword() {
                 <button
                   type='submit'
                   disabled={submitting}
-                  className='mt-2 inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
@@ -297,11 +283,7 @@ export default function ForgotPassword() {
           {/* ================= STEP 2: VERIFY OTP & RESET ================= */}
           {step === 'verify' && (
             <div>
-              <div className='flex items-center gap-2'>
-                <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Authentication</span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-              <h1 className='mt-2 font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+              <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
                 Set new password.
               </h1>
               <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
@@ -310,7 +292,7 @@ export default function ForgotPassword() {
 
               <form onSubmit={resetPassword} className='mt-7 space-y-4'>
                 <div>
-                  <label className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
                     6-Digit Verification Code
                   </label>
                   <input
@@ -327,7 +309,7 @@ export default function ForgotPassword() {
                 </div>
 
                 <div>
-                  <label className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
                     New Password
                   </label>
                   <div className='relative'>
@@ -353,7 +335,7 @@ export default function ForgotPassword() {
                 </div>
 
                 <div>
-                  <label className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
                     Confirm New Password
                   </label>
                   <div className='relative'>
@@ -380,7 +362,7 @@ export default function ForgotPassword() {
                 <button
                   type='submit'
                   disabled={submitting || !canReset}
-                  className='mt-2 inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
@@ -400,7 +382,7 @@ export default function ForgotPassword() {
                     type='button'
                     onClick={resendPasswordOtp}
                     disabled={submitting || otpTimer > 0}
-                    className='gold-underline font-bold uppercase tracking-wider text-[#a47d44] transition hover:text-[#24211e] disabled:opacity-40 disabled:no-underline'
+                    className='gold-underline font-semibold text-[#a47d44] transition hover:text-[#24211e] disabled:opacity-40 disabled:no-underline'
                   >
                     {otpTimer > 0 ? `Wait (${otpTimer}s)` : 'Resend Code'}
                   </button>
@@ -426,12 +408,7 @@ export default function ForgotPassword() {
                 <CheckCircle2 size={30} />
               </div>
 
-              <div className='mt-5 flex items-center justify-center gap-2'>
-                <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>Updated</span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-
-              <h1 className='mt-2 font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>
+              <h1 className='mt-5 font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>
                 Password reset complete.
               </h1>
               <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
@@ -441,9 +418,9 @@ export default function ForgotPassword() {
               <button
                 type='button'
                 onClick={() => navigate('/login', { replace: true })}
-                className='mt-8 inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
+                className='mt-8 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99]'
               >
-                Return to Sign In
+                Return to sign in
               </button>
             </div>
           )}

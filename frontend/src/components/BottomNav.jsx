@@ -17,8 +17,8 @@ export default function BottomNav({ mode = 'public' }) {
 
     return (
       <>
-        {location.pathname !== '/booking' && (
-          <Link to='/booking' className='fixed bottom-[78px] right-4 z-40 inline-flex min-h-11 items-center gap-2 bg-[var(--tt-ink)] px-4 text-[13px] font-semibold text-white shadow-[0_10px_30px_rgba(51,51,47,.18)] md:hidden'>
+        {location.pathname !== '/booking' && user?.role !== 'admin' && (
+          <Link to='/booking' className='fixed bottom-[78px] right-4 z-40 inline-flex min-h-11 items-center gap-2 bg-[var(--tt-ink)] px-4 text-[13px] font-semibold text-white shadow-[0_10px_30px_rgba(51,51,47,.18)] rounded-full md:hidden'>
             <span className='text-base leading-none'>+</span> Book a visit
           </Link>
         )}
@@ -36,14 +36,20 @@ export default function BottomNav({ mode = 'public' }) {
   }
 
   const accountTarget = user?.role === 'admin' ? '/admin' : user ? '/dashboard' : '/login'
-  const accountLabel = user?.role === 'admin' ? 'Admin' : user ? 'Account' : 'Sign in'
+  const accountLabel = user?.firstName || (user ? 'Account' : 'Sign in')
   const AccountIcon = user ? UserRound : LogIn
-  const publicItems = [
-    { label: 'Home', to: '/', icon: Home },
-    { label: 'Services', to: '/services', icon: Sparkles },
-    { label: 'Book', to: '/booking', icon: CalendarDays },
-    { label: accountLabel, to: accountTarget, icon: AccountIcon }
-  ]
+
+  const publicItems = user?.role === 'admin'
+    ? [
+        { label: 'Admin Hub', to: '/admin', icon: LayoutDashboard },
+        { label: user?.firstName || 'Admin Profile', to: '/admin', icon: UserRound }
+      ]
+    : [
+        { label: 'Home', to: '/', icon: Home },
+        { label: 'Services', to: '/services', icon: Sparkles },
+        { label: 'Book', to: '/booking', icon: CalendarDays },
+        { label: accountLabel, to: accountTarget, icon: AccountIcon }
+      ]
 
   return (
     <nav aria-label='Website mobile navigation' className='fixed inset-x-0 bottom-0 z-40 border-t border-[var(--tt-border)] bg-[var(--tt-canvas)] px-2 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1.5 md:hidden'>

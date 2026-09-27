@@ -40,11 +40,11 @@ export default function CustomerHeader() {
 
   return (
     <header className='sticky top-0 z-40 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/90 backdrop-blur-md'>
-      <div className='mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8'>
+      <div className='mx-auto flex h-16 sm:h-[72px] max-w-7xl items-center justify-between px-3.5 sm:px-6 lg:px-8'>
         {/* Brand Link */}
-        <Link to='/dashboard' className='flex items-center gap-3 transition-opacity duration-300 hover:opacity-85'>
-          <img src='/logo.png' alt='TimmyTails' className='h-9 w-9 rounded-full object-cover border border-[var(--tt-gold)]/40 shadow-xs' />
-          <span className='font-serif text-2xl font-medium tracking-tight text-[var(--tt-ink)]'>TimmyTails</span>
+        <Link to='/dashboard' className='flex items-center gap-2.5 sm:gap-3 transition-opacity duration-300 hover:opacity-85 min-w-0'>
+          <img src='/logo.png' alt='TimmyTails' className='h-8 w-8 sm:h-9 sm:w-9 shrink-0 rounded-full object-cover border border-[var(--tt-gold)]/40 shadow-xs' />
+          <span className='font-serif text-lg sm:text-xl font-medium tracking-tight text-[var(--tt-ink)] truncate'>TimmyTails</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -57,11 +57,11 @@ export default function CustomerHeader() {
         </nav>
 
         {/* Right Utilities & Actions */}
-        <div className='flex items-center gap-2 sm:gap-3'>
+        <div className='flex items-center gap-2 sm:gap-3 shrink-0'>
           <NotificationBell />
 
-          {/* User Profile Pill & Dropdown */}
-          <div className='relative' ref={accountRef}>
+          {/* User Profile Pill & Dropdown (Desktop & Tablet only) */}
+          <div className='relative hidden sm:block' ref={accountRef}>
             <button
               type='button'
               onClick={() => setAccountOpen((current) => !current)}
@@ -112,18 +112,18 @@ export default function CustomerHeader() {
           <button
             type='button'
             onClick={() => setMobileOpen((current) => !current)}
-            className='grid h-11 w-11 place-items-center text-[var(--tt-ink)] transition-transform duration-200 active:scale-95 lg:hidden'
+            className='grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full border border-[var(--tt-border)] bg-white/80 text-[var(--tt-ink)] transition hover:bg-white active:scale-95 lg:hidden'
             aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
             aria-expanded={mobileOpen}
           >
-            {mobileOpen ? <X size={22} className='transition-transform duration-200 rotate-90' /> : <Menu size={22} />}
+            {mobileOpen ? <X size={18} className='transition-transform duration-200 rotate-90' /> : <Menu size={18} />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileOpen && (
-        <div className='absolute inset-x-0 top-full max-h-[calc(100vh-72px)] overflow-y-auto border-y border-[var(--tt-border)] bg-[var(--tt-canvas)] px-5 py-5 shadow-[0_18px_35px_rgba(51,51,47,.08)] lg:hidden'>
+        <div className='absolute inset-x-0 top-full max-h-[calc(100vh-64px)] overflow-y-auto border-y border-[var(--tt-border)] bg-[var(--tt-canvas)] px-5 py-5 shadow-[0_18px_35px_rgba(51,51,47,.08)] lg:hidden'>
           <nav className='grid gap-1' aria-label='Customer mobile menu'>
             {customerLinks.map(([label, to]) => <MobileLink key={to} to={to}>{label}</MobileLink>)}
             <div className='my-2 h-px bg-[var(--tt-border)]' />

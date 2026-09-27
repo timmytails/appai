@@ -19,6 +19,7 @@ import {
     CircleDollarSign,
     ClipboardList,
     Clock3,
+    Download,
     Image as ImageIcon,
     Inbox,
     LogOut,
@@ -68,7 +69,7 @@ const STATUS_META = {
     },
     in_progress: {
         label: 'In Service',
-        badge: 'bg-[#EBF3FC] text-[#1E568F] ring-1 ring-[#BED6EE]'
+        badge: 'bg-[#F1F7F3] text-[#22573D] ring-1 ring-[#BAD5C3]'
     },
     completed: {
         label: 'Completed',
@@ -297,6 +298,32 @@ const buildWeek = (anchor) =>
             return date
         }
     )
+
+const buildMonthGrid = (anchor) => {
+    const year = anchor.getFullYear()
+    const month = anchor.getMonth()
+    const firstDayOfMonth = new Date(year, month, 1)
+    const startDayIndex = firstDayOfMonth.getDay() // 0 is Sun
+
+    const startDate = new Date(year, month, 1 - startDayIndex)
+    startDate.setHours(12, 0, 0, 0)
+
+    const days = []
+    for (let i = 0; i < 42; i++) {
+        const d = new Date(startDate)
+        d.setDate(startDate.getDate() + i)
+        days.push({
+            date: d,
+            isCurrentMonth: d.getMonth() === month,
+            key: dateKey(d)
+        })
+    }
+
+    return {
+        title: firstDayOfMonth.toLocaleDateString('en-PH', { month: 'long', year: 'numeric' }),
+        days
+    }
+}
 
 const getOwnerName = (
     appointment
@@ -802,8 +829,8 @@ export default function Admin() {
                         size={30}
                     />
 
-                    <p className='mt-3 font-semibold text-[var(--tt-ink-soft)]'>
-                        Loading administration data
+                    <p className='mt-3 font-medium text-[var(--tt-muted)] text-sm'>
+                        Loading dashboard...
                     </p>
                 </div>
             </div>
@@ -814,27 +841,47 @@ export default function Admin() {
         <div className='admin-page studio-theme min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)]'>
             <header className='sticky top-0 z-50 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/96 backdrop-blur'>
                 <div className='mx-auto flex min-h-[76px] max-w-[1560px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8'>
-                    <div className='flex min-w-0 items-center gap-3'>
-                        <button type='button' onClick={() => changeTab('dashboard')} className='shrink-0' aria-label='Open admin overview'>
-                            <img src='/logo.png' alt='TimmyTails' className='h-11 w-11 rounded-full object-cover' />
-                        </button>
-                        <div className='min-w-0'>
-                            <p className='truncate font-serif text-xl leading-none sm:text-2xl'>TimmyTails Studio</p>
-                            <p className='mt-1 text-[9px] font-bold uppercase tracking-[.18em] text-[var(--tt-gold)]'>Administration</p>
+                    <button
+                        type='button'
+                        onClick={() => changeTab('dashboard')}
+                        className='flex shrink-0 items-center gap-2.5 sm:gap-3 transition-opacity hover:opacity-85'
+                        aria-label='Open admin overview'
+                    >
+                        <img
+                            src='/logo.png'
+                            alt='TimmyTails'
+                            className='h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover border border-[rgba(210,143,119,0.35)] shadow-xs'
+                        />
+                        <div className='flex items-center gap-2'>
+                            <span className='font-serif text-lg sm:text-xl font-medium tracking-tight text-[var(--tt-ink)]'>
+                                TimmyTails
+                            </span>
+                            <span className='rounded border border-[var(--tt-border)] bg-white px-2 py-0.5 text-[10px] font-medium text-[var(--tt-muted)]'>
+                                Admin
+                            </span>
                         </div>
-                    </div>
+                    </button>
 
                     <div className='flex items-center gap-2 sm:gap-3'>
-                        <button type='button' onClick={() => navigate('/')} className='hidden min-h-10 items-center border-r border-[var(--tt-border)] pr-4 text-[10px] font-semibold uppercase tracking-[.1em] text-[var(--tt-muted)] hover:text-[var(--tt-ink)] md:inline-flex'>View website</button>
-                        <span className='hidden text-[10px] text-[var(--tt-muted)] xl:inline'>{formatDate(new Date())}</span>
-                        <button onClick={() => loadData(true)} disabled={refreshing} className='grid h-10 w-10 place-items-center border border-[var(--tt-border)] bg-white text-[var(--tt-muted)] hover:text-[var(--tt-ink)] disabled:opacity-40' aria-label='Refresh administration data'>
+                        <span className='hidden text-[10px] font-medium text-[var(--tt-muted)] xl:inline'>{formatDate(new Date())}</span>
+                        <button onClick={() => loadData(true)} disabled={refreshing} className='grid h-10 w-10 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-muted)] hover:text-[var(--tt-ink)] transition disabled:opacity-40 shadow-xs' aria-label='Refresh administration data'>
                             <RefreshCw size={15} className={refreshing ? 'animate-spin' : ''} />
                         </button>
-                        <div className='hidden items-center gap-2 border-l border-[var(--tt-border)] pl-3 sm:flex'>
-                            <span className='grid h-8 w-8 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm'>{(user?.firstName?.[0] || 'A').toUpperCase()}</span>
-                            <div className='hidden lg:block'><p className='text-[11px] font-semibold'>{user?.firstName || 'Administrator'}</p><p className='max-w-36 truncate text-[9px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p></div>
+                        <div className='hidden items-center gap-2.5 border-l border-[var(--tt-border)] pl-3.5 sm:flex'>
+                            <span className='grid h-8 w-8 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm font-semibold'>{(user?.firstName?.[0] || 'A').toUpperCase()}</span>
+                            <div className='hidden lg:block text-left'>
+                                <div className='flex items-center gap-1.5'>
+                                    <p className='text-[11px] font-bold text-[var(--tt-ink)]'>
+                                        {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : (user?.firstName || 'Salon Staff')}
+                                    </p>
+                                    <span className='rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                                        Admin
+                                    </span>
+                                </div>
+                                <p className='max-w-40 truncate text-[9px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p>
+                            </div>
                         </div>
-                        <button type='button' onClick={handleLogout} className='grid h-10 w-10 place-items-center text-[var(--tt-muted)] hover:text-[#934b4b]' aria-label='Sign out'><LogOut size={15} /></button>
+                        <button type='button' onClick={handleLogout} className='grid h-10 w-10 place-items-center rounded-lg text-[var(--tt-muted)] hover:text-[#934b4b] hover:bg-red-50/50 transition' aria-label='Sign out'><LogOut size={15} /></button>
                     </div>
                 </div>
             </header>
@@ -859,8 +906,7 @@ export default function Admin() {
             <main className='mx-auto max-w-[1480px] px-4 py-8 sm:px-6 lg:px-8 lg:py-12'>
                 <section className='mb-10 grid gap-5 border-b border-[var(--tt-border)] pb-8 sm:grid-cols-[1fr_auto] sm:items-end'>
                     <div>
-                        <p className='text-[9px] font-bold uppercase tracking-[.18em] text-[var(--tt-gold)]'>Admin workspace</p>
-                        <h1 className='mt-2 font-serif text-4xl font-normal tracking-[-.03em] sm:text-5xl'>{ADMIN_TAB_META[activeTab]?.title}</h1>
+                        <h1 className='font-serif text-4xl font-normal tracking-[-.03em] sm:text-5xl'>{ADMIN_TAB_META[activeTab]?.title}</h1>
                         <p className='mt-3 max-w-2xl text-sm leading-6 text-[var(--tt-muted)]'>{ADMIN_TAB_META[activeTab]?.description}</p>
                     </div>
                     <div className='flex flex-wrap items-center gap-3 text-[10px] text-[var(--tt-muted)]'>
@@ -979,8 +1025,8 @@ function DashboardView({
             <section className='grid gap-12 xl:grid-cols-[1.25fr_.75fr]'>
                 <div>
                     <div className='flex items-end justify-between gap-4 border-b border-[var(--tt-border)] pb-4'>
-                        <div><p className='text-[9px] font-bold uppercase tracking-[.16em] text-[var(--tt-muted)]'>Salon floor</p><h2 className='mt-1 font-serif text-3xl font-normal'>Today’s schedule</h2></div>
-                        <button type='button' onClick={onViewBookings} className='text-[10px] font-semibold uppercase tracking-[.09em] text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>All bookings →</button>
+                        <div><h2 className='font-serif text-3xl font-normal'>Today’s schedule</h2></div>
+                        <button type='button' onClick={onViewBookings} className='text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>All bookings →</button>
                     </div>
                     {todaysAppointments.length ? (
                         <div>
@@ -993,7 +1039,7 @@ function DashboardView({
 
                 <div>
                     <div className='flex items-end justify-between gap-4 border-b border-[var(--tt-border)] pb-4'>
-                        <div><p className='text-[9px] font-bold uppercase tracking-[.16em] text-[#9a704e]'>Needs attention</p><h2 className='mt-1 font-serif text-3xl font-normal'>Pending approvals</h2></div>
+                        <div><h2 className='font-serif text-3xl font-normal'>Pending approvals</h2></div>
                         <span className='font-serif text-2xl text-[var(--tt-muted)]'>{String(pendingAppointments.length).padStart(2, '0')}</span>
                     </div>
                     {pendingAppointments.length ? (
@@ -1008,12 +1054,12 @@ function DashboardView({
                                         </div>
                                     </div>
                                     <div className='mt-4 flex gap-2 pl-[52px]'>
-                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'confirmed')} className='min-h-9 bg-[var(--tt-ink)] px-4 text-[9px] font-bold uppercase tracking-[.08em] text-white disabled:opacity-50'>Approve</button>
-                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'cancelled')} className='min-h-9 border border-[#e8c5c5] px-4 text-[9px] font-bold uppercase tracking-[.08em] text-[#934b4b] disabled:opacity-50'>Decline</button>
+                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'confirmed')} className='min-h-8 rounded-md bg-[var(--tt-ink)] px-3.5 text-xs font-medium text-white transition hover:bg-[#3d3d3d] disabled:opacity-50'>Approve</button>
+                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'cancelled')} className='min-h-8 rounded-md border border-[#e8c5c5] bg-white px-3.5 text-xs font-medium text-[#934b4b] transition hover:bg-[#fbf4f4] disabled:opacity-50'>Decline</button>
                                     </div>
                                 </div>
                             ))}
-                            {pendingAppointments.length > 6 && <button type='button' onClick={onViewBookings} className='mt-5 text-[10px] font-semibold uppercase tracking-[.08em]'>Review all pending →</button>}
+                            {pendingAppointments.length > 6 && <button type='button' onClick={onViewBookings} className='mt-5 text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>Review all pending →</button>}
                         </div>
                     ) : (
                         <div className='py-12'><CheckCircle2 size={24} strokeWidth={1.2} className='text-[#6f7a4f]' /><p className='mt-4 font-serif text-xl'>Everything has been reviewed.</p><p className='mt-2 text-xs text-[var(--tt-muted)]'>No bookings are waiting for approval.</p></div>
@@ -1023,8 +1069,8 @@ function DashboardView({
 
             <section className='border-t border-[var(--tt-border)] pt-10'>
                 <div className='mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
-                    <div><p className='text-[9px] font-bold uppercase tracking-[.16em] text-[var(--tt-muted)]'>Business pulse</p><h2 className='mt-1 font-serif text-3xl font-normal'>Demand and completion</h2></div>
-                    <button type='button' onClick={onViewAnalytics} className='self-start border-b border-[var(--tt-ink)] pb-1 text-[10px] font-semibold uppercase tracking-[.08em] sm:self-auto'>Open analytics →</button>
+                    <div><h2 className='font-serif text-3xl font-normal'>Demand and completion</h2></div>
+                    <button type='button' onClick={onViewAnalytics} className='self-start border-b border-[var(--tt-ink)] pb-1 text-xs font-medium sm:self-auto'>Open analytics →</button>
                 </div>
                 <div className='grid gap-10 lg:grid-cols-[1.1fr_.9fr]'>
                     <div>
@@ -1111,6 +1157,86 @@ function ScheduleRow({ appointment }) {
     )
 }
 
+function PaginationControl({ currentPage, totalPages, totalItems, pageSize, onPageChange, label = 'records' }) {
+    if (totalItems <= pageSize) return null
+
+    const startItem = (currentPage - 1) * pageSize + 1
+    const endItem = Math.min(currentPage * pageSize, totalItems)
+
+    const getPageNumbers = () => {
+        const pages = []
+        if (totalPages <= 7) {
+            for (let i = 1; i <= totalPages; i++) pages.push(i)
+        } else {
+            if (currentPage <= 4) {
+                pages.push(1, 2, 3, 4, 5, '...', totalPages)
+            } else if (currentPage >= totalPages - 3) {
+                pages.push(1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
+            } else {
+                pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages)
+            }
+        }
+        return pages
+    }
+
+    return (
+        <div className='flex flex-col gap-3 rounded-xl border border-[var(--tt-border)] bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between shadow-xs'>
+            <p className='text-xs font-medium text-[var(--tt-muted)]'>
+                Showing <strong className='font-bold text-[var(--tt-ink)]'>{startItem}–{endItem}</strong> of{' '}
+                <strong className='font-bold text-[var(--tt-ink)]'>{totalItems}</strong> {label}
+            </p>
+
+            <div className='flex items-center gap-1.5'>
+                <button
+                    type='button'
+                    onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className='inline-flex h-8 items-center gap-1 rounded-lg border border-[var(--tt-border)] bg-white px-2.5 text-xs font-semibold text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)] disabled:cursor-not-allowed disabled:opacity-40'
+                    aria-label='Previous page'
+                >
+                    <ChevronLeft size={14} /> Previous
+                </button>
+
+                <div className='hidden sm:flex items-center gap-1'>
+                    {getPageNumbers().map((p, idx) => (
+                        p === '...' ? (
+                            <span key={`ellipsis-${idx}`} className='px-1.5 text-xs text-[var(--tt-muted)]'>…</span>
+                        ) : (
+                            <button
+                                key={`page-${p}`}
+                                type='button'
+                                onClick={() => onPageChange(p)}
+                                className={`h-8 min-w-[32px] rounded-lg px-2 text-xs font-bold transition ${
+                                    currentPage === p
+                                        ? 'bg-[var(--tt-ink)] text-white shadow-xs'
+                                        : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
+                                }`}
+                                aria-current={currentPage === p ? 'page' : undefined}
+                            >
+                                {p}
+                            </button>
+                        )
+                    ))}
+                </div>
+
+                <span className='text-xs font-medium text-[var(--tt-muted)] sm:hidden'>
+                    Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                    type='button'
+                    onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className='inline-flex h-8 items-center gap-1 rounded-lg border border-[var(--tt-border)] bg-white px-2.5 text-xs font-semibold text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)] disabled:cursor-not-allowed disabled:opacity-40'
+                    aria-label='Next page'
+                >
+                    Next <ChevronRight size={14} />
+                </button>
+            </div>
+        </div>
+    )
+}
+
 function BookingsView({
     appointments,
     filter,
@@ -1123,11 +1249,26 @@ function BookingsView({
     onStatusUpdate,
     onStageUpdate
 }) {
+    const [page, setPage] = useState(1)
+    const pageSize = 10
+
+    useEffect(() => {
+        setPage(1)
+    }, [filter, search])
+
+    const totalCount = appointments.length
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
+
+    const pagedAppointments = useMemo(() => {
+        const start = (page - 1) * pageSize
+        return appointments.slice(start, start + pageSize)
+    }, [appointments, page, pageSize])
+
     return (
         <div className='space-y-4'>
             {/* Filter Tabs and Search Bar */}
             <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
-                <div className='flex items-center gap-1 overflow-x-auto no-scrollbar rounded-sm border border-[var(--tt-border)] bg-white p-1 shadow-xs w-full sm:w-auto'>
+                <div className='flex items-center gap-1 overflow-x-auto no-scrollbar rounded-xl border border-[var(--tt-border)] bg-white p-1 shadow-xs w-full sm:w-auto'>
                     {BOOKING_FILTERS.map((item) => (
                         <button
                             key={item.id || 'all'}
@@ -1149,19 +1290,19 @@ function BookingsView({
                         value={search}
                         onChange={(event) => onSearch(event.target.value)}
                         placeholder='Search pet, customer, service...'
-                        className='h-10 w-full rounded-sm border border-[var(--tt-border)] bg-white pl-9 pr-4 text-xs font-medium shadow-xs outline-none transition focus:border-[var(--tt-brand)] focus:ring-1 focus:ring-[var(--tt-brand)]/20'
+                        className='h-10 w-full rounded-xl border border-[var(--tt-border)] bg-white pl-9 pr-4 text-xs font-medium shadow-xs outline-none transition focus:border-[var(--tt-brand)] focus:ring-1 focus:ring-[var(--tt-brand)]/20'
                     />
                 </label>
             </div>
 
             {/* Full-width Bookings List */}
             <div className='space-y-3'>
-                {appointments.length ? (
-                    appointments.map((appointment) => (
+                {pagedAppointments.length ? (
+                    pagedAppointments.map((appointment) => (
                         <button
                             key={appointment._id}
                             onClick={() => onSelect(appointment._id)}
-                            className='group flex w-full flex-col gap-4 rounded-sm border border-[var(--tt-border)] bg-white p-4 sm:p-5 text-left shadow-xs transition hover:border-[var(--tt-brand)] hover:shadow-sm md:flex-row md:items-center md:justify-between'
+                            className='group flex w-full flex-col gap-4 rounded-xl border border-[var(--tt-border)] bg-white p-4 sm:p-5 text-left shadow-xs transition hover:border-[var(--tt-brand)] hover:shadow-sm md:flex-row md:items-center md:justify-between'
                         >
                             <div className='flex items-center gap-4 min-w-0'>
                                 <PetAvatar appointment={appointment} large />
@@ -1171,8 +1312,8 @@ function BookingsView({
                                         <span className='text-xs text-[var(--tt-muted)]'>({appointment.breed})</span>
                                         <StatusBadge status={appointment.status} />
                                         {appointment.status === 'in_progress' && appointment.serviceStage && (
-                                            <span className='inline-flex items-center gap-1 rounded-full bg-[#EBF3FC] px-2.5 py-0.5 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
-                                                <span className='h-1.5 w-1.5 rounded-full bg-[#1E568F] animate-pulse' />
+                                            <span className='inline-flex items-center gap-1 rounded-full bg-[#F1F7F3] px-2.5 py-0.5 text-[10px] font-bold text-[#22573D] ring-1 ring-[#BAD5C3]'>
+                                                <span className='h-1.5 w-1.5 rounded-full bg-[#22573D] animate-pulse' />
                                                 {appointment.serviceStage}
                                             </span>
                                         )}
@@ -1208,6 +1349,16 @@ function BookingsView({
                 )}
             </div>
 
+            {/* Pagination Controls */}
+            <PaginationControl
+                currentPage={page}
+                totalPages={totalPages}
+                totalItems={totalCount}
+                pageSize={pageSize}
+                onPageChange={setPage}
+                label='bookings'
+            />
+
             {/* Modal Popup for Full Booking Details & Actions */}
             {selected && (
                 <BookingDetailModal
@@ -1233,6 +1384,7 @@ function BookingDetailModal({
     const [previewLoading, setPreviewLoading] = useState(false)
     const [previewError, setPreviewError] = useState('')
     const [previewOpen, setPreviewOpen] = useState(false)
+    const [confirmStage, setConfirmStage] = useState(null)
 
     useEffect(() => {
         let active = true
@@ -1385,29 +1537,25 @@ function BookingDetailModal({
                     </div>
                 )}
 
-                {/* Live Service Progress Stepper (Milestones) */}
+                {/* Service Progress Stepper (Milestones) */}
                 {['in_progress', 'confirmed'].includes(appointment.status) && onStageUpdate && (
-                    <div className='rounded-sm border border-[#BED6EE] bg-[#F4F9FD] p-4 space-y-3'>
+                    <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4 space-y-3'>
                         <div className='flex flex-wrap items-center justify-between gap-2'>
                             <div>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#1D5B96]'>
-                                    Live Service Progress ({appointment.service})
-                                </p>
                                 <p className='text-sm font-bold text-[var(--tt-ink)]'>
-                                    Current Stage: <span className='text-[#1D5B96]'>{appointment.serviceStage || 'Not started'}</span>
+                                    Current Stage: <span className='text-[var(--tt-brand-strong)] font-serif'>{appointment.serviceStage || 'Not started'}</span>
+                                </p>
+                                <p className='text-[11px] text-[var(--tt-muted)] mt-0.5'>
+                                    Select a milestone below to advance the service stage for <strong>{appointment.petName}</strong>:
                                 </p>
                             </div>
                             {appointment.status === 'in_progress' && (
-                                <span className='inline-flex items-center gap-1.5 rounded-full bg-[#EBF3FC] px-2.5 py-1 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
-                                    <span className='h-2 w-2 rounded-full bg-[#1E568F] animate-pulse' />
+                                <span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800 ring-1 ring-emerald-200'>
+                                    <span className='h-2 w-2 rounded-full bg-emerald-600 animate-pulse' />
                                     In Service
                                 </span>
                             )}
                         </div>
-
-                        <p className='text-[11px] text-[var(--tt-ink-soft)]'>
-                            Click any milestone below to update the live progress for <strong>{appointment.petName}</strong>:
-                        </p>
 
                         <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
                             {getStagesForService(appointment.serviceId).map((stage, idx, allStages) => {
@@ -1420,13 +1568,13 @@ function BookingDetailModal({
                                         key={stage.id}
                                         type='button'
                                         disabled={updating || isCurrent}
-                                        onClick={() => onStageUpdate(appointment, stage)}
+                                        onClick={() => setConfirmStage(stage)}
                                         className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
                                             isCurrent
-                                                ? 'bg-[#1E568F] text-white border-[#1E568F] shadow-xs'
+                                                ? 'bg-[#22573D] text-white border-[#22573D] shadow-xs'
                                                 : isPast
-                                                ? 'bg-[#EBF3FC] text-[#1E568F] border-[#BED6EE] hover:bg-[#DDEBFA]'
-                                                : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#1E568F] hover:text-[#1E568F]'
+                                                ? 'bg-[#F1F7F3] text-[#22573D] border-[#BAD5C3] hover:bg-[#E5F0E9]'
+                                                : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#22573D] hover:text-[#22573D]'
                                         } disabled:opacity-85`}
                                     >
                                         <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
@@ -1518,6 +1666,24 @@ function BookingDetailModal({
                     </div>
                 </div>
             )}
+
+            {/* Confirmation Modal before advancing step */}
+            <ConfirmModal
+                isOpen={Boolean(confirmStage)}
+                title='Update Service Stage'
+                description={`Are you sure you want to update ${appointment.petName}’s grooming stage to "${confirmStage?.label}"? This will be reflected on the customer's live tracking.`}
+                confirmText='Update Stage'
+                cancelText='Cancel'
+                variant='default'
+                loading={updating}
+                onConfirm={async () => {
+                    if (!confirmStage) return
+                    const stageToApply = confirmStage
+                    setConfirmStage(null)
+                    await onStageUpdate(appointment, stageToApply)
+                }}
+                onClose={() => setConfirmStage(null)}
+            />
         </div>
     )
 }
@@ -1532,13 +1698,19 @@ function ScheduleView({
     onStageUpdate,
     updatingId
 }) {
+    const [viewMode, setViewMode] = useState('month') // 'month' (default) or 'week'
+    const [monthAnchor, setMonthAnchor] = useState(() => new Date())
+    const [selectedDateKey, setSelectedDateKey] = useState(() => dateKey(new Date()))
     const [selectedAppointmentSelection, setSelectedAppointment] = useState(null)
     const [previewState, setPreviewState] = useState({ appointmentId: null, image: null })
     const [enlargedImage, setEnlargedImage] = useState(null)
+    const [confirmStage, setConfirmStage] = useState(null)
 
     const [statusFilter, setStatusFilter] = useState('all')
 
     const week = buildWeek(weekAnchor)
+    const monthGrid = useMemo(() => buildMonthGrid(monthAnchor), [monthAnchor])
+    const todayKey = dateKey(new Date())
 
     const hours = [
         '08:00',
@@ -1601,83 +1773,140 @@ function ScheduleView({
     )
     const aiPreviewImg = fetchedAiPreview || selectedAppointment?.generatedImagePreviewUrl || selectedAppointment?.previewImage || selectedAppointment?.aiPreviewImage
 
+    // Navigation handlers
+    const handlePrev = () => {
+        if (viewMode === 'month') {
+            setMonthAnchor((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))
+        } else {
+            onPrevious?.()
+        }
+    }
+
+    const handleNext = () => {
+        if (viewMode === 'month') {
+            setMonthAnchor((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))
+        } else {
+            onNext?.()
+        }
+    }
+
+    const handleToday = () => {
+        setMonthAnchor(new Date())
+        setSelectedDateKey(dateKey(new Date()))
+        onToday?.()
+    }
+
+    // Selected day appointments in Month view
+    const selectedDayAppointments = useMemo(() => {
+        return activeAppointments.filter((a) => a.date === selectedDateKey)
+    }, [activeAppointments, selectedDateKey])
+
     return (
-        <section className='overflow-hidden rounded-sm border border-[var(--tt-border)] bg-white shadow-xs'>
-            <div className='flex flex-col gap-3 border-b border-[var(--tt-border)] px-5 py-4 sm:flex-row sm:items-center sm:justify-between'>
-                <div>
-                    <h2 className='font-serif text-lg font-bold'>Weekly Schedule</h2>
-                    <p className='mt-0.5 text-xs text-[var(--tt-brand)]'>
-                        {formatDate(week[0])} – {formatDate(week[6])}
-                    </p>
+        <section className='space-y-6'>
+            {/* Top Toolbar */}
+            <div className='flex flex-col gap-4 rounded-2xl border border-[var(--tt-border)] bg-white p-4 sm:p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between'>
+                <div className='flex items-center gap-3'>
+                    <div className='grid h-10 w-10 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-brand)] font-bold'>
+                        <CalendarDays size={20} />
+                    </div>
+                    <div>
+                        <h2 className='font-serif text-xl sm:text-2xl font-bold text-[var(--tt-ink)]'>
+                            {viewMode === 'month' ? monthGrid.title : `Week of ${formatDate(week[0])}`}
+                        </h2>
+                        <p className='text-xs text-[var(--tt-muted)]'>
+                            {viewMode === 'month'
+                                ? `Monthly Schedule · ${activeAppointments.length} total active bookings`
+                                : `${formatDate(week[0])} – ${formatDate(week[6])}`}
+                        </p>
+                    </div>
                 </div>
 
-                <div className='flex flex-wrap items-center gap-2'>
+                <div className='flex flex-wrap items-center gap-2.5'>
+                    {/* View Switcher: Month (Default) vs Week */}
+                    <div className='flex items-center rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-1'>
+                        <button
+                            type='button'
+                            onClick={() => setViewMode('month')}
+                            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
+                                viewMode === 'month'
+                                    ? 'bg-white text-[var(--tt-ink)] shadow-xs'
+                                    : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
+                            }`}
+                        >
+                            Monthly Calendar
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => setViewMode('week')}
+                            className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
+                                viewMode === 'week'
+                                    ? 'bg-white text-[var(--tt-ink)] shadow-xs'
+                                    : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
+                            }`}
+                        >
+                            Weekly View
+                        </button>
+                    </div>
+
                     {/* Status Filter Buttons */}
-                    <div className='flex items-center gap-0.5 rounded-sm border border-[var(--tt-border)] bg-white p-1'>
+                    <div className='hidden xl:flex items-center gap-1 rounded-xl border border-[var(--tt-border)] bg-white p-1'>
                         <button
                             type='button'
                             onClick={() => setStatusFilter('all')}
-                            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`rounded-lg px-3 py-1 text-xs font-bold transition ${
                                 statusFilter === 'all'
-                                    ? 'bg-[var(--tt-ink)] text-[var(--tt-canvas)] shadow-xs'
-                                    : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
+                                    ? 'bg-[var(--tt-ink)] text-white shadow-xs'
+                                    : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'
                             }`}
                         >
-                            All · {totalCount}
+                            All ({totalCount})
                         </button>
                         <button
                             type='button'
                             onClick={() => setStatusFilter('confirmed')}
-                            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`rounded-lg px-3 py-1 text-xs font-bold transition ${
                                 statusFilter === 'confirmed'
-                                    ? 'bg-[var(--tt-brand-strong)] text-[var(--tt-canvas)] shadow-xs'
-                                    : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
+                                    ? 'bg-[var(--tt-brand-strong)] text-white shadow-xs'
+                                    : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'
                             }`}
                         >
-                            Approved · {approvedCount}
+                            Approved ({approvedCount})
                         </button>
                         <button
                             type='button'
                             onClick={() => setStatusFilter('in_progress')}
-                            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+                            className={`rounded-lg px-3 py-1 text-xs font-bold transition ${
                                 statusFilter === 'in_progress'
-                                    ? 'bg-[#1E568F] text-white shadow-xs'
-                                    : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
+                                    ? 'bg-[#22573D] text-white shadow-xs'
+                                    : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'
                             }`}
                         >
-                            In Service · {inProgressCount}
-                        </button>
-                        <button
-                            type='button'
-                            onClick={() => setStatusFilter('pending')}
-                            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
-                                statusFilter === 'pending'
-                                    ? 'bg-[var(--tt-accent)] text-[var(--tt-canvas)] shadow-xs'
-                                    : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'
-                            }`}
-                        >
-                            Pending · {pendingCount}
+                            In Service ({inProgressCount})
                         </button>
                     </div>
 
+                    {/* Navigation Buttons */}
                     <div className='flex items-center gap-1'>
                         <button
-                            onClick={onPrevious}
-                            className='grid h-8 w-8 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] transition hover:bg-[var(--tt-canvas)]'
-                            aria-label='Previous week'
+                            type='button'
+                            onClick={handlePrev}
+                            className='grid h-9 w-9 place-items-center rounded-xl border border-[var(--tt-border)] bg-white text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)]'
+                            aria-label={viewMode === 'month' ? 'Previous month' : 'Previous week'}
                         >
                             <ChevronLeft size={16} />
                         </button>
                         <button
-                            onClick={onToday}
-                            className='h-8 rounded-lg border border-[var(--tt-border)] bg-white px-3 text-xs font-bold text-[var(--tt-ink-soft)] transition hover:bg-[var(--tt-canvas)]'
+                            type='button'
+                            onClick={handleToday}
+                            className='h-9 rounded-xl border border-[var(--tt-border)] bg-white px-3.5 text-xs font-bold text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)]'
                         >
                             Today
                         </button>
                         <button
-                            onClick={onNext}
-                            className='grid h-8 w-8 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] transition hover:bg-[var(--tt-canvas)]'
-                            aria-label='Next week'
+                            type='button'
+                            onClick={handleNext}
+                            className='grid h-9 w-9 place-items-center rounded-xl border border-[var(--tt-border)] bg-white text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)]'
+                            aria-label={viewMode === 'month' ? 'Next month' : 'Next week'}
                         >
                             <ChevronRight size={16} />
                         </button>
@@ -1685,108 +1914,275 @@ function ScheduleView({
                 </div>
             </div>
 
-            <div className='overflow-x-auto'>
-                <div className='min-w-[1050px]'>
-                    <div className='grid grid-cols-[110px_repeat(7,minmax(130px,1fr))]'>
-                        <div className='border-b border-r border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 font-mono text-xs uppercase text-[var(--tt-brand)]'>
-                            Time
+            {/* MONTHLY CALENDAR VIEW (Default) */}
+            {viewMode === 'month' && (
+                <div className='space-y-6'>
+                    <div className='overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-xs'>
+                        {/* Day names header */}
+                        <div className='grid grid-cols-7 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/60 text-center text-[11px] font-bold uppercase tracking-wider text-[var(--tt-muted)]'>
+                            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                                <div key={d} className='py-3'>
+                                    {d}
+                                </div>
+                            ))}
                         </div>
 
-                        {week.map((date) => (
-                            <div
-                                key={dateKey(date)}
-                                className={`border-b border-r border-[var(--tt-border)] p-3 text-center last:border-r-0 ${dateKey(date) === dateKey(new Date()) ? 'bg-[var(--tt-canvas)]' : 'bg-[var(--tt-canvas)]'}`}
-                            >
-                                <p className='text-xs text-[var(--tt-brand)]'>
-                                    {date.toLocaleDateString('en-PH', { weekday: 'short' })}
-                                </p>
-
-                                <p className='font-serif text-lg font-bold'>
-                                    {date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' })}
-                                </p>
-                            </div>
-                        ))}
-
-                        {hours.flatMap((hour) => [
-                            <div
-                                key={`time-${hour}`}
-                                className='min-h-[86px] border-b border-r border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 font-mono text-xs text-[var(--tt-brand)]'
-                            >
-                                {formatTime(hour)}
-                            </div>,
-
-                            ...week.map((date) => {
-                                const key = dateKey(date)
-
-                                const items = activeAppointments.filter(
-                                    (appointment) =>
-                                        appointment.date === key &&
-                                        appointment.time?.slice(0, 2) === hour.slice(0, 2)
-                                )
+                        {/* Calendar 42-cell grid */}
+                        <div className='grid grid-cols-7 divide-x divide-y divide-[var(--tt-border)]'>
+                            {monthGrid.days.map((day) => {
+                                const isToday = day.key === todayKey
+                                const isSelected = day.key === selectedDateKey
+                                const dayAppts = activeAppointments.filter((a) => a.date === day.key)
 
                                 return (
                                     <div
-                                        key={`${key}-${hour}`}
-                                        className='min-h-[86px] border-b border-r border-[var(--tt-border)] p-2 last:border-r-0'
+                                        key={day.key}
+                                        onClick={() => setSelectedDateKey(day.key)}
+                                        className={`group min-h-[96px] sm:min-h-[110px] p-2 transition cursor-pointer flex flex-col justify-between ${
+                                            isSelected
+                                                ? 'bg-[var(--tt-sage)]/35 ring-2 ring-inset ring-[var(--tt-brand)]'
+                                                : day.isCurrentMonth
+                                                ? 'bg-white hover:bg-[var(--tt-canvas)]/50'
+                                                : 'bg-[var(--tt-canvas)]/30 opacity-60 hover:opacity-100 hover:bg-[var(--tt-canvas)]/70'
+                                        }`}
                                     >
-                                        {items.map((appointment) => {
-                                            const displayImg = appointment.pet?.photoUrl || appointment.petPhotoUrl || appointment.photoUrl || appointment.generatedImagePreviewUrl || appointment.previewImage || appointment.aiPreviewImage
-                                            return (
-                                                <button
-                                                    key={appointment._id}
-                                                    type='button'
-                                                    onClick={() => setSelectedAppointment(appointment)}
-                                                    className='mb-1.5 w-full rounded-sm border border-[var(--tt-border)] bg-white p-2 text-left text-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--tt-brand)] hover:bg-[var(--tt-canvas)] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--tt-brand)]'
-                                                    title='Click to view appointment details'
+                                        <div className='flex items-center justify-between'>
+                                            <span
+                                                className={`grid h-6 w-6 place-items-center rounded-full text-xs font-bold ${
+                                                    isToday
+                                                        ? 'bg-[var(--tt-brand)] text-white shadow-xs'
+                                                        : isSelected
+                                                        ? 'bg-[var(--tt-ink)] text-white'
+                                                        : 'text-[var(--tt-ink)]'
+                                                }`}
+                                            >
+                                                {day.date.getDate()}
+                                            </span>
+
+                                            {dayAppts.length > 0 && (
+                                                <span className='rounded-full bg-[var(--tt-accent-soft)] px-1.5 py-0.5 text-[9px] font-bold text-[var(--tt-ink)]'>
+                                                    {dayAppts.length}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Mini appointment chips */}
+                                        <div className='mt-1.5 space-y-1 overflow-hidden'>
+                                            {dayAppts.slice(0, 2).map((a) => (
+                                                <div
+                                                    key={a._id}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setSelectedAppointment(a)
+                                                    }}
+                                                    className='flex items-center gap-1 truncate rounded-md bg-white border border-[var(--tt-border)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--tt-ink)] shadow-2xs hover:border-[var(--tt-brand)] transition'
+                                                    title={`${a.petName} (${a.service}) at ${formatTime(a.time)}`}
                                                 >
-                                                    <div className='flex items-center gap-2'>
-                                                        {displayImg ? (
-                                                            <img
-                                                                src={displayImg}
-                                                                alt={appointment.petName}
-                                                                className='h-8 w-8 shrink-0 rounded-lg border border-[var(--tt-canvas)] object-cover bg-[var(--tt-canvas)]'
-                                                            />
-                                                        ) : (
-                                                            <div className='grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-brand)] font-bold text-[10px]'>
-                                                                {appointment.petName?.[0] || 'P'}
-                                                            </div>
-                                                        )}
-                                                        <div className='min-w-0 flex-1'>
-                                                            <div className='flex items-center justify-between gap-1'>
-                                                                <p className='truncate font-bold text-[var(--tt-ink)]'>
-                                                                    {appointment.petName}
-                                                                </p>
-                                                                <span className={`inline-block h-2 w-2 rounded-full shrink-0 ${
-                                                                    appointment.status === 'confirmed'
-                                                                        ? 'bg-[var(--tt-brand-strong)]'
-                                                                        : appointment.status === 'in_progress'
-                                                                        ? 'bg-[#1E568F]'
-                                                                        : appointment.status === 'completed'
-                                                                        ? 'bg-[var(--tt-ink-soft)]'
-                                                                        : 'bg-[var(--tt-accent)]'
-                                                                }`} />
-                                                            </div>
-
-                                                            <p className='truncate text-[10px] text-[var(--tt-brand)]'>
-                                                                {appointment.service}
-                                                            </p>
-
-                                                            <p className='font-mono text-[9px] font-bold text-[var(--tt-brand)]'>
-                                                                {formatTime(appointment.time)}
-                                                                {appointment.endTime ? `–${formatTime(appointment.endTime)}` : ''}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </button>
-                                            )
-                                        })}
+                                                    <span
+                                                        className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                                                            a.status === 'confirmed'
+                                                                ? 'bg-[var(--tt-brand-strong)]'
+                                                                : a.status === 'in_progress'
+                                                                ? 'bg-[#22573D]'
+                                                                : a.status === 'completed'
+                                                                ? 'bg-[var(--tt-ink-soft)]'
+                                                                : 'bg-[var(--tt-accent)]'
+                                                        }`}
+                                                    />
+                                                    <span className='truncate font-bold'>{a.petName}</span>
+                                                    <span className='text-[9px] text-[var(--tt-muted)] shrink-0'>{formatTime(a.time)}</span>
+                                                </div>
+                                            ))}
+                                            {dayAppts.length > 2 && (
+                                                <p className='text-[9px] font-bold text-[var(--tt-muted)] text-right pr-1'>
+                                                    +{dayAppts.length - 2} more
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 )
-                            })
-                        ])}
+                            })}
+                        </div>
+                    </div>
+
+                    {/* Selected Day Agenda Drawer */}
+                    <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 sm:p-6 shadow-xs'>
+                        <div className='flex flex-col gap-2 border-b border-[var(--tt-border)] pb-4 sm:flex-row sm:items-center sm:justify-between'>
+                            <div>
+                                <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Day Schedule Details</p>
+                                <h3 className='font-serif text-xl sm:text-2xl font-bold text-[var(--tt-ink)] mt-0.5'>
+                                    {formatDate(selectedDateKey)}
+                                </h3>
+                            </div>
+                            <span className='rounded-full bg-[var(--tt-canvas)] px-3 py-1 text-xs font-bold text-[var(--tt-ink)] self-start sm:self-auto'>
+                                {selectedDayAppointments.length} {selectedDayAppointments.length === 1 ? 'appointment' : 'appointments'} scheduled
+                            </span>
+                        </div>
+
+                        <div className='mt-5'>
+                            {selectedDayAppointments.length > 0 ? (
+                                <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
+                                    {selectedDayAppointments.map((appt) => (
+                                        <div
+                                            key={appt._id}
+                                            onClick={() => setSelectedAppointment(appt)}
+                                            className='group cursor-pointer rounded-xl border border-[var(--tt-border)] bg-white p-4 shadow-2xs transition hover:border-[var(--tt-brand)] hover:shadow-sm flex flex-col justify-between'
+                                        >
+                                            <div>
+                                                <div className='flex items-start justify-between gap-2'>
+                                                    <div className='flex items-center gap-2.5'>
+                                                        <PetAvatar appointment={appt} />
+                                                        <div>
+                                                            <p className='font-bold text-sm text-[var(--tt-ink)]'>{appt.petName}</p>
+                                                            <p className='text-[11px] text-[var(--tt-muted)]'>{appt.breed || 'Pet'}</p>
+                                                        </div>
+                                                    </div>
+                                                    <StatusBadge status={appt.status} />
+                                                </div>
+
+                                                <div className='mt-3 space-y-1 border-t border-[var(--tt-border)] pt-2.5 text-xs text-[var(--tt-ink-soft)]'>
+                                                    <p className='font-semibold text-[var(--tt-ink)]'>{appt.service}</p>
+                                                    <p className='font-mono text-[11px] text-[var(--tt-muted)]'>
+                                                        Time: {formatTime(appt.time)}{appt.endTime ? ` – ${formatTime(appt.endTime)}` : ''}
+                                                    </p>
+                                                    <p className='text-[11px] text-[var(--tt-muted)]'>
+                                                        Client: <strong className='text-[var(--tt-ink)]'>{getOwnerName(appt)}</strong>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className='mt-4 flex items-center justify-between border-t border-[var(--tt-border)] pt-2.5 text-xs'>
+                                                <span className='font-serif font-bold text-sm text-[var(--tt-ink)]'>{formatPeso(appt.price || appt.amount)}</span>
+                                                <span className='font-bold text-[var(--tt-brand)] group-hover:underline'>
+                                                    View details →
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className='flex flex-col items-center justify-center py-10 text-center'>
+                                    <div className='grid h-12 w-12 place-items-center rounded-2xl bg-[var(--tt-canvas)] text-[var(--tt-muted)] mb-3'>
+                                        <CalendarDays size={22} />
+                                    </div>
+                                    <p className='font-serif text-lg font-bold text-[var(--tt-ink)]'>No bookings on this day</p>
+                                    <p className='text-xs text-[var(--tt-muted)] mt-1 max-w-sm'>
+                                        Select any date on the calendar above with scheduled visits to review appointments.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
+
+            {/* WEEKLY GRID VIEW (Optional) */}
+            {viewMode === 'week' && (
+                <div className='overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-xs'>
+                    <div className='overflow-x-auto'>
+                        <div className='min-w-[1050px]'>
+                            <div className='grid grid-cols-[110px_repeat(7,minmax(130px,1fr))]'>
+                                <div className='border-b border-r border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 font-mono text-xs uppercase text-[var(--tt-brand)]'>
+                                    Time
+                                </div>
+
+                                {week.map((date) => (
+                                    <div
+                                        key={dateKey(date)}
+                                        className={`border-b border-r border-[var(--tt-border)] p-3 text-center last:border-r-0 ${dateKey(date) === dateKey(new Date()) ? 'bg-[var(--tt-sage)]/25' : 'bg-[var(--tt-canvas)]'}`}
+                                    >
+                                        <p className='text-xs text-[var(--tt-brand)]'>
+                                            {date.toLocaleDateString('en-PH', { weekday: 'short' })}
+                                        </p>
+
+                                        <p className='font-serif text-lg font-bold'>
+                                            {date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric' })}
+                                        </p>
+                                    </div>
+                                ))}
+
+                                {hours.flatMap((hour) => [
+                                    <div
+                                        key={`time-${hour}`}
+                                        className='min-h-[86px] border-b border-r border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 font-mono text-xs text-[var(--tt-brand)]'
+                                    >
+                                        {formatTime(hour)}
+                                    </div>,
+
+                                    ...week.map((date) => {
+                                        const key = dateKey(date)
+
+                                        const items = activeAppointments.filter(
+                                            (appointment) =>
+                                                appointment.date === key &&
+                                                appointment.time?.slice(0, 2) === hour.slice(0, 2)
+                                        )
+
+                                        return (
+                                            <div
+                                                key={`${key}-${hour}`}
+                                                className='min-h-[86px] border-b border-r border-[var(--tt-border)] p-2 last:border-r-0'
+                                            >
+                                                {items.map((appointment) => {
+                                                    const displayImg = appointment.pet?.photoUrl || appointment.petPhotoUrl || appointment.photoUrl || appointment.generatedImagePreviewUrl || appointment.previewImage || appointment.aiPreviewImage
+                                                    return (
+                                                        <button
+                                                            key={appointment._id}
+                                                            type='button'
+                                                            onClick={() => setSelectedAppointment(appointment)}
+                                                            className='mb-1.5 w-full rounded-xl border border-[var(--tt-border)] bg-white p-2 text-left text-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--tt-brand)] hover:bg-[var(--tt-canvas)] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--tt-brand)]'
+                                                            title='Click to view appointment details'
+                                                        >
+                                                            <div className='flex items-center gap-2'>
+                                                                {displayImg ? (
+                                                                    <img
+                                                                        src={displayImg}
+                                                                        alt={appointment.petName}
+                                                                        className='h-8 w-8 shrink-0 rounded-lg border border-[var(--tt-canvas)] object-cover bg-[var(--tt-canvas)]'
+                                                                    />
+                                                                ) : (
+                                                                    <div className='grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-brand)] font-bold text-[10px]'>
+                                                                        {appointment.petName?.[0] || 'P'}
+                                                                    </div>
+                                                                )}
+                                                                <div className='min-w-0 flex-1'>
+                                                                    <div className='flex items-center justify-between gap-1'>
+                                                                        <p className='truncate font-bold text-[var(--tt-ink)]'>
+                                                                            {appointment.petName}
+                                                                        </p>
+                                                                        <span className={`inline-block h-2 w-2 rounded-full shrink-0 ${
+                                                                            appointment.status === 'confirmed'
+                                                                                ? 'bg-[var(--tt-brand-strong)]'
+                                                                                : appointment.status === 'in_progress'
+                                                                                ? 'bg-[#22573D]'
+                                                                                : appointment.status === 'completed'
+                                                                                ? 'bg-[var(--tt-ink-soft)]'
+                                                                                : 'bg-[var(--tt-accent)]'
+                                                                        }`} />
+                                                                    </div>
+
+                                                                    <p className='truncate text-[10px] text-[var(--tt-brand)]'>
+                                                                        {appointment.service}
+                                                                    </p>
+
+                                                                    <p className='font-mono text-[9px] font-bold text-[var(--tt-brand)]'>
+                                                                        {formatTime(appointment.time)}
+                                                                        {appointment.endTime ? `–${formatTime(appointment.endTime)}` : ''}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    )
+                                                })}
+                                            </div>
+                                        )
+                                    })
+                                ])}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Appointment Details Modal */}
             {selectedAppointment && (
@@ -1938,29 +2334,25 @@ function ScheduleView({
                                 </div>
                             )}
 
-                            {/* Live Service Progress Stepper (Milestones) */}
+                            {/* Service Progress Stepper (Milestones) */}
                             {['in_progress', 'confirmed'].includes(selectedAppointment.status) && onStageUpdate && (
-                                <div className='rounded-sm border border-[#BED6EE] bg-[#F4F9FD] p-4 space-y-3'>
+                                <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4 space-y-3'>
                                     <div className='flex flex-wrap items-center justify-between gap-2'>
                                         <div>
-                                            <p className='text-[10px] font-bold uppercase tracking-wider text-[#1D5B96]'>
-                                                Live Service Progress ({selectedAppointment.service})
-                                            </p>
                                             <p className='text-sm font-bold text-[var(--tt-ink)]'>
-                                                Current Stage: <span className='text-[#1D5B96]'>{selectedAppointment.serviceStage || 'Not started'}</span>
+                                                Current Stage: <span className='text-[var(--tt-brand-strong)] font-serif'>{selectedAppointment.serviceStage || 'Not started'}</span>
+                                            </p>
+                                            <p className='text-[11px] text-[var(--tt-muted)] mt-0.5'>
+                                                Select a milestone below to advance the service stage for <strong>{selectedAppointment.petName}</strong>:
                                             </p>
                                         </div>
                                         {selectedAppointment.status === 'in_progress' && (
-                                            <span className='inline-flex items-center gap-1.5 rounded-full bg-[#EBF3FC] px-2.5 py-1 text-[10px] font-bold text-[#1E568F] ring-1 ring-[#BED6EE]'>
-                                                <span className='h-2 w-2 rounded-full bg-[#1E568F] animate-pulse' />
+                                            <span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800 ring-1 ring-emerald-200'>
+                                                <span className='h-2 w-2 rounded-full bg-emerald-600 animate-pulse' />
                                                 In Service
                                             </span>
                                         )}
                                     </div>
-
-                                    <p className='text-[11px] text-[var(--tt-ink-soft)]'>
-                                        Click any milestone below to update live progress for <strong>{selectedAppointment.petName}</strong>:
-                                    </p>
 
                                     <div className='grid grid-cols-2 sm:grid-cols-3 gap-2'>
                                         {getStagesForService(selectedAppointment.serviceId).map((stage, idx, allStages) => {
@@ -1973,13 +2365,13 @@ function ScheduleView({
                                                     key={stage.id}
                                                     type='button'
                                                     disabled={updatingId === selectedAppointment._id || isCurrent}
-                                                    onClick={() => onStageUpdate(selectedAppointment, stage)}
+                                                    onClick={() => setConfirmStage(stage)}
                                                     className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
                                                         isCurrent
-                                                            ? 'bg-[#1E568F] text-white border-[#1E568F] shadow-xs'
+                                                            ? 'bg-[#22573D] text-white border-[#22573D] shadow-xs'
                                                             : isPast
-                                                            ? 'bg-[#EBF3FC] text-[#1E568F] border-[#BED6EE] hover:bg-[#DDEBFA]'
-                                                            : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#1E568F] hover:text-[#1E568F]'
+                                                            ? 'bg-[#F1F7F3] text-[#22573D] border-[#BAD5C3] hover:bg-[#E5F0E9]'
+                                                            : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#22573D] hover:text-[#22573D]'
                                                     } disabled:opacity-85`}
                                                 >
                                                     <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
@@ -2013,7 +2405,7 @@ function ScheduleView({
                                             type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'in_progress'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'in_progress')}
-                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'in_progress' ? 'bg-[#1E568F] text-white' : 'border border-[var(--tt-border)] bg-white text-[#1E568F] hover:bg-[#EBF3FC]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'in_progress' ? 'bg-[#22573D] text-white' : 'border border-[var(--tt-border)] bg-white text-[#22573D] hover:bg-[#F1F7F3]'}`}
                                         >
                                             Start Service
                                         </button>
@@ -2042,6 +2434,24 @@ function ScheduleView({
                     </div>
                 </div>
             )}
+
+            {/* Confirmation Modal before advancing step */}
+            <ConfirmModal
+                isOpen={Boolean(confirmStage)}
+                title='Update Service Stage'
+                description={`Are you sure you want to update ${selectedAppointment?.petName}’s grooming stage to "${confirmStage?.label}"? This will be reflected on the customer's live tracking.`}
+                confirmText='Update Stage'
+                cancelText='Cancel'
+                variant='default'
+                loading={updatingId === selectedAppointment?._id}
+                onConfirm={async () => {
+                    if (!confirmStage || !selectedAppointment) return
+                    const targetStage = confirmStage
+                    setConfirmStage(null)
+                    await onStageUpdate(selectedAppointment, targetStage)
+                }}
+                onClose={() => setConfirmStage(null)}
+            />
 
             {/* Enlarged Image Zoom Overlay */}
             {enlargedImage && (
@@ -2088,8 +2498,21 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
             ? customer.accountStatus
             : 'warned'
     )
-    const [presetReason, setPresetReason] = useState('Multiple booking cancellations / No-show policy')
-    const [customReason, setCustomReason] = useState(customer?.statusReason || '')
+    const [presetReason, setPresetReason] = useState(() => {
+        return customer?.accountStatus === 'active'
+            ? 'Multiple booking cancellations / No-show policy'
+            : 'Compliance acknowledged & policy confirmed'
+    })
+    const [customReason, setCustomReason] = useState('')
+
+    // Update preset default if user switches action to/from active
+    useEffect(() => {
+        if (action === 'active') {
+            setPresetReason('Compliance acknowledged & policy confirmed')
+        } else {
+            setPresetReason('Multiple booking cancellations / No-show policy')
+        }
+    }, [action])
 
     if (!isOpen || !customer) return null
 
@@ -2100,41 +2523,49 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
         { id: 'active', label: 'Restore active', detail: 'Clear restrictions', icon: CheckCircle2 }
     ]
 
+    const isCustom = presetReason === 'Other (custom reason)'
+    const isReasonValid = isCustom
+        ? customReason.trim().length >= 5
+        : Boolean(presetReason && presetReason.trim())
+
     const handleSave = () => {
-        const finalReason = action === 'active'
-            ? ''
-            : presetReason === 'Other (custom reason)'
-                ? customReason.trim()
-                : `${presetReason}${customReason.trim() ? `: ${customReason.trim()}` : ''}`
+        if (!isReasonValid) {
+            toast.error('A justification reason is strictly required before changing account status.')
+            return
+        }
+
+        const finalReason = isCustom
+            ? customReason.trim()
+            : `${presetReason}${customReason.trim() ? `: ${customReason.trim()}` : ''}`
 
         onConfirm(customer._id, {
             accountStatus: action,
             statusReason: finalReason,
-            warningMessage: action === 'active' ? '' : (customReason.trim() || presetReason)
+            warningMessage: customReason.trim() || presetReason
         })
     }
 
     return (
-        <div className='fixed inset-0 z-50 grid place-items-center bg-[var(--tt-ink)]/70 p-4' role='presentation'>
+        <div className='fixed inset-0 z-50 grid place-items-center bg-[var(--tt-ink)]/70 p-4 backdrop-blur-sm' role='presentation'>
             <button type='button' className='absolute inset-0' onClick={loading ? undefined : onClose} aria-label='Close customer status dialog' />
-            <div className='relative z-10 w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-[var(--tt-border)] bg-white shadow-2xl' role='dialog' aria-modal='true' aria-labelledby='customer-status-title'>
+            <div className='relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-2xl' role='dialog' aria-modal='true' aria-labelledby='customer-status-title'>
                 <div className='grid gap-5 border-b border-[var(--tt-border)] p-5 sm:grid-cols-[1fr_auto] sm:items-start sm:p-6'>
                     <div>
-                        <p className='text-[11px] font-extrabold uppercase tracking-[.16em] text-[var(--tt-ink-soft)]'>Account access</p>
+                        <p className='text-[11px] font-extrabold uppercase tracking-[.16em] text-[var(--tt-brand)]'>Account Access Control</p>
                         <h3 id='customer-status-title' className='mt-1 font-serif text-2xl font-bold text-[var(--tt-ink)]'>Manage {customer.firstName} {customer.lastName}</h3>
                         <div className='mt-3 flex flex-wrap items-center gap-2'>
                             <CustomerStatusBadge status={customer.accountStatus} reason={customer.statusReason} />
-                            <span className='text-xs font-semibold text-[var(--tt-ink-soft)]'>{customer.email || customer.phone || 'No contact detail'}</span>
+                            <span className='text-xs font-semibold text-[var(--tt-muted)]'>{customer.email || customer.phone || 'No contact detail'}</span>
                         </div>
                     </div>
-                    <button type='button' onClick={onClose} disabled={loading} className='grid h-11 w-11 place-items-center rounded-sm border border-[var(--tt-border)] bg-white text-[var(--tt-ink)]' aria-label='Close dialog'>
-                        <X size={19} />
+                    <button type='button' onClick={onClose} disabled={loading} className='grid h-10 w-10 place-items-center rounded-xl border border-[var(--tt-border)] bg-white text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] transition' aria-label='Close dialog'>
+                        <X size={18} />
                     </button>
                 </div>
 
                 <div className='space-y-6 p-5 sm:p-6'>
                     <fieldset>
-                        <legend className='text-sm font-extrabold text-[var(--tt-ink)]'>Choose account status</legend>
+                        <legend className='text-sm font-extrabold text-[var(--tt-ink)]'>Choose new account status</legend>
                         <div className='mt-3 grid gap-2 sm:grid-cols-2'>
                             {actions.map(({ id, label, detail, icon }) => {
                                 const Icon = icon
@@ -2145,9 +2576,9 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
                                         type='button'
                                         onClick={() => setAction(id)}
                                         aria-pressed={selected}
-                                        className={`flex min-h-16 items-center gap-3 rounded-sm border p-3 text-left transition ${selected ? 'border-[var(--tt-brand-strong)] bg-[var(--tt-sage)] text-[var(--tt-ink)]' : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:border-[var(--tt-border)] hover:bg-[var(--tt-canvas)]'}`}
+                                        className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left transition ${selected ? 'border-[var(--tt-brand)] bg-[var(--tt-sage)]/40 text-[var(--tt-ink)] ring-1 ring-[var(--tt-brand)]' : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:border-[var(--tt-border)] hover:bg-[var(--tt-canvas)]'}`}
                                     >
-                                        <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-sm ${selected ? 'bg-[var(--tt-brand-strong)] text-white' : 'bg-[var(--tt-sage)] text-[var(--tt-brand-strong)]'}`}><Icon size={18} /></span>
+                                        <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${selected ? 'bg-[var(--tt-brand)] text-white' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'}`}><Icon size={18} /></span>
                                         <span>
                                             <span className='block text-sm font-extrabold'>{label}</span>
                                             <span className='block text-xs font-semibold opacity-80'>{detail}</span>
@@ -2158,46 +2589,83 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
                         </div>
                     </fieldset>
 
-                    {action !== 'active' && (
+                    {/* Mandatory Reason Justification Section */}
+                    <div className='rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]/50 p-4 space-y-4'>
+                        <div className='flex items-center gap-1.5'>
+                            <AlertCircle size={15} className='text-[var(--tt-brand)] shrink-0' />
+                            <p className='text-xs font-bold text-[var(--tt-ink)]'>
+                                Mandatory Reason Justification <span className='text-[var(--tt-brand)]'>*</span>
+                            </p>
+                        </div>
+                        <p className='text-[11px] text-[var(--tt-muted)]'>
+                            An explicit administrative reason is required for audit logs and customer records before this status update is committed.
+                        </p>
+
                         <div className='grid gap-4 sm:grid-cols-2'>
                             <label className='block'>
-                                <span className='text-sm font-extrabold text-[var(--tt-ink)]'>Reason category</span>
+                                <span className='text-xs font-bold text-[var(--tt-ink)]'>Reason Category <span className='text-[var(--tt-brand)]'>*</span></span>
                                 <select
                                     value={presetReason}
                                     onChange={(event) => setPresetReason(event.target.value)}
-                                    className='mt-2 min-h-12 w-full rounded-sm border border-[var(--tt-border)] bg-white px-3 text-sm font-semibold text-[var(--tt-ink)]'
+                                    className='mt-1.5 min-h-11 w-full rounded-xl border border-[var(--tt-border)] bg-white px-3 text-xs font-semibold text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none'
                                 >
-                                    <option value='Multiple booking cancellations / No-show policy'>Multiple cancellations / no-show</option>
-                                    <option value='Excessive last-minute schedule changes'>Last-minute schedule changes</option>
-                                    <option value='Uncooperative pet handling or policy refusal'>Handling or policy refusal</option>
-                                    <option value='Payment issues / Unpaid grooming balance'>Payment issue / unpaid balance</option>
-                                    <option value='Other (custom reason)'>Other (custom reason)</option>
+                                    {action === 'active' ? (
+                                        <>
+                                            <option value='Compliance acknowledged & policy confirmed'>Compliance acknowledged & policy confirmed</option>
+                                            <option value='Outstanding balance or invoice settled'>Outstanding balance or invoice settled</option>
+                                            <option value='Dispute resolved / Account reinstated'>Dispute resolved / Account reinstated</option>
+                                            <option value='Administrative test / Cleared by staff'>Administrative test / Cleared by staff</option>
+                                            <option value='Other (custom reason)'>Other (custom reason)</option>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <option value='Multiple booking cancellations / No-show policy'>Multiple cancellations / no-show</option>
+                                            <option value='Excessive last-minute schedule changes'>Last-minute schedule changes</option>
+                                            <option value='Uncooperative pet handling or policy refusal'>Handling or policy refusal</option>
+                                            <option value='Payment issues / Unpaid grooming balance'>Payment issue / unpaid balance</option>
+                                            <option value='Other (custom reason)'>Other (custom reason)</option>
+                                        </>
+                                    )}
                                 </select>
                             </label>
 
                             <label className='block'>
-                                <span className='text-sm font-extrabold text-[var(--tt-ink)]'>Customer-facing note</span>
+                                <span className='text-xs font-bold text-[var(--tt-ink)]'>
+                                    {isCustom ? 'Required Custom Justification *' : 'Optional Additional Context'}
+                                </span>
                                 <textarea
                                     value={customReason}
                                     onChange={(event) => setCustomReason(event.target.value)}
                                     rows={3}
-                                    placeholder='Add concise context for the customer'
-                                    className='mt-2 w-full rounded-sm border border-[var(--tt-border)] bg-white px-3 py-3 text-sm text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)]'
+                                    placeholder={isCustom ? 'Describe the reason for this action (min 5 chars)…' : 'Add concise notes for customer history…'}
+                                    className={`mt-1.5 w-full rounded-xl border bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:outline-none ${
+                                        isCustom && customReason.trim().length < 5
+                                            ? 'border-red-300 focus:border-red-500'
+                                            : 'border-[var(--tt-border)] focus:border-[var(--tt-brand)]'
+                                    }`}
                                 />
+                                {isCustom && customReason.trim().length < 5 && (
+                                    <p className='mt-1 text-[10px] text-red-600 font-semibold'>
+                                        Please provide at least 5 characters for custom justification.
+                                    </p>
+                                )}
                             </label>
                         </div>
-                    )}
-
-                    <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-sage)] p-4 text-sm leading-6 text-[var(--tt-ink-soft)]'>
-                        <strong className='text-[var(--tt-brand-strong)]'>Persistence rule:</strong> this action is complete only after the server confirms the new status was committed. Notifications are sent as communication and do not determine account access.
                     </div>
                 </div>
 
                 <div className='flex flex-col-reverse gap-2 border-t border-[var(--tt-border)] p-5 sm:flex-row sm:justify-end sm:p-6'>
-                    <button type='button' onClick={onClose} disabled={loading} className='min-h-11 rounded-sm border border-[var(--tt-brand-strong)] px-4 font-bold text-[var(--tt-brand-strong)] disabled:opacity-50'>Cancel</button>
-                    <button type='button' onClick={handleSave} disabled={loading} className='tt-primary px-5 disabled:opacity-50'>
-                        {loading ? <RefreshCw size={16} className='animate-spin' /> : <CheckCheck size={16} />}
-                        {loading ? 'Saving…' : 'Save persisted status'}
+                    <button type='button' onClick={onClose} disabled={loading} className='min-h-11 rounded-xl border border-[var(--tt-border)] px-5 text-xs font-bold text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] disabled:opacity-50 transition'>
+                        Cancel
+                    </button>
+                    <button
+                        type='button'
+                        onClick={handleSave}
+                        disabled={loading || !isReasonValid}
+                        className='inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[var(--tt-ink)] px-6 text-xs font-bold text-white transition hover:bg-[var(--tt-brand)] disabled:cursor-not-allowed disabled:opacity-40 shadow-xs'
+                    >
+                        {loading ? <RefreshCw size={14} className='animate-spin' /> : <CheckCheck size={14} />}
+                        {loading ? 'Saving…' : 'Save Persisted Status'}
                     </button>
                 </div>
             </div>
@@ -2211,6 +2679,12 @@ function CustomersView({ customers, onRefresh }) {
     const [actionModalOpen, setActionModalOpen] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [persistedOverrides, setPersistedOverrides] = useState({})
+    const [page, setPage] = useState(1)
+    const pageSize = 10
+
+    useEffect(() => {
+        setPage(1)
+    }, [query])
 
     const customerList = useMemo(() => (customers || []).map((customer) => {
         const persisted = persistedOverrides[customer._id]
@@ -2257,6 +2731,13 @@ function CustomersView({ customers, onRefresh }) {
         ].filter(Boolean).some((value) => String(value).toLowerCase().includes(normalized)))
     }, [customerList, query])
 
+    const totalItems = filtered.length
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+    const pagedCustomers = useMemo(() => {
+        const start = (page - 1) * pageSize
+        return filtered.slice(start, start + pageSize)
+    }, [filtered, page, pageSize])
+
     const statusCounts = useMemo(() => customerList.reduce((counts, customer) => {
         const status = customer.accountStatus || 'active'
         counts[status] = (counts[status] || 0) + 1
@@ -2279,7 +2760,7 @@ function CustomersView({ customers, onRefresh }) {
                 />
             )}
 
-            <div className='grid overflow-hidden rounded-sm border border-[var(--tt-border)] bg-white sm:grid-cols-2 xl:grid-cols-4'>
+            <div className='grid overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white sm:grid-cols-2 xl:grid-cols-4 shadow-xs'>
                 {[
                     ['Active', statusCounts.active, 'active'],
                     ['Warned', statusCounts.warned, 'warned'],
@@ -2290,7 +2771,7 @@ function CustomersView({ customers, onRefresh }) {
                         <div className='flex items-center justify-between gap-3'>
                             <div>
                                 <p className='text-[10px] font-extrabold uppercase tracking-[.13em] text-[var(--tt-muted)]'>{label}</p>
-                                <p className='mt-2 font-serif text-3xl font-bold'>{value}</p>
+                                <p className='mt-2 font-serif text-3xl font-bold text-[var(--tt-ink)]'>{value}</p>
                             </div>
                             <CustomerStatusBadge status={status} />
                         </div>
@@ -2298,56 +2779,56 @@ function CustomersView({ customers, onRefresh }) {
                 ))}
             </div>
 
-            <div className='flex flex-col gap-4 rounded-sm border border-[var(--tt-border)] bg-white p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5'>
+            <div className='flex flex-col gap-4 rounded-2xl border border-[var(--tt-border)] bg-white p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5 shadow-xs'>
                 <div>
-                    <h2 className='font-serif text-2xl font-bold'>Customer records</h2>
-                    <p className='mt-1 text-sm font-semibold text-[var(--tt-ink-soft)]'>{filtered.length} of {customerList.length} customers shown</p>
+                    <h2 className='font-serif text-2xl font-bold text-[var(--tt-ink)]'>Customer records</h2>
+                    <p className='mt-1 text-xs font-semibold text-[var(--tt-muted)]'>{filtered.length} of {customerList.length} customers shown</p>
                 </div>
                 <label className='relative block w-full sm:max-w-md'>
-                    <Search size={17} className='absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--tt-ink-soft)]' />
+                    <Search size={16} className='absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--tt-muted)]' />
                     <span className='sr-only'>Search customers</span>
                     <input
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
-                        placeholder='Search name, contact, pet, or status'
-                        className='min-h-12 w-full rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] pl-10 pr-4 text-sm font-semibold text-[var(--tt-ink)] placeholder:text-[var(--tt-ink-soft)]'
+                        placeholder='Search name, contact, pet, or status...'
+                        className='h-10 w-full rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)] pl-10 pr-4 text-xs font-medium text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] outline-none focus:border-[var(--tt-brand)] focus:ring-1 focus:ring-[var(--tt-brand)]/20 transition'
                     />
                 </label>
             </div>
 
-            {filtered.length ? (
+            {pagedCustomers.length ? (
                 <div className='grid gap-3'>
-                    {filtered.map((customer) => (
-                        <article key={customer._id} className='grid gap-5 rounded-sm border border-[var(--tt-border)] bg-white p-5 transition hover:border-[var(--tt-border)] lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center'>
+                    {pagedCustomers.map((customer) => (
+                        <article key={customer._id} className='grid gap-5 rounded-2xl border border-[var(--tt-border)] bg-white p-5 transition hover:border-[var(--tt-brand)] shadow-xs lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center'>
                             <div className='flex min-w-0 gap-4'>
-                                <span className='grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-[var(--tt-sage)] font-serif font-bold text-[var(--tt-brand-strong)]'>{getInitials(customer.firstName, customer.lastName)}</span>
+                                <span className='grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[var(--tt-canvas)] font-serif font-bold text-[var(--tt-brand)]'>{getInitials(customer.firstName, customer.lastName)}</span>
                                 <div className='min-w-0'>
                                     <div className='flex flex-wrap items-center gap-2'>
-                                        <h3 className='font-serif text-lg font-bold'>{customer.firstName} {customer.lastName}</h3>
+                                        <h3 className='font-serif text-lg font-bold text-[var(--tt-ink)]'>{customer.firstName} {customer.lastName}</h3>
                                         <CustomerStatusBadge status={customer.accountStatus} reason={customer.statusReason} />
                                     </div>
-                                    <p className='mt-1 text-sm font-semibold text-[var(--tt-ink-soft)]'>{customer.email || 'No email'} · {customer.phone || 'No phone'}</p>
-                                    <p className='mt-1 text-xs leading-5 text-[var(--tt-ink-soft)]'>{getCustomerAddress(customer)}</p>
+                                    <p className='mt-1 text-xs font-semibold text-[var(--tt-muted)]'>{customer.email || 'No email'} · {customer.phone || 'No phone'}</p>
+                                    <p className='mt-1 text-xs leading-5 text-[var(--tt-muted)]'>{getCustomerAddress(customer)}</p>
 
                                     {customer.accountStatus && customer.accountStatus !== 'active' && customer.statusReason && (
-                                        <p className='mt-3 max-w-2xl rounded-sm border border-[#F0DEB6] bg-[#FFF4DC] px-3 py-2 text-xs font-bold leading-5 text-[#6E4A0D]'>
-                                            Status note: {customer.statusReason}
+                                        <p className='mt-2.5 max-w-2xl rounded-xl border border-[#F0DEB6] bg-[#FFF4DC] px-3 py-1.5 text-xs font-medium leading-5 text-[#6E4A0D]'>
+                                            Status reason: <strong>{customer.statusReason}</strong>
                                         </p>
                                     )}
 
                                     <div className='mt-3 flex flex-wrap gap-2'>
                                         {(customer.pets || []).length ? customer.pets.map((pet) => (
-                                            <span key={pet._id} className='rounded-full border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3 py-1 text-xs font-bold text-[var(--tt-ink-soft)]'>{pet.name} · {pet.breed}</span>
-                                        )) : <span className='text-xs font-semibold text-[var(--tt-ink-soft)]'>No saved pet profiles</span>}
+                                            <span key={pet._id} className='rounded-full border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3 py-1 text-xs font-semibold text-[var(--tt-ink)]'>{pet.name} · {pet.breed}</span>
+                                        )) : <span className='text-xs font-medium text-[var(--tt-muted)]'>No saved pet profiles</span>}
                                     </div>
                                 </div>
                             </div>
 
                             <div className='grid gap-4 border-t border-[var(--tt-border)] pt-4 sm:grid-cols-[1fr_auto] sm:items-center lg:min-w-[420px] lg:border-l lg:border-[var(--tt-border)] lg:border-t-0 lg:pl-6 lg:pt-0'>
                                 <dl className='grid grid-cols-3 gap-3'>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Bookings</dt><dd className='mt-1 font-serif text-lg font-bold'>{customer.visits || 0}</dd></div>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Spend</dt><dd className='mt-1 font-serif text-lg font-bold'>{formatPeso(customer.totalSpend)}</dd></div>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-ink-soft)]'>Last visit</dt><dd className='mt-1 font-serif text-sm font-bold'>{formatShortDate(customer.lastVisit)}</dd></div>
+                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Bookings</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{customer.visits || 0}</dd></div>
+                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Spend</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{formatPeso(customer.totalSpend)}</dd></div>
+                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Last visit</dt><dd className='mt-1 font-serif text-sm font-bold text-[var(--tt-ink)]'>{formatShortDate(customer.lastVisit)}</dd></div>
                                 </dl>
                                 <button
                                     type='button'
@@ -2355,9 +2836,9 @@ function CustomersView({ customers, onRefresh }) {
                                         setSelectedCustomer(customer)
                                         setActionModalOpen(true)
                                     }}
-                                    className='inline-flex min-h-11 items-center justify-center gap-2 rounded-sm bg-[var(--tt-ink)] px-4 text-sm font-extrabold text-[var(--tt-canvas)] transition hover:bg-[var(--tt-brand-strong)]'
+                                    className='inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-[var(--tt-ink)] px-4 text-xs font-bold text-white transition hover:bg-[var(--tt-brand)] shadow-xs'
                                 >
-                                    <UserX size={16} /> Manage access
+                                    <UserX size={15} /> Manage access
                                 </button>
                             </div>
                         </article>
@@ -2366,9 +2847,20 @@ function CustomersView({ customers, onRefresh }) {
             ) : (
                 <EmptyPanel message='No customer records match your search.' />
             )}
+
+            {/* Pagination Controls */}
+            <PaginationControl
+                currentPage={page}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                pageSize={pageSize}
+                onPageChange={setPage}
+                label='customers'
+            />
         </section>
     )
 }
+
 
 function AnalyticsView({
     analytics,
@@ -2480,8 +2972,140 @@ function AnalyticsView({
         currentMonthData
             ?.appointments || 0
 
+    const downloadCSVFile = (filename, rows) => {
+        const escapeCell = (cell) => {
+            if (cell === null || cell === undefined) return ''
+            if (typeof cell === 'number') return cell
+            const str = String(cell).trim()
+            if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+                return `"${str.replace(/"/g, '""')}"`
+            }
+            return str
+        }
+
+        const lines = rows.map((row) => row.map(escapeCell).join(','))
+        // 'sep=,' instructs Microsoft Excel on Windows to parse columns by commas regardless of regional locale settings
+        const csvContent = ['sep=,', ...lines].join('\r\n')
+        const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.setAttribute('href', url)
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+    }
+
+    const handleExportAppointmentsCSV = () => {
+        try {
+            const dateStr = new Date().toISOString().slice(0, 10)
+            const headers = [
+                'Appointment ID',
+                'Booking Date',
+                'Time Slot',
+                'Customer Name',
+                'Phone',
+                'Email',
+                'Pet Name',
+                'Pet Type',
+                'Breed',
+                'Service',
+                'Haircut Style',
+                'Price (PHP)',
+                'Status',
+                'Service Stage',
+                'Created Date'
+            ]
+
+            const dataRows = appointments.map((a) => [
+                a._id,
+                a.date || '',
+                a.time || '',
+                getOwnerName(a),
+                a.ownerPhone || a.phone || '',
+                a.ownerEmail || a.email || '',
+                a.petName || '',
+                a.petType || 'dog',
+                a.breed || a.petBreed || '',
+                a.service || '',
+                a.haircutStyle || 'Standard',
+                a.price || a.amount || 0,
+                a.status || 'pending',
+                a.serviceStage || 'N/A',
+                a.createdAt ? new Date(a.createdAt).toISOString().slice(0, 10) : ''
+            ])
+
+            downloadCSVFile(`TimmyTails_Appointments_Audit_${dateStr}.csv`, [headers, ...dataRows])
+            toast.success('Appointments audit log exported as CSV!')
+        } catch (err) {
+            console.error(err)
+            toast.error('Failed to export appointments: ' + (err?.message || 'Unknown error'))
+        }
+    }
+
+    const handleExportSummaryCSV = () => {
+        try {
+            const dateStr = new Date().toISOString().slice(0, 10)
+            const headers = ['Category', 'Dimension / Metric', 'Value', 'Details / Notes']
+
+            const rows = [
+                headers,
+                ['Executive KPI', 'Appointments This Month', currentMonthData?.appointments || 0, 'Current calendar month'],
+                ['Executive KPI', 'Revenue This Month', currentMonthData?.revenue || 0, 'PHP (gross bookings)'],
+                ['Executive KPI', 'Style Preview Adoption Rate', `${aiUsageRate}%`, 'Clients utilizing AI styling preview'],
+                ['Executive KPI', 'Completed Booking Rate', `${completedRate}%`, 'Completed vs total reservations'],
+                ['Executive KPI', 'All-Time Total Bookings', appointments.length, 'Total registered appointments'],
+                ['Executive KPI', 'All-Time Total Revenue', analytics?.totalRevenue || 0, 'PHP (all completed/paid)'],
+                ...monthlyData.map((m) => ['Monthly Trend', m.monthKey || m.month, m.revenue || 0, `${m.appointments || 0} appointments`]),
+                ...serviceDistribution.map((s) => ['Service Demand', s.name, `${s.percentage}%`, `${s.count || 0} total bookings`]),
+                ...styleUsage.map((st) => ['Haircut Style Demand', st.style, `${st.total} bookings`, `${st.rate}% AI preview adoption`])
+            ]
+
+            downloadCSVFile(`TimmyTails_Analytics_Summary_${dateStr}.csv`, rows)
+            toast.success('KPI & analytics summary exported as CSV!')
+        } catch (err) {
+            console.error(err)
+            toast.error('Failed to export summary: ' + (err?.message || 'Unknown error'))
+        }
+    }
+
+    const handleExportCSV = handleExportAppointmentsCSV
+
     return (
-        <div className='space-y-5'>
+        <div className='space-y-6'>
+            {/* Top Action Bar */}
+            <div className='flex flex-col gap-4 rounded-2xl border border-[var(--tt-border)] bg-white p-4 sm:p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between'>
+                <div className='flex items-center gap-3'>
+                    <div className='grid h-10 w-10 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-brand)] font-bold'>
+                        <BarChart3 size={20} />
+                    </div>
+                    <div>
+                        <h2 className='font-serif text-xl sm:text-2xl font-bold text-[var(--tt-ink)]'>Analytics & Reports</h2>
+                        <p className='text-xs text-[var(--tt-muted)]'>Review salon demand, financial totals, and export raw logs</p>
+                    </div>
+                </div>
+
+                <div className='flex flex-wrap items-center gap-2.5'>
+                    <button
+                        type='button'
+                        onClick={handleExportAppointmentsCSV}
+                        className='inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[var(--tt-ink)] px-4 text-xs font-bold text-white transition hover:bg-[var(--tt-brand)] shadow-xs'
+                        title='Export complete appointments audit spreadsheet for Excel'
+                    >
+                        <Download size={14} /> Export Appointments (CSV)
+                    </button>
+                    <button
+                        type='button'
+                        onClick={handleExportSummaryCSV}
+                        className='inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[var(--tt-border)] bg-white px-4 text-xs font-bold text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)] shadow-xs'
+                        title='Export high-level KPI and revenue trend summary'
+                    >
+                        <Download size={14} /> Export KPI Summary (CSV)
+                    </button>
+                </div>
+            </div>
+
             <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
                 <MetricCard
                     icon={
@@ -3003,7 +3627,28 @@ function ContactsView({ contacts = [], onRefresh }) {
     const [markingId, setMarkingId] = useState(null)
     const [confirmDeleteId, setConfirmDeleteId] = useState(null)
 
+    // In-app email reply state
+    const [replySubject, setReplySubject] = useState('')
+    const [replyMessage, setReplyMessage] = useState('')
+    const [replySending, setReplySending] = useState(false)
+
+    // Pagination state
+    const [page, setPage] = useState(1)
+    const pageSize = 8
+
     const safeContacts = useMemo(() => (Array.isArray(contacts) ? contacts : []), [contacts])
+
+    useEffect(() => {
+        setPage(1)
+    }, [filter, search])
+
+    // Update reply subject when selectedContact changes
+    useEffect(() => {
+        if (selectedContact) {
+            setReplySubject(`Re: Inquiry from ${selectedContact.name} - Timmy Tails Salon`)
+            setReplyMessage('')
+        }
+    }, [selectedContact?._id])
 
     const filteredContacts = useMemo(() => {
         return safeContacts
@@ -3023,6 +3668,13 @@ function ContactsView({ contacts = [], onRefresh }) {
             })
             .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
     }, [safeContacts, filter, search])
+
+    const totalItems = filteredContacts.length
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+    const pagedContacts = useMemo(() => {
+        const start = (page - 1) * pageSize
+        return filteredContacts.slice(start, start + pageSize)
+    }, [filteredContacts, page, pageSize])
 
     const handleMarkAsRead = async (id) => {
         setMarkingId(id)
@@ -3057,77 +3709,112 @@ function ContactsView({ contacts = [], onRefresh }) {
         }
     }
 
+    const handleSendReply = async (e) => {
+        e?.preventDefault?.()
+        if (!selectedContact?._id) return
+        if (!replyMessage.trim()) {
+            toast.error('Please enter a reply message before sending.')
+            return
+        }
+
+        setReplySending(true)
+        try {
+            const res = await adminApi.replyContact(selectedContact._id, {
+                replyMessage: replyMessage.trim(),
+                subject: replySubject.trim() || `Re: Inquiry - Timmy Tails Salon`
+            })
+
+            const updatedContact = res.data?.contact || {
+                ...selectedContact,
+                read: true,
+                replied: true,
+                replyMessage: replyMessage.trim(),
+                repliedAt: new Date().toISOString()
+            }
+
+            setSelectedContact(updatedContact)
+            setReplyMessage('')
+            toast.success(`Reply email sent to ${selectedContact.email}!`)
+            if (onRefresh) await onRefresh()
+        } catch (err) {
+            toast.error(getErrorMessage(err))
+        } finally {
+            setReplySending(false)
+        }
+    }
+
     const unreadCount = safeContacts.filter((c) => c && !c.read).length
+    const repliedCount = safeContacts.filter((c) => c && c.replied).length
 
     return (
         <div className='space-y-6'>
             {/* Header Metrics */}
             <div className='grid gap-4 sm:grid-cols-3'>
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-5 shadow-sm'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
                         <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Total Messages</p>
-                        <span className='grid h-9 w-9 place-items-center rounded-sm bg-[var(--tt-canvas)] text-[var(--tt-ink)]'>
+                        <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-ink)]'>
                             <Mail size={18} />
                         </span>
                     </div>
                     <p className='mt-2 font-serif text-3xl font-bold text-[var(--tt-ink)]'>{safeContacts.length}</p>
                 </div>
 
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-5 shadow-sm'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
-                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Unread Messages</p>
-                        <span className='grid h-9 w-9 place-items-center rounded-sm bg-[var(--tt-canvas)] text-[var(--tt-brand)]'>
+                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Unread Inquiries</p>
+                        <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-brand)]'>
                             <MessageSquare size={18} />
                         </span>
                     </div>
                     <p className='mt-2 font-serif text-3xl font-bold text-[var(--tt-brand)]'>{unreadCount}</p>
                 </div>
 
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-5 shadow-sm'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
-                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Read & Replied</p>
-                        <span className='grid h-9 w-9 place-items-center rounded-sm bg-[var(--tt-canvas)] text-[var(--tt-ink)]'>
+                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Replied to Client</p>
+                        <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[#216245]'>
                             <CheckCheck size={18} />
                         </span>
                     </div>
-                    <p className='mt-2 font-serif text-3xl font-bold text-[var(--tt-ink)]'>{safeContacts.length - unreadCount}</p>
+                    <p className='mt-2 font-serif text-3xl font-bold text-[#216245]'>{repliedCount}</p>
                 </div>
             </div>
 
-            {/* Filter Bar */}
+            {/* Filter and Search Bar */}
             <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
-                <div className='flex items-center gap-1.5 rounded-sm border border-[var(--tt-border)] bg-white p-1 shadow-sm'>
+                <div className='flex items-center gap-1.5 rounded-xl border border-[var(--tt-border)] bg-white p-1 shadow-xs'>
                     <button
                         type='button'
                         onClick={() => setFilter('all')}
-                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'all' ? 'bg-[var(--tt-ink)] text-[var(--tt-canvas)]' : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'}`}
+                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'all' ? 'bg-[var(--tt-ink)] text-white shadow-xs' : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'}`}
                     >
                         All ({safeContacts.length})
                     </button>
                     <button
                         type='button'
                         onClick={() => setFilter('unread')}
-                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'unread' ? 'bg-[var(--tt-brand)] text-[var(--tt-canvas)]' : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'}`}
+                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'unread' ? 'bg-[var(--tt-brand)] text-white shadow-xs' : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'}`}
                     >
                         Unread ({unreadCount})
                     </button>
                     <button
                         type='button'
                         onClick={() => setFilter('read')}
-                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'read' ? 'bg-[var(--tt-ink)] text-[var(--tt-canvas)]' : 'text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)]'}`}
+                        className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${filter === 'read' ? 'bg-[var(--tt-ink)] text-white shadow-xs' : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'}`}
                     >
-                        Read ({safeContacts.length - unreadCount})
+                        Handled ({safeContacts.length - unreadCount})
                     </button>
                 </div>
 
-                <div className='relative min-w-[240px]'>
-                    <Search size={15} className='absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--tt-brand)]' />
+                <div className='relative min-w-[260px]'>
+                    <Search size={15} className='absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--tt-muted)]' />
                     <input
                         type='text'
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder='Search name, email, message...'
-                        className='w-full rounded-sm border border-[var(--tt-border)] bg-white py-2 pl-9 pr-4 text-xs shadow-sm focus:border-[var(--tt-brand)] focus:outline-none focus:ring-1 focus:ring-[var(--tt-brand)]'
+                        placeholder='Search client, email, message...'
+                        className='h-10 w-full rounded-xl border border-[var(--tt-border)] bg-white py-2 pl-9 pr-4 text-xs font-medium text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] shadow-xs focus:border-[var(--tt-brand)] focus:outline-none focus:ring-1 focus:ring-[var(--tt-brand)]/20 transition'
                     />
                 </div>
             </div>
@@ -3135,16 +3822,16 @@ function ContactsView({ contacts = [], onRefresh }) {
             {/* Main Content Grid: Messages List + Detailed View */}
             <div className='grid gap-6 lg:grid-cols-12'>
                 <div className='space-y-3 lg:col-span-5'>
-                    {filteredContacts.length === 0 ? (
-                        <div className='rounded-sm border border-dashed border-[var(--tt-border)] bg-white p-8 text-center'>
+                    {pagedContacts.length === 0 ? (
+                        <div className='rounded-2xl border border-dashed border-[var(--tt-border)] bg-white p-8 text-center'>
                             <Inbox size={32} className='mx-auto mb-2 text-[var(--tt-brand)]' />
                             <p className='font-bold text-[var(--tt-ink)]'>No messages found</p>
-                            <p className='mt-1 text-xs text-[var(--tt-brand)]'>
+                            <p className='mt-1 text-xs text-[var(--tt-muted)]'>
                                 {search ? 'Try adjusting your search query' : 'No contact form submissions received yet.'}
                             </p>
                         </div>
                     ) : (
-                        filteredContacts.map((contact) => {
+                        pagedContacts.map((contact) => {
                             const isSelected = selectedContact?._id === contact._id
                             return (
                                 <button
@@ -3156,9 +3843,9 @@ function ContactsView({ contacts = [], onRefresh }) {
                                             handleMarkAsRead(contact._id)
                                         }
                                     }}
-                                    className={`w-full rounded-sm border p-4 text-left transition ${
+                                    className={`w-full rounded-2xl border p-4 text-left transition ${
                                         isSelected
-                                            ? 'border-[var(--tt-brand)] bg-[var(--tt-sage)] shadow-sm'
+                                            ? 'border-[var(--tt-brand)] bg-[var(--tt-sage)]/30 shadow-xs ring-1 ring-[var(--tt-brand)]'
                                             : !contact.read
                                             ? 'border-[var(--tt-border)] bg-white shadow-xs hover:border-[var(--tt-brand)]'
                                             : 'border-[var(--tt-border)] bg-white hover:border-[var(--tt-border)]'
@@ -3170,6 +3857,11 @@ function ContactsView({ contacts = [], onRefresh }) {
                                                 {contact.name}
                                                 {!contact.read && (
                                                     <span className='h-2 w-2 rounded-full bg-[var(--tt-brand)]' title='Unread message' />
+                                                )}
+                                                {contact.replied && (
+                                                    <span className='rounded-full bg-[#E4F1EA] px-1.5 py-0.2 text-[9px] font-bold text-[#216245]'>
+                                                        Replied
+                                                    </span>
                                                 )}
                                             </p>
                                             <p className='text-xs text-[var(--tt-muted)] mt-0.5'>{contact.email}</p>
@@ -3187,27 +3879,42 @@ function ContactsView({ contacts = [], onRefresh }) {
                             )
                         })
                     )}
+
+                    {/* Pagination */}
+                    <PaginationControl
+                        currentPage={page}
+                        totalPages={totalPages}
+                        totalItems={totalItems}
+                        pageSize={pageSize}
+                        onPageChange={setPage}
+                        label='messages'
+                    />
                 </div>
 
                 {/* Selected Contact Message Detail View */}
                 <div className='lg:col-span-7'>
                     {selectedContact ? (
-                        <div className='sticky top-20 rounded-sm border border-[var(--tt-border)] bg-white p-6 shadow-sm space-y-6'>
+                        <div className='sticky top-24 rounded-2xl border border-[var(--tt-border)] bg-white p-6 shadow-xs space-y-6'>
                             <div className='flex items-start justify-between gap-4 border-b border-[var(--tt-border)] pb-5'>
                                 <div>
                                     <div className='flex items-center gap-2'>
                                         <h3 className='font-serif text-2xl font-bold text-[var(--tt-ink)]'>{selectedContact.name}</h3>
                                         <span
                                             className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                                                selectedContact.read ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'
+                                                selectedContact.read ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]' : 'bg-[var(--tt-brand)]/15 text-[var(--tt-brand)]'
                                             }`}
                                         >
                                             {selectedContact.read ? 'Read' : 'Unread'}
                                         </span>
+                                        {selectedContact.replied && (
+                                            <span className='rounded-full bg-[#E4F1EA] px-2 py-0.5 text-[10px] font-bold text-[#216245] flex items-center gap-1'>
+                                                <CheckCheck size={11} /> Replied via Email
+                                            </span>
+                                        )}
                                     </div>
 
-                                    <p className='mt-1 text-xs text-[var(--tt-brand)]'>
-                                        Received on {new Date(selectedContact.createdAt).toLocaleString()}
+                                    <p className='mt-1 text-xs text-[var(--tt-muted)]'>
+                                        Received on {new Date(selectedContact.createdAt).toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' })}
                                     </p>
                                 </div>
 
@@ -3216,7 +3923,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                                         type='button'
                                         onClick={() => setConfirmDeleteId(selectedContact._id)}
                                         disabled={deletingId === selectedContact._id}
-                                        className='grid h-9 w-9 place-items-center rounded-sm border border-[#F0CCCC] bg-[#FBEAEA] text-[#9E3E3E] transition hover:bg-[#F6DADA] disabled:opacity-50'
+                                        className='grid h-9 w-9 place-items-center rounded-xl border border-[#F0CCCC] bg-[#FBEAEA] text-[#9E3E3E] transition hover:bg-[#F6DADA] disabled:opacity-50'
                                         title='Delete message'
                                     >
                                         <Trash2 size={16} />
@@ -3225,12 +3932,12 @@ function ContactsView({ contacts = [], onRefresh }) {
                             </div>
 
                             {/* Contact Details Card */}
-                            <div className='grid gap-3 sm:grid-cols-2 rounded-sm border border-[var(--tt-border)] bg-white p-4 text-xs'>
+                            <div className='grid gap-3 sm:grid-cols-2 rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]/40 p-4 text-xs'>
                                 <div>
-                                    <p className='text-[var(--tt-brand)] font-bold uppercase tracking-wider text-[10px]'>Email Address</p>
+                                    <p className='text-[var(--tt-brand)] font-bold uppercase tracking-wider text-[10px]'>Client Email</p>
                                     <a
                                         href={`mailto:${selectedContact.email}`}
-                                        className='mt-1 block font-semibold text-[var(--tt-brand)] hover:underline truncate'
+                                        className='mt-1 block font-semibold text-[var(--tt-ink)] hover:underline truncate'
                                     >
                                         {selectedContact.email}
                                     </a>
@@ -3253,41 +3960,103 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                             {/* Message Body */}
                             <div>
-                                <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)] mb-2'>Message Content</p>
-                                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4 text-sm text-[var(--tt-ink)] leading-relaxed whitespace-pre-wrap'>
+                                <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-muted)] mb-2'>Client Message</p>
+                                <div className='rounded-xl border border-[var(--tt-border)] bg-white p-4 text-sm text-[var(--tt-ink)] leading-relaxed whitespace-pre-wrap shadow-2xs'>
                                     {selectedContact.message}
                                 </div>
                             </div>
 
-                            {/* Actions */}
-                            <div className='flex items-center justify-between border-t border-[var(--tt-border)] pt-4'>
-                                <a
-                                    href={`mailto:${selectedContact.email}?subject=Re:%20Timmy%20Tails%20Inquiry`}
-                                    className='inline-flex items-center gap-2 rounded-sm bg-[var(--tt-ink)] px-4 py-2.5 text-xs font-bold text-[var(--tt-canvas)] shadow-sm transition hover:bg-[var(--tt-ink)]'
-                                >
-                                    <Mail size={14} /> Reply via Email
-                                </a>
+                            {/* Sent Reply History (Audit) */}
+                            {selectedContact.replied && selectedContact.replyMessage && (
+                                <div className='rounded-xl border border-[#C9E1D3] bg-[#E4F1EA]/50 p-4 space-y-2'>
+                                    <div className='flex items-center justify-between text-xs'>
+                                        <span className='font-bold text-[#216245] flex items-center gap-1.5'>
+                                            <CheckCheck size={14} /> Official Salon Reply Sent
+                                        </span>
+                                        {selectedContact.repliedAt && (
+                                            <span className='font-mono text-[10px] text-[#216245]'>
+                                                {new Date(selectedContact.repliedAt).toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' })}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className='text-xs text-[var(--tt-ink-soft)] leading-relaxed whitespace-pre-wrap border-t border-[#C9E1D3] pt-2'>
+                                        {selectedContact.replyMessage}
+                                    </p>
+                                </div>
+                            )}
 
-                                {!selectedContact.read && (
+                            {/* In-App Email Reply Composer */}
+                            <form onSubmit={handleSendReply} className='space-y-3 rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]/30 p-4'>
+                                <div className='flex items-center justify-between'>
+                                    <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-ink)] flex items-center gap-1.5'>
+                                        <Mail size={13} className='text-[var(--tt-brand)]' />
+                                        {selectedContact.replied ? 'Send Follow-up Reply Email' : 'Compose Email Reply'}
+                                    </p>
+                                    <span className='text-[10px] text-[var(--tt-muted)]'>Sent via Timmy Tails Mailer</span>
+                                </div>
+
+                                <div>
+                                    <label className='block text-[11px] font-bold text-[var(--tt-muted)] mb-1'>Subject</label>
+                                    <input
+                                        type='text'
+                                        value={replySubject}
+                                        onChange={(e) => setReplySubject(e.target.value)}
+                                        placeholder='Subject…'
+                                        required
+                                        className='h-9 w-full rounded-lg border border-[var(--tt-border)] bg-white px-3 text-xs text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none'
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className='block text-[11px] font-bold text-[var(--tt-muted)] mb-1'>Message to Client</label>
+                                    <textarea
+                                        value={replyMessage}
+                                        onChange={(e) => setReplyMessage(e.target.value)}
+                                        rows={4}
+                                        placeholder={`Dear ${selectedContact.name},\n\nThank you for reaching out to Timmy Tails Grooming Salon...`}
+                                        required
+                                        className='w-full rounded-lg border border-[var(--tt-border)] bg-white p-3 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:border-[var(--tt-brand)] focus:outline-none'
+                                    />
+                                </div>
+
+                                <div className='flex items-center justify-between pt-1'>
+                                    {!selectedContact.read && (
+                                        <button
+                                            type='button'
+                                            onClick={() => handleMarkAsRead(selectedContact._id)}
+                                            disabled={markingId === selectedContact._id}
+                                            className='inline-flex items-center gap-1.5 rounded-lg border border-[var(--tt-border)] bg-white px-3 py-2 text-xs font-semibold text-[var(--tt-ink-soft)] transition hover:bg-[var(--tt-canvas)]'
+                                        >
+                                            <CheckCheck size={13} /> Mark as Read
+                                        </button>
+                                    )}
+
                                     <button
-                                        type='button'
-                                        onClick={() => handleMarkAsRead(selectedContact._id)}
-                                        disabled={markingId === selectedContact._id}
-                                        className='inline-flex items-center gap-1.5 rounded-sm border border-[var(--tt-border)] bg-white px-3.5 py-2.5 text-xs font-semibold text-[var(--tt-ink-soft)] transition hover:bg-[var(--tt-canvas)]'
+                                        type='submit'
+                                        disabled={replySending || !replyMessage.trim()}
+                                        className='ml-auto inline-flex items-center gap-2 rounded-xl bg-[var(--tt-ink)] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[var(--tt-brand)] disabled:opacity-40 shadow-xs'
                                     >
-                                        <CheckCheck size={14} /> Mark as Read
+                                        {replySending ? (
+                                            <>
+                                                <RefreshCw size={13} className='animate-spin' /> Sending Email…
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Send size={13} /> Dispatch Email Reply
+                                            </>
+                                        )}
                                     </button>
-                                )}
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     ) : (
-                        <div className='rounded-sm border border-dashed border-[var(--tt-border)] bg-white p-12 text-center shadow-xs'>
-                            <div className='mx-auto mb-3 grid h-12 w-12 place-items-center rounded-sm bg-[var(--tt-sage)] text-[var(--tt-brand-strong)]'>
+                        <div className='rounded-2xl border border-dashed border-[var(--tt-border)] bg-white p-12 text-center shadow-xs'>
+                            <div className='mx-auto mb-3 grid h-12 w-12 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-brand)]'>
                                 <Mail size={22} />
                             </div>
                             <h4 className='font-serif text-xl font-bold text-[var(--tt-ink)]'>Select a Message</h4>
                             <p className='mt-1 text-xs text-[var(--tt-muted)] max-w-xs mx-auto'>
-                                Click on any contact submission on the left side to read full details and reply.
+                                Click on any client inquiry on the left side to read the full inquiry and dispatch an official email reply.
                             </p>
                         </div>
                     )}
@@ -3319,6 +4088,14 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
     const [targetUserId, setTargetUserId] = useState('')
     const [sending, setSending] = useState(false)
     const [search, setSearch] = useState('')
+
+    // Pagination for notifications
+    const [page, setPage] = useState(1)
+    const pageSize = 6
+
+    useEffect(() => {
+        setPage(1)
+    }, [search])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -3353,6 +4130,10 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
         )
     })
 
+    const totalItems = filtered.length
+    const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+    const pagedNotifications = filtered.slice((page - 1) * pageSize, page * pageSize)
+
     const broadcastCount = (notifications || []).filter((n) => n.audience === 'all-users').length
     const targetedCount = (notifications || []).filter((n) => n.audience === 'user').length
 
@@ -3372,35 +4153,35 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
         <div className='space-y-6'>
             {/* Page header */}
             <div className='flex items-center gap-3 border-b border-[var(--tt-border)] pb-4'>
-                <span className='grid h-10 w-10 place-items-center rounded-sm bg-[var(--tt-ink)] text-[var(--tt-canvas)]'>
+                <span className='grid h-10 w-10 place-items-center rounded-xl bg-[var(--tt-ink)] text-white shadow-xs'>
                     <Bell size={20} />
                 </span>
                 <div>
-                    <h2 className='font-serif text-2xl font-bold text-[var(--tt-ink)]'>Notifications</h2>
-                    <p className='text-xs text-[var(--tt-brand)]'>Compose and send notifications to customers</p>
+                    <h2 className='font-serif text-2xl font-bold text-[var(--tt-ink)]'>Notifications & Salon Broadcasts</h2>
+                    <p className='text-xs text-[var(--tt-muted)]'>Compose and dispatch official notifications to customer accounts</p>
                 </div>
             </div>
 
             {/* Stats row */}
             <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-4 shadow-xs'>
                     <p className='text-2xl font-bold text-[var(--tt-ink)]'>{(notifications || []).length}</p>
-                    <p className='text-xs font-medium text-[var(--tt-brand)]'>Total Sent</p>
+                    <p className='text-xs font-semibold text-[var(--tt-muted)]'>Total Sent</p>
                 </div>
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-4 shadow-xs'>
                     <p className='text-2xl font-bold text-[var(--tt-ink)]'>{broadcastCount}</p>
-                    <p className='text-xs font-medium text-[var(--tt-brand)]'>Broadcasts</p>
+                    <p className='text-xs font-semibold text-[var(--tt-muted)]'>Broadcasts</p>
                 </div>
-                <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4'>
+                <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-4 shadow-xs'>
                     <p className='text-2xl font-bold text-[var(--tt-brand)]'>{targetedCount}</p>
-                    <p className='text-xs font-medium text-[var(--tt-brand)]'>Targeted</p>
+                    <p className='text-xs font-semibold text-[var(--tt-muted)]'>Targeted Direct</p>
                 </div>
             </div>
 
             <div className='grid gap-6 lg:grid-cols-5'>
                 {/* ── Compose Form ── */}
                 <div className='lg:col-span-2'>
-                    <div className='rounded-sm border border-[var(--tt-border)] bg-white shadow-sm'>
+                    <div className='rounded-2xl border border-[var(--tt-border)] bg-white shadow-xs'>
                         <div className='border-b border-[var(--tt-border)] px-5 py-4'>
                             <div className='flex items-center gap-2'>
                                 <Megaphone size={16} className='text-[var(--tt-brand)]' />
@@ -3416,10 +4197,10 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     <button
                                         type='button'
                                         onClick={() => { setAudience('all-users'); setTargetUserId('') }}
-                                        className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-bold transition ${
+                                        className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-2 text-xs font-bold transition ${
                                             audience === 'all-users'
-                                                ? 'border-[var(--tt-ink)] bg-[var(--tt-ink)] text-[var(--tt-canvas)]'
-                                                : 'border-[var(--tt-canvas)] bg-[var(--tt-canvas)] text-[var(--tt-ink-soft)] hover:border-[var(--tt-ink)]'
+                                                ? 'border-[var(--tt-ink)] bg-[var(--tt-ink)] text-white shadow-xs'
+                                                : 'border-[var(--tt-border)] bg-[var(--tt-canvas)] text-[var(--tt-muted)] hover:border-[var(--tt-ink)]'
                                         }`}
                                     >
                                         <Users size={13} />
@@ -3428,10 +4209,10 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     <button
                                         type='button'
                                         onClick={() => setAudience('user')}
-                                        className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border py-2 text-xs font-bold transition ${
+                                        className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl border py-2 text-xs font-bold transition ${
                                             audience === 'user'
-                                                ? 'border-[var(--tt-brand)] bg-[var(--tt-brand)] text-[var(--tt-canvas)]'
-                                                : 'border-[var(--tt-canvas)] bg-[var(--tt-canvas)] text-[var(--tt-ink-soft)] hover:border-[var(--tt-brand)]'
+                                                ? 'border-[var(--tt-brand)] bg-[var(--tt-brand)] text-white shadow-xs'
+                                                : 'border-[var(--tt-border)] bg-[var(--tt-canvas)] text-[var(--tt-muted)] hover:border-[var(--tt-brand)]'
                                         }`}
                                     >
                                         <UserRound size={13} />
@@ -3448,7 +4229,7 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                         value={targetUserId}
                                         onChange={(e) => setTargetUserId(e.target.value)}
                                         required
-                                        className='w-full rounded-lg border border-[var(--tt-border)] bg-white px-3 py-2.5 text-xs font-medium text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none'
+                                        className='w-full rounded-xl border border-[var(--tt-border)] bg-white px-3 py-2 text-xs font-medium text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none'
                                     >
                                         <option value=''>— Choose a customer —</option>
                                         {(customers || []).map((c) => (
@@ -3470,11 +4251,11 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     maxLength={120}
-                                    placeholder='e.g. Shop Holiday Hours'
+                                    placeholder='e.g. Salon Holiday Schedule Update'
                                     required
-                                    className='w-full rounded-lg border border-[var(--tt-canvas)] px-3 py-2.5 text-xs text-[var(--tt-ink)] placeholder-[var(--tt-canvas)] focus:border-[var(--tt-brand)] focus:outline-none'
+                                    className='w-full rounded-xl border border-[var(--tt-border)] bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:border-[var(--tt-brand)] focus:outline-none'
                                 />
-                                <p className='mt-1 text-right text-[10px] text-[var(--tt-canvas)]'>{title.length}/120</p>
+                                <p className='mt-1 text-right text-[10px] text-[var(--tt-muted)]'>{title.length}/120</p>
                             </div>
 
                             {/* Message */}
@@ -3486,37 +4267,36 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                     maxLength={1000}
-                                    rows={5}
-                                    placeholder='Write your notification message here…'
+                                    rows={4}
+                                    placeholder='Write your notification notice here…'
                                     required
-                                    className='w-full resize-none rounded-lg border border-[var(--tt-canvas)] px-3 py-2.5 text-xs text-[var(--tt-ink)] placeholder-[var(--tt-canvas)] focus:border-[var(--tt-brand)] focus:outline-none'
+                                    className='w-full resize-none rounded-xl border border-[var(--tt-border)] bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:border-[var(--tt-brand)] focus:outline-none'
                                 />
-                                <p className='mt-1 text-right text-[10px] text-[var(--tt-canvas)]'>{message.length}/1000</p>
+                                <p className='mt-1 text-right text-[10px] text-[var(--tt-muted)]'>{message.length}/1000</p>
                             </div>
 
                             {/* Preview */}
                             {(title || message) && (
-                                <div className='rounded-sm border border-dashed border-[var(--tt-border)] bg-white p-3'>
-                                    <p className='mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--tt-canvas)]'>Preview</p>
+                                <div className='rounded-xl border border-dashed border-[var(--tt-border)] bg-[var(--tt-canvas)]/40 p-3'>
+                                    <p className='mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--tt-muted)]'>Preview Notice</p>
                                     <p className='text-xs font-bold text-[var(--tt-ink)]'>{title || '—'}</p>
-                                    <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>{message || '—'}</p>
+                                    <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)] leading-relaxed'>{message || '—'}</p>
                                 </div>
                             )}
 
                             <button
                                 type='submit'
                                 disabled={sending || loading || !title.trim() || !message.trim() || (audience === 'user' && !targetUserId)}
-                                className='flex w-full items-center justify-center gap-2 rounded-sm bg-[var(--tt-brand)] py-3 text-xs font-bold text-[var(--tt-canvas)] shadow-sm transition hover:bg-[var(--tt-brand-strong)] disabled:cursor-not-allowed disabled:opacity-50'
+                                className='flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--tt-ink)] py-3 text-xs font-bold text-white shadow-xs transition hover:bg-[var(--tt-brand)] disabled:cursor-not-allowed disabled:opacity-40'
                             >
                                 {sending ? (
                                     <>
-                                        <span className='h-4 w-4 animate-spin rounded-full border-2 border-[var(--tt-brand)]/30 border-t-[var(--tt-canvas)]' />
-                                        Sending…
+                                        <RefreshCw size={13} className='animate-spin' /> Sending Notice…
                                     </>
                                 ) : (
                                     <>
                                         <Send size={13} />
-                                        {audience === 'all-users' ? 'Send to All Users' : 'Send to User'}
+                                        {audience === 'all-users' ? 'Broadcast to All Users' : 'Send to Customer'}
                                     </>
                                 )}
                             </button>
@@ -3525,8 +4305,8 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                 </div>
 
                 {/* ── Sent History ── */}
-                <div className='lg:col-span-3'>
-                    <div className='rounded-sm border border-[var(--tt-border)] bg-white shadow-sm'>
+                <div className='lg:col-span-3 space-y-3'>
+                    <div className='rounded-2xl border border-[var(--tt-border)] bg-white shadow-xs'>
                         <div className='flex items-center justify-between border-b border-[var(--tt-border)] px-5 py-4'>
                             <div className='flex items-center gap-2'>
                                 <Bell size={15} className='text-[var(--tt-ink)]' />
@@ -3537,50 +4317,50 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                             </div>
                             {/* Search */}
                             <div className='relative'>
-                                <Search size={13} className='absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--tt-canvas)]' />
+                                <Search size={13} className='absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--tt-muted)]' />
                                 <input
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    placeholder='Search…'
-                                    className='rounded-lg border border-[var(--tt-border)] bg-white py-1.5 pl-7 pr-3 text-xs text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none w-36'
+                                    placeholder='Search notices…'
+                                    className='rounded-xl border border-[var(--tt-border)] bg-white py-1.5 pl-7 pr-3 text-xs text-[var(--tt-ink)] focus:border-[var(--tt-brand)] focus:outline-none w-36 shadow-2xs'
                                 />
                             </div>
                         </div>
 
-                        <div className='max-h-[520px] overflow-y-auto divide-y divide-[var(--tt-canvas)]'>
-                            {filtered.length === 0 ? (
-                                <div className='flex flex-col items-center gap-3 py-14 text-[var(--tt-brand)]'>
+                        <div className='divide-y divide-[var(--tt-border)]'>
+                            {pagedNotifications.length === 0 ? (
+                                <div className='flex flex-col items-center gap-3 py-14 text-[var(--tt-muted)]'>
                                     <Bell size={32} strokeWidth={1.5} />
                                     <p className='text-sm font-medium'>No notifications sent yet</p>
-                                    <p className='text-xs text-[var(--tt-canvas)]'>Use the form on the left to send one</p>
+                                    <p className='text-xs text-[var(--tt-muted)]'>Use the form on the left to send one</p>
                                 </div>
                             ) : (
-                                filtered.map((n) => (
-                                    <div key={n._id} className='flex items-start gap-3 px-5 py-4 hover:bg-[var(--tt-canvas)]'>
-                                        <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full ${
+                                pagedNotifications.map((n) => (
+                                    <div key={n._id} className='flex items-start gap-3 px-5 py-4 hover:bg-[var(--tt-canvas)]/40 transition'>
+                                        <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl ${
                                             n.audience === 'all-users'
                                                 ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]'
-                                                : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'
+                                                : 'bg-[var(--tt-brand)]/15 text-[var(--tt-brand)]'
                                         }`}>
                                             {n.audience === 'all-users' ? <Megaphone size={14} /> : <UserRound size={14} />}
                                         </span>
                                         <div className='flex-1 min-w-0'>
                                             <div className='flex items-start justify-between gap-2'>
                                                 <p className='text-xs font-bold text-[var(--tt-ink)] leading-snug'>{n.title}</p>
-                                                <span className='shrink-0 text-[10px] text-[var(--tt-canvas)] whitespace-nowrap'>{timeAgo(n.createdAt)}</span>
+                                                <span className='shrink-0 text-[10px] text-[var(--tt-muted)] whitespace-nowrap'>{timeAgo(n.createdAt)}</span>
                                             </div>
                                             <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)] leading-relaxed line-clamp-2'>{n.message}</p>
                                             <div className='mt-1.5 flex items-center gap-2'>
                                                 <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
                                                     n.audience === 'all-users'
                                                         ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]'
-                                                        : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'
+                                                        : 'bg-[var(--tt-brand)]/15 text-[var(--tt-brand)]'
                                                 }`}>
                                                     {n.audience === 'all-users' ? <Users size={9} /> : <UserRound size={9} />}
                                                     {n.audience === 'all-users' ? 'Broadcast' : 'Targeted'}
                                                 </span>
                                                 {n.readBy?.length > 0 && (
-                                                    <span className='inline-flex items-center gap-1 rounded-full bg-[var(--tt-canvas)] px-2 py-0.5 text-[10px] font-bold text-[var(--tt-brand-strong)]'>
+                                                    <span className='inline-flex items-center gap-1 rounded-full bg-[#E4F1EA] px-2 py-0.5 text-[10px] font-bold text-[#216245]'>
                                                         <CheckCheck size={9} />
                                                         {n.readBy.length} read
                                                     </span>
@@ -3592,6 +4372,16 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                             )}
                         </div>
                     </div>
+
+                    {/* Pagination */}
+                    <PaginationControl
+                        currentPage={page}
+                        totalPages={totalPages}
+                        totalItems={totalItems}
+                        pageSize={pageSize}
+                        onPageChange={setPage}
+                        label='notifications'
+                    />
                 </div>
             </div>
         </div>

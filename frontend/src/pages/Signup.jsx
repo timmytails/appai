@@ -216,7 +216,7 @@ export default function Signup() {
       setOtpChannel(channel)
       setStep('otp')
       setOtpTimer(60)
-      toast.success(data?.message || `Verification code sent to your Gmail (${form.email.trim()})`)
+      toast.success(data?.message || `Verification code sent to your email (${form.email.trim()})`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -239,7 +239,7 @@ export default function Signup() {
       const channel = data?.channel || otpChannel || 'email'
       setOtpChannel(channel)
       setOtpTimer(60)
-      toast.success(data?.message || `New verification code sent to your Gmail (${form.email.trim()})`)
+      toast.success(data?.message || `New verification code sent to your email (${form.email.trim()})`)
     } catch (error) {
       toast.error(getErrorMessage(error))
     } finally {
@@ -334,11 +334,7 @@ export default function Signup() {
 
         {/* Editorial Text & Sanctuary Highlights */}
         <div className='relative z-10 my-auto max-w-lg py-12'>
-          <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-[10px] font-bold uppercase tracking-[2px] text-[#d1a85b] backdrop-blur-sm'>
-            <Sparkles size={11} className='text-[#d1a85b]' /> Sanctuary Registration
-          </div>
-
-          <h2 className='mt-6 font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
+          <h2 className='font-serif text-[clamp(2.5rem,3.4vw,4rem)] font-medium leading-[1.04] tracking-[-0.03em] text-white'>
             Begin a quiet, dedicated standard of grooming care.
           </h2>
 
@@ -379,7 +375,7 @@ export default function Signup() {
           </div>
         </div>
 
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-[10px] uppercase tracking-[2px] text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -387,18 +383,13 @@ export default function Signup() {
 
       {/* RIGHT REGISTRATION FORM */}
       <main className='relative flex min-h-screen items-start justify-center px-6 py-12 sm:px-10 sm:py-16 lg:overflow-y-auto lg:px-14 xl:px-18'>
-        <svg className='pointer-events-none absolute inset-0 z-0 h-full w-full' viewBox='0 0 800 1100' fill='none' preserveAspectRatio='none'>
-          <path d='M-50,180 C200,260 400,100 700,220 C900,300 1000,180 1100,240' stroke='#ecdcd0' strokeWidth='1.3' strokeDasharray='5 5' />
-          <path d='M-50,680 C250,750 500,610 750,710' stroke='#f2e2d7' strokeWidth='1.1' strokeDasharray='5 5' />
-        </svg>
-
         <div className='relative z-10 w-full max-w-[540px]'>
           <Link
             to='/'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-xs font-semibold uppercase tracking-[1.5px] text-[#82746b] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
           >
-            <ArrowLeft size={13} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
-            Back to sanctuary home
+            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            Back to home
           </Link>
 
           <div className='mb-7 flex items-center gap-3 lg:hidden'>
@@ -411,19 +402,13 @@ export default function Signup() {
           </div>
 
           <div>
-            <div className='flex items-center gap-2'>
-              <span className='text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>
-                {step === 'details' ? 'Sanctuary Registry' : 'Email Verification (Gmail)'}
-              </span>
-              <span className='text-xs text-[#cf7c54]'>✦</span>
-            </div>
-            <h1 className='mt-2 font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+            <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
               {step === 'details' ? 'Create your account.' : 'Verify your email.'}
             </h1>
             <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
               {step === 'details'
                 ? 'Register with Google or your email address to begin scheduling grooming appointments.'
-                : `We have sent a six-digit verification code to your Gmail address (${form.email}).`}
+                : `We have sent a six-digit verification code to your email address (${form.email}).`}
             </p>
           </div>
 
@@ -433,7 +418,7 @@ export default function Signup() {
                 <GoogleSignInButton onCredential={handleGoogle} disabled={submitting} text='signup_with' />
               </div>
 
-              <div className='my-7 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[2px] text-[#82746b]'>
+              <div className='my-7 flex items-center gap-3 text-xs font-medium text-[#82746b]'>
                 <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
                 <span>or register with details</span>
                 <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
@@ -458,7 +443,7 @@ export default function Signup() {
                   <div>
                     <label className='block'>
                       <span className='mb-1.5 flex items-center gap-1'>
-                        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+                        <span className='block text-xs font-semibold text-[#54483e]'>
                           Mobile Number
                         </span>
                         <span className='text-[#cf7c54]'>*</span>
@@ -481,7 +466,6 @@ export default function Signup() {
                 <div className='rounded-xl border border-[rgba(210,143,119,0.3)] bg-white/70 p-5 shadow-[0_4px_16px_rgba(40,26,18,0.02)] backdrop-blur-sm'>
                   <div className='flex items-center gap-2'>
                     <h2 className='font-serif text-base font-medium text-[#24211e]'>Home Address</h2>
-                    <span className='text-[10px] text-[#cf7c54]'>✦</span>
                   </div>
                   <p className='mt-0.5 text-xs text-[#82746b]'>Used for appointment record & verification.</p>
 
@@ -507,8 +491,8 @@ export default function Signup() {
                           !selectedProvinceCode
                             ? 'Select Province First'
                             : loadingCities
-                            ? 'Loading cities...'
-                            : 'Select City / Municipality'
+                              ? 'Loading cities...'
+                              : 'Select City / Municipality'
                         }
                         disabled={!selectedProvinceCode || loadingCities}
                         loading={loadingCities}
@@ -527,8 +511,8 @@ export default function Signup() {
                           !selectedCityCode
                             ? 'Select City / Municipality First'
                             : loadingBarangays
-                            ? 'Loading barangays...'
-                            : 'Select Barangay'
+                              ? 'Loading barangays...'
+                              : 'Select Barangay'
                         }
                         disabled={!selectedCityCode || loadingBarangays}
                         loading={loadingBarangays}
@@ -590,14 +574,14 @@ export default function Signup() {
                 <button
                   type='submit'
                   disabled={submitting}
-                  className='mt-2 inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
                       <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Sending code…
                     </>
                   ) : (
-                    'Send Verification Code to Gmail'
+                    'Send Verification Code'
                   )}
                 </button>
               </form>
@@ -606,7 +590,7 @@ export default function Signup() {
             /* Step 2: OTP Verification */
             <form onSubmit={verifyOtp} className='mt-8 space-y-4'>
               <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[#675728] shadow-xs'>
-                Enter the six-digit verification code sent to your Gmail address{' '}
+                Enter the six-digit verification code sent to your email address{' '}
                 <strong className='font-semibold text-[#24211e]'>
                   {form.email || 'your email'}
                 </strong>{' '}
@@ -627,7 +611,7 @@ export default function Signup() {
               <button
                 type='submit'
                 disabled={submitting || otp.length !== 6}
-                className='inline-flex min-h-[50px] w-full items-center justify-center gap-2 rounded-md bg-[#262626] text-xs font-semibold uppercase tracking-[1.5px] text-white shadow-md transition-all duration-300 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99] disabled:opacity-50'
+                className='inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
               >
                 {submitting ? (
                   <>
@@ -655,7 +639,7 @@ export default function Signup() {
                 onClick={() => setStep('details')}
                 className='gold-underline w-full pt-2 text-center text-xs font-semibold text-[#82746b] hover:text-[#24211e]'
               >
-                &larr; Edit Registration Details
+                &larr; Edit registration details
               </button>
             </form>
           )}
@@ -680,7 +664,7 @@ function Field({ label, help, required = true, className = '', ...props }) {
   return (
     <label className='block'>
       <span className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+        <span className='block text-xs font-semibold text-[#54483e]'>
           {label}
         </span>
         {required && <span className='text-[#cf7c54]'>*</span>}
@@ -759,7 +743,7 @@ function AddressSelect({
   return (
     <div className='relative' ref={containerRef}>
       <label htmlFor={id} className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+        <span className='block text-xs font-semibold text-[#54483e]'>
           {label}
         </span>
         {required && <span className='text-[#cf7c54]'>*</span>}
@@ -770,13 +754,12 @@ function AddressSelect({
         type='button'
         disabled={disabled || loading}
         onClick={() => setOpen((prev) => !prev)}
-        className={`flex h-12 w-full items-center justify-between rounded-md border px-4 text-left text-sm transition-all outline-none ${
-          disabled
-            ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[#a59a8f]'
-            : open
+        className={`flex h-12 w-full items-center justify-between rounded-md border px-4 text-left text-sm transition-all outline-none ${disabled
+          ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[#a59a8f]'
+          : open
             ? 'border-[#d1a85b] bg-white ring-2 ring-[#d1a85b]/20'
             : 'border-[rgba(210,143,119,0.35)] bg-white text-[#24211e] hover:border-[#a47d44]'
-        }`}
+          }`}
         aria-haspopup='listbox'
         aria-expanded={open}
       >
@@ -844,11 +827,10 @@ function AddressSelect({
                     role='option'
                     aria-selected={isSelected}
                     onClick={() => handleSelect(item)}
-                    className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs transition-colors ${
-                      isSelected
-                        ? 'bg-[#fdf4ef] font-semibold text-[#a47d44]'
-                        : 'text-[#24211e] hover:bg-[#fdf4ef] hover:text-[#a47d44]'
-                    }`}
+                    className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs transition-colors ${isSelected
+                      ? 'bg-[#fdf4ef] font-semibold text-[#a47d44]'
+                      : 'text-[#24211e] hover:bg-[#fdf4ef] hover:text-[#a47d44]'
+                      }`}
                   >
                     <span>{item.name}</span>
                     {isSelected && <span className='text-[10px] text-[#d1a85b]'>✦</span>}

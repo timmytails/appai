@@ -33,7 +33,7 @@ const appointmentDate = (appointment, useEnd = false) => {
 
 const STATUS = {
   confirmed: { label: 'Approved', className: 'border-[#cdbd86] bg-[#fdf8eb] text-[#675728]' },
-  in_progress: { label: 'In Service', className: 'border-[#b6d5f0] bg-[#eef6fc] text-[#1c5d99]' },
+  in_progress: { label: 'In Service', className: 'border-[#bad5c3] bg-[#f1f7f3] text-[#22573d]' },
   completed: { label: 'Completed', className: 'border-[rgba(210,143,119,0.3)] bg-[#f7ebe1] text-[#7a6f66]' },
   cancelled: { label: 'Cancelled', className: 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' },
   pending: { label: 'Pending review', className: 'border-[#ead7ca] bg-[#f9eee7] text-[#79584b]' }
@@ -106,24 +106,6 @@ export default function Appointments() {
           border-color: rgba(207, 124, 84, 0.4);
         }
 
-        .editorial-card-hover::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          border-radius: 12px 12px 0 0;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 10;
-        }
-
-        .editorial-card-hover:hover::before {
-          opacity: 1;
-        }
-
         .gold-underline {
           position: relative;
           transition: color 0.25s ease;
@@ -169,24 +151,18 @@ export default function Appointments() {
         <header className='relative border-b border-[rgba(210,143,119,0.4)] pb-10'>
           <div className='flex flex-col justify-between gap-8 md:flex-row md:items-end'>
             <div>
-              <div className='flex items-center gap-2'>
-                <span className='inline-block text-[10px] font-bold uppercase tracking-[3px] text-[#a47d44]'>
-                  Appointments
-                </span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-              <h1 className='mt-3 font-serif text-[clamp(2.4rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
+              <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5.5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
                 Your grooming appointments, <span className='italic'>past and upcoming</span>.
               </h1>
-              <p className='mt-4 max-w-xl text-base leading-relaxed text-[#635b53]'>
+              <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[#635b53]'>
                 Check your upcoming visits, view your appointment history, or reschedule and cancel before your visit.
               </p>
             </div>
 
-            <div className='shrink-0'>
+            <div className='shrink-0 w-full sm:w-auto'>
               <Link
                 to='/booking'
-                className='group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
+                className='group inline-flex min-h-[46px] sm:min-h-[48px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
               >
                 <Plus size={15} className='text-[#d1a85b] transition-transform duration-300 group-hover:rotate-90' />
                 Book another visit
@@ -210,13 +186,12 @@ export default function Appointments() {
             {/* Sidebar Overview */}
             <aside className='lg:sticky lg:top-[120px] lg:self-start'>
               <div className='rounded-2xl border border-[rgba(210,143,119,0.35)] bg-white/70 p-6 shadow-[0_8px_24px_rgba(40,26,18,0.03)] backdrop-blur-sm'>
-                <span className='text-[10px] font-bold uppercase tracking-[2.5px] text-[#a47d44]'>At a Glance</span>
+                <h3 className='font-serif text-lg font-medium text-[#24211e]'>At a glance</h3>
                 <div className='mt-4 divide-y divide-[rgba(210,143,119,0.2)] border-y border-[rgba(210,143,119,0.2)]'>
                   <SummaryCount label='Upcoming Visits' value={upcoming.length} />
                   <SummaryCount label='Visit History' value={history.length} />
                 </div>
                 <div className='mt-5 flex items-start gap-2.5 text-xs leading-relaxed text-[#82746b]'>
-                  <Sparkles size={14} className='mt-0.5 shrink-0 text-[#d1a85b]' />
                   <p>You can reschedule or cancel appointments up to 24 hours before your slot.</p>
                 </div>
               </div>
@@ -309,8 +284,7 @@ function VisitSection({ title, eyebrow, count, children }) {
     <section>
       <div className='flex items-end justify-between border-b border-[rgba(210,143,119,0.35)] pb-4'>
         <div>
-          <span className='text-[10px] font-bold uppercase tracking-[2.5px] text-[#a47d44]'>{eyebrow}</span>
-          <h2 className='mt-1 font-serif text-3xl font-medium tracking-tight text-[#24211e]'>{title}</h2>
+          <h2 className='font-serif text-3xl font-medium tracking-tight text-[#24211e]'>{title}</h2>
         </div>
         <span className='font-serif text-2xl font-light text-[#82746b]'>{String(count).padStart(2, '0')}</span>
       </div>
@@ -360,12 +334,6 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               <span className={`inline-block border px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-[1px] ${status.className}`}>
                 {status.label}
               </span>
-              {appointment.status === 'in_progress' && appointment.serviceStage && (
-                <span className='inline-flex items-center gap-1.5 rounded-full border border-[#b6d5f0] bg-[#eef6fc] px-2.5 py-0.5 text-[9px] font-bold text-[#1c5d99]'>
-                  <span className='h-1.5 w-1.5 animate-pulse rounded-full bg-[#1c5d99]' />
-                  {appointment.serviceStage}
-                </span>
-              )}
             </div>
 
             <p className='mt-1 text-sm text-[#635b53]'>
@@ -393,13 +361,13 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               const stages = getStagesForService(appointment.serviceId)
               const progress = getStageProgress(stages, appointment.serviceStageKey)
               return (
-                <div className='mt-3 flex items-center gap-2.5 rounded-lg border border-[#b6d5f0] bg-[#f0f7fd] px-3 py-2 text-xs text-[#1c5d99]'>
+                <div className='mt-3 flex items-center gap-2.5 rounded-lg border border-[#bad5c3] bg-[#f2f7f4] px-3.5 py-2 text-xs text-[#22573d]'>
                   <span className='relative flex h-2 w-2 shrink-0'>
-                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3b82f6] opacity-75'></span>
-                    <span className='relative inline-flex h-2 w-2 rounded-full bg-[#1d4ed8]'></span>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3d7f5c] opacity-75'></span>
+                    <span className='relative inline-flex h-2 w-2 rounded-full bg-[#22573d]'></span>
                   </span>
-                  <span className='font-medium text-[#0f345a]'>
-                    Live Milestone: <strong className='text-[#1d4ed8]'>{appointment.serviceStage || stages[0]?.label}</strong> · Step {progress.currentStep} of {progress.totalSteps}
+                  <span className='font-medium text-[#183f2c]'>
+                    Live Milestone: <strong className='text-[#22573d]'>{appointment.serviceStage || stages[0]?.label}</strong> · Step {progress.currentStep} of {progress.totalSteps}
                   </span>
                 </div>
               )

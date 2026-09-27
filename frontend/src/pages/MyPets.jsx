@@ -110,24 +110,6 @@ export default function MyPets() {
           border-color: rgba(209, 168, 91, 0.7);
         }
 
-        .gallery-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          border-radius: 12px 12px 0 0;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 10;
-        }
-
-        .gallery-card:hover::before {
-          opacity: 1;
-        }
-
         .gold-underline {
           position: relative;
           transition: color 0.25s ease;
@@ -204,25 +186,19 @@ export default function MyPets() {
         <header className='relative border-b border-[rgba(210,143,119,0.4)] pb-10'>
           <div className='flex flex-col justify-between gap-8 md:flex-row md:items-end'>
             <div>
-              <div className='flex items-center gap-2'>
-                <span className='inline-block text-[10px] font-bold tracking-[2px] text-[#a47d44]'>
-                  Your Pets
-                </span>
-                <span className='text-xs text-[#cf7c54]'>✦</span>
-              </div>
-              <h1 className='mt-3 font-serif text-[clamp(2.4rem,5.5vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
+              <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5.5vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
                 Your pets, <span className='italic'>all in one place</span>.
               </h1>
-              <p className='mt-4 max-w-xl text-base leading-relaxed text-[#635b53]'>
+              <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[#635b53]'>
                 Add and manage your pets' details, breed info, coat type, and special grooming instructions.
               </p>
             </div>
 
-            <div className='shrink-0'>
+            <div className='shrink-0 w-full sm:w-auto'>
               <button
                 type='button'
                 onClick={openNew}
-                className='group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
+                className='group inline-flex min-h-[46px] sm:min-h-[48px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
               >
                 <Plus size={15} className='text-[#d1a85b] transition-transform duration-300 group-hover:rotate-90' />
                 Add a pet
@@ -286,10 +262,7 @@ export default function MyPets() {
             {/* Modal Header */}
             <div className='sticky top-0 z-10 flex items-center justify-between border-b border-[rgba(210,143,119,0.3)] bg-[#fdf4ef]/95 px-6 py-4 backdrop-blur sm:px-8'>
               <div>
-                <span className='text-[9px] font-bold uppercase tracking-[2px] text-[#a47d44]'>
-                  {editingId ? 'Edit Pet Profile' : 'New Pet'}
-                </span>
-                <h2 className='mt-0.5 font-serif text-2xl font-medium text-[#24211e]'>
+                <h2 className='font-serif text-2xl font-medium text-[#24211e]'>
                   {editingId ? `Update ${form.name || 'pet'}` : 'Add a new pet'}
                 </h2>
               </div>
@@ -435,9 +408,6 @@ function PetPortrait({ pet, onEdit, onDelete }) {
 
   return (
     <article className='gallery-card group relative rounded-xl border border-[rgba(210,143,119,0.35)] bg-white p-4 shadow-[0_4px_20px_rgba(40,26,18,0.03)]'>
-      
-      {/* Top Gold Gradient Reveal Line */}
-      <div className='absolute inset-x-0 top-0 h-[2px] rounded-t-xl bg-gradient-to-r from-transparent via-[#d1a85b] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100' />
 
       {/* MUSEUM MATTING PHOTO CONTAINER */}
       <div className='relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-[rgba(210,143,119,0.25)] bg-[#fdf4ef] p-2.5 shadow-inner'>
@@ -563,7 +533,7 @@ function formatAge(months) {
 
 function FieldLabel({ children }) {
   return (
-    <span className='mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+    <span className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
       {children}
     </span>
   )

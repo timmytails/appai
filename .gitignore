@@ -35,3 +35,7 @@ Thumbs.db
 # Stray root files & notebooks
 /Booking.jsx
 *.ipynb
+
+# Agent skills & configs
+.agents/
+

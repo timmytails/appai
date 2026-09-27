@@ -855,6 +855,66 @@ const sendAppointmentCompletedEmail = async ({ to, name, appointment }) => {
     })
 }
 
+const sendContactReplyEmail = async ({ to, name, subject, message, originalInquiry }) => {
+    const emailSubject = subject || 'Response from Timmy Tails Pet Grooming Salon'
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>${emailSubject}</title></head>
+<body style="margin:0;padding:0;background-color:#F5EFE6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#2C221E;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5EFE6;padding:32px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:12px;overflow:hidden;border:1px solid #E5D6C5;box-shadow:0 4px 16px rgba(44,34,30,0.06);">
+        <tr>
+          <td style="background-color:#2C221E;padding:24px 32px;text-align:center;">
+            <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;font-weight:normal;color:#FFFFFF;letter-spacing:1px;">Timmy Tails</h1>
+            <p style="margin:6px 0 0;font-size:12px;color:#D4A373;text-transform:uppercase;letter-spacing:2px;font-weight:600;">Customer Care Desk</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:32px;">
+            <p style="margin:0 0 16px;font-size:16px;font-weight:600;color:#2C221E;">Hello ${name || 'Valued Client'},</p>
+            <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#5C4B40;">
+              Thank you for contacting Timmy Tails Pet Grooming Salon. Our salon team has reviewed your message and provided the following response:
+            </p>
+            <div style="background-color:#FAF7F2;border-left:4px solid #D4A373;border-radius:6px;padding:18px 20px;margin:20px 0;font-size:14px;line-height:1.7;color:#2C221E;white-space:pre-wrap;">${message}</div>
+            ${originalInquiry ? `
+            <div style="margin-top:24px;padding:14px 16px;background-color:#FDFCFB;border:1px solid #ECE3D8;border-radius:6px;">
+              <p style="margin:0 0 6px;font-size:11px;font-weight:700;color:#8C7A6D;text-transform:uppercase;letter-spacing:1px;">Your Original Inquiry</p>
+              <p style="margin:0;font-size:13px;color:#6C5C50;font-style:italic;line-height:1.5;">"${originalInquiry}"</p>
+            </div>
+            ` : ''}
+            <p style="margin:28px 0 0;font-size:14px;line-height:1.6;color:#5C4B40;">
+              If you have any further questions or would like to schedule a visit, feel free to reply directly to this email or visit our salon in Baliuag City.
+            </p>
+            <p style="margin:20px 0 0;font-size:14px;color:#2C221E;">
+              Warm regards,<br>
+              <strong>Timmy Tails Salon Team</strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#FAF7F2;padding:16px 24px;text-align:center;font-size:12px;color:#8C7A6D;border-top:1px solid #E5D6C5;">
+            <p style="margin:0;">© ${new Date().getFullYear()} Timmy Tails Pet Grooming Salon • Baliuag City, Bulacan</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+`
+    return sendMailViaHttpOrSmtp({
+        to,
+        name,
+        subject: emailSubject,
+        html,
+        text: `Hello ${name || 'Valued Client'},\n\n${message}\n\nWarm regards,\nTimmy Tails Salon Team`
+    })
+}
+
 module.exports = {
     sendAppointmentReminderTodayEmail,
     sendAppointmentConfirmedEmail,
@@ -864,5 +924,7 @@ module.exports = {
     sendAppointmentCompletedEmail,
     sendWelcomeEmail,
     sendOtpEmail,
+    sendContactReplyEmail,
+    sendMailViaHttpOrSmtp,
     closeTransporter
 }

@@ -28,6 +28,17 @@ const contactSchema = new mongoose.Schema(
         read: {
             type: Boolean,
             default: false
+        },
+        replied: {
+            type: Boolean,
+            default: false
+        },
+        replyMessage: {
+            type: String,
+            default: ''
+        },
+        repliedAt: {
+            type: Date
         }
     },
     { timestamps: true }

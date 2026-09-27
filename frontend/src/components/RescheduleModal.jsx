@@ -119,7 +119,7 @@ export default function RescheduleModal({
             className='fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-[var(--tt-ink)]/40 backdrop-blur-xs animate-in fade-in duration-150 overflow-y-auto'
             onMouseDown={(e) => { if (e.target === e.currentTarget && !submitting) onClose() }}
         >
-            <div className='my-0 max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-5 text-[var(--tt-ink)] shadow-[0_30px_90px_rgba(51,51,47,.24)] sm:my-auto sm:p-7'>
+            <div className='my-0 max-h-[92vh] sm:max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-5 text-[var(--tt-ink)] shadow-[0_30px_90px_rgba(51,51,47,.24)] sm:my-auto sm:p-7 pb-safe'>
                 {/* Header */}
                 <div className='flex items-start gap-4 border-b border-[var(--tt-border)] pb-4'>
                     <span className='grid h-10 w-10 shrink-0 place-items-center border border-[var(--tt-gold)] text-[var(--tt-gold)]'>

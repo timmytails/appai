@@ -186,8 +186,8 @@ export default function CompleteProfile() {
             setOtpTimer(60)
             const channel = data?.channel || 'email'
             setOtpChannel(channel)
-            const targetEmail = user?.email || data?.email || 'your Gmail'
-            toast.success(data?.message || `Verification code sent to your Gmail (${targetEmail})`)
+            const targetEmail = user?.email || data?.email || 'your email'
+            toast.success(data?.message || `Verification code sent to your email (${targetEmail})`)
         } catch (error) {
             toast.error(getErrorMessage(error))
         } finally {
@@ -203,7 +203,7 @@ export default function CompleteProfile() {
         if (!form.address.barangay) { toast.error('Please select Barangay'); return }
         if (!form.address.street.trim()) { toast.error('Please enter Street / House Number'); return }
         if (!otpSent || otp.length !== 6) {
-            toast.error('Enter the 6-digit verification code sent to your Gmail address')
+            toast.error('Enter the 6-digit verification code sent to your email address')
             return
         }
         setSubmitting(true)
@@ -263,7 +263,7 @@ export default function CompleteProfile() {
                         {/* Email and Phone in a 2-column grid */}
                         <div className='grid gap-4 sm:grid-cols-2'>
                             <label className='block'>
-                                <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+                                <span className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                                     Email Address
                                 </span>
                                 <input
@@ -278,7 +278,7 @@ export default function CompleteProfile() {
                             <div>
                                 <label className='block'>
                                     <span className='mb-1.5 flex items-center gap-1'>
-                                        <span className='block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+                                        <span className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                                             Mobile Number
                                         </span>
                                         <span className='text-[var(--tt-brand)]'>*</span>
@@ -298,14 +298,14 @@ export default function CompleteProfile() {
                                     </span>
                                     <div>
                                         <p className='font-semibold text-[var(--tt-ink)] text-sm'>
-                                            Email Verification (Gmail)
+                                            Email Verification
                                         </p>
                                         <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>
                                             {otpSent
                                                 ? (otpTimer > 0
-                                                    ? `Verification code sent to your Gmail (${user?.email || 'your email'}). Resend available in ${otpTimer}s.`
-                                                    : `A verification code was sent to your Gmail (${user?.email || 'your email'}).`)
-                                                : `We will send a 6-digit verification code to your Gmail address (${user?.email || 'registered email'}) to verify your account.`}
+                                                    ? `Verification code sent to your email (${user?.email || 'your email'}). Resend available in ${otpTimer}s.`
+                                                    : `A verification code was sent to your email (${user?.email || 'your email'}).`)
+                                                : `We will send a 6-digit verification code to your email address (${user?.email || 'registered email'}) to verify your account.`}
                                         </p>
                                     </div>
                                 </div>
@@ -315,7 +315,7 @@ export default function CompleteProfile() {
                                     disabled={sendingOtp || (otpSent && otpTimer > 0)}
                                     className='shrink-0 rounded-lg border border-[var(--tt-border)] px-3.5 py-1.5 text-xs font-bold text-[var(--tt-brand)] transition hover:bg-[var(--tt-brand-strong)]/10 disabled:opacity-60'
                                 >
-                                    {sendingOtp ? 'Sending...' : otpSent ? (otpTimer > 0 ? `Resend (${otpTimer}s)` : 'Resend Code') : 'Send OTP to Gmail'}
+                                    {sendingOtp ? 'Sending...' : otpSent ? (otpTimer > 0 ? `Resend (${otpTimer}s)` : 'Resend Code') : 'Send Verification Code'}
                                 </button>
                             </div>
 
@@ -340,7 +340,6 @@ export default function CompleteProfile() {
                         <div className='border-t border-[var(--tt-brand)]/20 pt-5'>
                             <div className='flex items-center gap-2'>
                                 <h2 className='font-serif text-lg font-bold text-[var(--tt-ink)]'>Home Address</h2>
-                                <span className='text-[10px] text-[#cf7c54]'>✦</span>
                             </div>
                             <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)]'>Used for appointment record & verification (Bulacan only).</p>
 
@@ -428,7 +427,7 @@ export default function CompleteProfile() {
 function Field({ label, required = true, ...props }) {
     return (
         <label className='block'>
-            <span className='mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>{label}</span>
+            <span className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>{label}</span>
             <input
                 required={required}
                 className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-3.5 text-sm font-medium text-[#24211e] outline-none transition focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 placeholder:text-[var(--tt-muted)]'
@@ -502,7 +501,7 @@ function AddressSelect({
   return (
     <div className='relative' ref={containerRef}>
       <label htmlFor={id} className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+        <span className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
           {label}
         </span>
         {required && <span className='text-[var(--tt-brand)]'>*</span>}
