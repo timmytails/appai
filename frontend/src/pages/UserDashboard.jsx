@@ -381,13 +381,13 @@ function NextVisit({ appointment, pets, onOpen }) {
   const petPhoto = pet?.photoUrl || appointment.petPhotoUrl || appointment.petPhoto
 
   return (
-    <article className='editorial-card-hover group grid overflow-hidden rounded-2xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_12px_32px_rgba(50,32,22,0.04)] lg:grid-cols-[1.3fr_0.7fr]'>
+    <article className='editorial-card-hover group grid w-full overflow-hidden rounded-2xl border border-[rgba(210,143,119,0.3)] bg-white shadow-[0_12px_32px_rgba(50,32,22,0.04)] lg:grid-cols-[1.3fr_0.7fr]'>
       {/* Left Main Content */}
-      <div className='flex flex-col justify-between p-6 sm:p-8 lg:p-10'>
-        <div>
+      <div className='flex min-w-0 flex-col justify-between p-4 sm:p-7 lg:p-9'>
+        <div className='min-w-0'>
           {/* Status & Date Bar */}
-          <div className='flex flex-wrap items-center gap-2.5 text-xs'>
-            <span className={`inline-flex rounded-full border px-3 py-1 text-[12px] font-bold uppercase tracking-[.08em] ${status.className}`}>
+          <div className='flex flex-wrap items-center gap-2 text-xs'>
+            <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[.08em] ${status.className}`}>
               {status.label}
             </span>
             <span className='text-[var(--tt-muted)]'>•</span>
@@ -397,43 +397,43 @@ function NextVisit({ appointment, pets, onOpen }) {
           </div>
 
           {/* Heading */}
-          <h3 className='mt-4 font-serif text-2xl sm:text-3xl lg:text-[2.25rem] font-medium leading-[1.2] text-[var(--tt-ink)]'>
+          <h3 className='mt-3 sm:mt-4 font-serif text-2xl sm:text-3xl lg:text-[2.25rem] font-medium leading-[1.2] text-[var(--tt-ink)] break-words'>
             {appointment.status === 'in_progress'
               ? `${appointment.petName} is currently in service.`
               : `${appointment.petName}’s upcoming visit.`}
           </h3>
 
-          <p className='mt-2 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
+          <p className='mt-2 text-sm leading-relaxed text-[var(--tt-ink-soft)] break-words'>
             Booked for <strong className='font-semibold text-[var(--tt-ink)]'>{appointment.service}</strong>
             {appointment.haircutStyle ? ` (${appointment.haircutStyle})` : ''} at Timmy Tails Pet Salon.
           </p>
 
-          {/* Clean Segmented In-Service Progress Track (No nested boxes or AI badges) */}
+          {/* Clean Segmented In-Service Progress Track */}
           {appointment.status === 'in_progress' && (
-            <div className='mt-7 border-t border-[rgba(210,143,119,0.2)] pt-6'>
-              <div className='flex items-center justify-between text-xs'>
-                <div className='flex items-center gap-2'>
-                  <span className='h-2 w-2 rounded-full bg-[#216245]' />
-                  <span className='text-[12px] font-bold uppercase tracking-[.08em] text-[#216245]'>
+            <div className='mt-5 sm:mt-6 border-t border-[rgba(210,143,119,0.2)] pt-5 min-w-0'>
+              <div className='flex flex-wrap items-baseline justify-between gap-1.5 text-xs'>
+                <div className='flex flex-wrap items-center gap-1.5 min-w-0'>
+                  <span className='h-2 w-2 rounded-full bg-[#216245] shrink-0' />
+                  <span className='text-[11px] font-bold uppercase tracking-[.08em] text-[#216245] shrink-0'>
                     Current Stage
                   </span>
-                  <span className='text-[var(--tt-muted)]'>—</span>
-                  <span className='font-serif font-bold text-[var(--tt-ink)] text-sm'>
+                  <span className='text-[var(--tt-muted)] hidden sm:inline'>—</span>
+                  <span className='font-serif font-bold text-[var(--tt-ink)] text-sm break-words'>
                     {appointment.serviceStage || stages[0]?.label || 'Service in progress'}
                   </span>
                 </div>
-                <span className='font-mono text-xs font-semibold text-[var(--tt-muted)]'>
+                <span className='font-mono text-xs font-semibold text-[var(--tt-muted)] shrink-0'>
                   Step {progress.currentStep} of {progress.totalSteps}
                 </span>
               </div>
 
               {/* Segmented Timeline */}
-              <div className='mt-3.5 grid gap-2' style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}>
+              <div className='mt-3 grid gap-1.5 sm:gap-2' style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}>
                 {stages.map((stg, i) => {
                   const isDone = i < progress.currentStep - 1
                   const isCurrent = i === progress.currentStep - 1
                   return (
-                    <div key={stg.id} className='space-y-1.5'>
+                    <div key={stg.id} className='min-w-0 space-y-1.5'>
                       <div className={`h-1.5 w-full rounded-full transition-all duration-500 ${
                         isCurrent
                           ? 'bg-[#216245]'
@@ -441,7 +441,7 @@ function NextVisit({ appointment, pets, onOpen }) {
                           ? 'bg-[#89b899]'
                           : 'bg-[rgba(210,143,119,0.18)]'
                       }`} />
-                      <p className={`text-[12px] leading-tight transition-colors ${
+                      <p className={`hidden sm:block text-[11px] lg:text-[12px] leading-tight transition-colors break-words ${
                         isCurrent
                           ? 'font-bold text-[#216245]'
                           : isDone
@@ -454,18 +454,30 @@ function NextVisit({ appointment, pets, onOpen }) {
                   )
                 })}
               </div>
+
+              {/* Mobile Concise Active Stage Indicator */}
+              <div className='sm:hidden mt-2 flex items-center justify-between text-[11px] text-[var(--tt-muted)]'>
+                <span className='truncate font-medium text-[#216245]'>
+                  ● {appointment.serviceStage || stages[progress.currentStep - 1]?.label}
+                </span>
+                {progress.currentStep < stages.length && (
+                  <span className='truncate pl-2 text-[10px] text-[var(--tt-muted-soft)]'>
+                    Next: {stages[progress.currentStep]?.label}
+                  </span>
+                )}
+              </div>
             </div>
           )}
 
           {/* Quick Details Badges */}
-          <div className='mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[var(--tt-ink-soft)]'>
+          <div className='mt-5 sm:mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-[var(--tt-ink-soft)]'>
             <span className='inline-flex items-center gap-1.5'>
-              <Clock3 size={15} className='text-[var(--tt-gold)]' />
+              <Clock3 size={14} className='text-[var(--tt-gold)] shrink-0' />
               <span className='font-medium'>{formatTimeRange(appointment.time, appointment.endTime)}</span>
             </span>
             {appointment.haircutStyle && (
               <span className='inline-flex items-center gap-1.5'>
-                <Scissors size={15} className='text-[var(--tt-gold)]' />
+                <Scissors size={14} className='text-[var(--tt-gold)] shrink-0' />
                 <span>{appointment.haircutStyle}</span>
               </span>
             )}
@@ -476,7 +488,7 @@ function NextVisit({ appointment, pets, onOpen }) {
         </div>
 
         {/* Footer Link */}
-        <div className='mt-8 pt-5 border-t border-[rgba(210,143,119,0.2)]'>
+        <div className='mt-6 pt-4 sm:mt-8 sm:pt-5 border-t border-[rgba(210,143,119,0.2)]'>
           <button
             type='button'
             onClick={onOpen}
@@ -663,33 +675,33 @@ function VisitRow({ appointment, onOpen }) {
     <button
       type='button'
       onClick={onOpen}
-      className='group grid w-full grid-cols-[70px_1fr_auto] items-center gap-4 p-4 text-left transition-all duration-300 ease-out hover:bg-[var(--tt-canvas)] hover:pl-6'
+      className='group grid w-full grid-cols-[56px_1fr_auto] sm:grid-cols-[70px_1fr_auto] items-center gap-3 sm:gap-4 p-3 sm:p-4 text-left transition-all duration-300 ease-out hover:bg-[var(--tt-canvas)] hover:pl-5'
     >
       <div className='text-center transition-transform duration-300 group-hover:scale-105'>
-        <p className='font-serif text-2xl font-semibold leading-none text-[var(--tt-ink)]'>
+        <p className='font-serif text-xl sm:text-2xl font-semibold leading-none text-[var(--tt-ink)]'>
           {Number.isNaN(date.getTime()) ? '—' : date.getDate()}
         </p>
-        <p className='mt-1 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>
+        <p className='mt-1 text-[11px] sm:text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>
           {Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('en-PH', { month: 'short' })}
         </p>
       </div>
 
       <div className='min-w-0'>
-        <div className='flex flex-wrap items-center gap-2'>
-          <p className='truncate font-serif text-lg font-medium text-[var(--tt-ink)] transition-colors duration-300 group-hover:text-[var(--tt-gold)]'>
+        <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
+          <p className='truncate font-serif text-base sm:text-lg font-medium text-[var(--tt-ink)] transition-colors duration-300 group-hover:text-[var(--tt-gold)]'>
             {appointment.petName}
           </p>
-          <span className={`border px-2 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] ${status.className}`}>
+          <span className={`border px-2 py-0.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[.08em] ${status.className}`}>
             {status.label}
           </span>
-          {appointment.status === 'in_progress' && appointment.serviceStage && (
-            <span className='inline-flex items-center gap-1 rounded-full border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] px-2 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[#216245]'>
-              <span className='tt-live text-[#216245]' />
-              {appointment.serviceStage}
-            </span>
-          )}
         </div>
-        <p className='mt-1 truncate text-xs text-[var(--tt-muted)]'>
+        {appointment.status === 'in_progress' && appointment.serviceStage && (
+          <p className='mt-1 flex items-center gap-1.5 text-xs font-semibold text-[#216245] truncate'>
+            <span className='h-1.5 w-1.5 rounded-full bg-[#216245] shrink-0 animate-pulse' />
+            <span className='truncate'>{appointment.serviceStage}</span>
+          </p>
+        )}
+        <p className='mt-0.5 truncate text-xs text-[var(--tt-muted)]'>
           {appointment.service} · {formatTimeRange(appointment.time, appointment.endTime)}
         </p>
       </div>

@@ -316,13 +316,9 @@ export default function Profile() {
                     <h2 className='truncate font-serif text-2xl font-medium text-[var(--tt-ink)]'>
                       {user?.firstName} {user?.lastName}
                     </h2>
-                    {user?.role === 'admin' ? (
+                    {user?.role === 'admin' && (
                       <span className='rounded-full bg-[#fbeee6] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-accent)] border border-[var(--tt-accent)]/30'>
                         Admin Access
-                      </span>
-                    ) : (
-                      <span className='rounded-full bg-[#f0f4ee] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-ink-soft)] border border-[var(--tt-ink-soft)]/20'>
-                        Client Member
                       </span>
                     )}
                   </div>
@@ -359,10 +355,9 @@ export default function Profile() {
               eyebrow='Account Owner'
               description='Your registered name and contact details for your TimmyTails account.'
             >
-              <div className='grid gap-4 sm:grid-cols-3'>
+              <div className='grid gap-4 sm:grid-cols-2'>
                 <ReadOnlyField label='First Name' value={user?.firstName || ''} />
                 <ReadOnlyField label='Last Name' value={user?.lastName || ''} />
-                <ReadOnlyField label='Access Role' value={user?.role === 'admin' ? 'Administrator' : 'Client Member'} />
               </div>
 
               <div className='mt-4'>

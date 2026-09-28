@@ -130,6 +130,8 @@ export default function About() {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .hero-eyebrow {
@@ -139,19 +141,27 @@ export default function About() {
           color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 1.2rem;
+          display: block;
+          width: 100%;
+          text-align: inherit;
         }
 
         .hero-heading {
           font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(2.5rem, 4.2vw, 3.8rem);
+          font-size: clamp(2rem, 3.8vw, 3.6rem);
           line-height: 1.15;
           color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
+          width: 100%;
+          text-align: inherit;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .hero-heading span {
           display: block;
+          text-align: inherit;
         }
 
         .hero-description {
@@ -160,6 +170,10 @@ export default function About() {
           color: var(--tt-ink-soft);
           max-width: 480px;
           margin: 0;
+          width: 100%;
+          text-align: inherit;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         /* Hero Media */
@@ -187,6 +201,7 @@ export default function About() {
           background-color: #f5e9dc;
           box-shadow: 0 18px 36px -10px rgba(71, 46, 31, 0.12);
           position: relative;
+          flex-shrink: 0;
         }
 
         .hero-arch-box img {
@@ -210,6 +225,7 @@ export default function About() {
           display: flex;
           align-items: flex-end;
           justify-content: center;
+          flex-shrink: 0;
         }
 
         .hero-portrait-box img {
@@ -546,7 +562,29 @@ export default function About() {
         }
 
         @media (max-width: 1024px) {
-          .hero-grid-content,
+          .hero-grid-content {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+            text-align: center;
+          }
+
+          .hero-left-content {
+            align-items: center;
+            text-align: center;
+            width: 100%;
+          }
+
+          .hero-heading {
+            text-align: center;
+            width: 100%;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+          }
+
+          .hero-description {
+            margin: 0 auto;
+            text-align: center;
+          }
+
           .vision-mission-grid,
           .brand-story-card,
           .comfort-card {
@@ -556,6 +594,8 @@ export default function About() {
 
           .hero-media-wrapper {
             margin-top: 1rem;
+            width: 100%;
+            justify-content: center;
           }
 
           .comfort-card {
@@ -577,13 +617,15 @@ export default function About() {
 
         @media (max-width: 640px) {
           .hero-arch-box {
-            width: 200px;
-            height: 300px;
+            width: 175px;
+            height: 250px;
+            border-radius: 88px 88px 0 0;
           }
           .hero-portrait-box {
-            width: 160px;
-            height: 260px;
-            margin-left: -25px;
+            width: 140px;
+            height: 215px;
+            margin-left: -22px;
+            border-radius: 70px 70px 18px 18px;
           }
           .why-grid {
             grid-template-columns: 1fr;
@@ -591,6 +633,49 @@ export default function About() {
           }
           .why-card {
             padding: 2.25rem 1.75rem;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .hero-heading {
+            font-size: clamp(1.4rem, 6vw, 1.75rem);
+            line-height: 1.2;
+          }
+          .hero-arch-box {
+            width: 135px;
+            height: 190px;
+            border-radius: 68px 68px 0 0;
+            outline-width: 3px;
+            outline-offset: 2px;
+          }
+          .hero-portrait-box {
+            width: 110px;
+            height: 160px;
+            margin-left: -16px;
+            border-radius: 55px 55px 14px 14px;
+          }
+          .hero-flower-accent {
+            width: 20px;
+            height: 20px;
+            left: -6px;
+            bottom: 14px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .hero-heading {
+            font-size: 1.3rem;
+          }
+          .hero-arch-box {
+            width: 125px;
+            height: 175px;
+            border-radius: 62px 62px 0 0;
+          }
+          .hero-portrait-box {
+            width: 100px;
+            height: 145px;
+            margin-left: -14px;
+            border-radius: 50px 50px 12px 12px;
           }
         }
       `}</style>

@@ -564,6 +564,7 @@ export default function Home() {
 
         .home-about-container {
           max-width: 1280px;
+          width: 100%;
           margin: 0 auto;
           display: grid;
           grid-template-columns: 1.05fr 1fr;
@@ -571,12 +572,15 @@ export default function Home() {
           align-items: center;
           position: relative;
           z-index: 2;
+          box-sizing: border-box;
         }
 
         .home-about-text {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .home-about-eyebrow {
@@ -586,19 +590,27 @@ export default function Home() {
           color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 1.25rem;
+          display: block;
+          width: 100%;
+          text-align: inherit;
         }
 
         .home-about-heading {
           font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(2.6rem, 4vw, 3.8rem);
+          font-size: clamp(2rem, 3.8vw, 3.6rem);
           line-height: 1.15;
           color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
+          width: 100%;
+          text-align: inherit;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .home-about-heading span {
           display: block;
+          text-align: inherit;
         }
 
         .home-about-desc {
@@ -607,6 +619,10 @@ export default function Home() {
           color: var(--tt-ink-soft);
           max-width: 490px;
           margin: 0 0 2rem 0;
+          width: 100%;
+          text-align: inherit;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
 
         .home-about-btn {
@@ -632,6 +648,9 @@ export default function Home() {
           align-items: flex-end;
           justify-content: center;
           position: relative;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
         }
 
         .home-arch-main {
@@ -646,6 +665,7 @@ export default function Home() {
           box-shadow: 0 18px 36px -10px rgba(71, 46, 31, 0.12);
           position: relative;
           z-index: 2;
+          flex-shrink: 0;
         }
 
         .home-arch-main img {
@@ -669,6 +689,7 @@ export default function Home() {
           display: flex;
           align-items: flex-end;
           justify-content: center;
+          flex-shrink: 0;
         }
 
         .home-arch-accent img {
@@ -1707,18 +1728,57 @@ export default function Home() {
             bottom: -15px;
           }
 
+          .home-about-bloom {
+            padding: 5rem 1.5rem;
+          }
+
           .home-about-container {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
             gap: 3rem;
             text-align: center;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
           }
 
           .home-about-text {
             align-items: center;
+            text-align: center;
+            width: 100%;
+          }
+
+          .home-about-eyebrow {
+            text-align: center;
+          }
+
+          .home-about-heading {
+            text-align: center;
+            width: 100%;
+            font-size: clamp(2rem, 4.5vw, 2.8rem);
           }
 
           .home-about-desc {
-            max-width: 100%;
+            max-width: 540px;
+            text-align: center;
+            margin: 0 auto 2rem auto;
+          }
+
+          .home-about-btn {
+            align-self: center;
+            margin: 0 auto;
+          }
+
+          .home-arch-main {
+            width: 250px;
+            height: 350px;
+            border-radius: 125px 125px 0 0;
+          }
+
+          .home-arch-accent {
+            width: 200px;
+            height: 290px;
+            margin-left: -35px;
+            border-radius: 100px 100px 24px 24px;
           }
         }
 
@@ -1880,15 +1940,36 @@ export default function Home() {
             padding: 2.25rem 1.5rem;
           }
 
+          .home-about-bloom {
+            padding: 4rem 1.25rem;
+          }
+
+          .home-about-container {
+            gap: 2.25rem;
+          }
+
+          .home-about-heading {
+            font-size: clamp(1.65rem, 6vw, 2.2rem);
+            margin-bottom: 1.15rem;
+          }
+
+          .home-about-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.75rem;
+          }
+
           .home-arch-main {
-            width: 200px;
-            height: 290px;
+            width: 175px;
+            height: 250px;
+            border-radius: 88px 88px 0 0;
           }
 
           .home-arch-accent {
-            width: 160px;
-            height: 250px;
-            margin-left: -25px;
+            width: 140px;
+            height: 215px;
+            margin-left: -22px;
+            border-radius: 70px 70px 18px 18px;
           }
 
           .home-why-card,
@@ -1899,28 +1980,105 @@ export default function Home() {
 
         @media (max-width: 420px) {
           .bloom-hero-visual-stage {
-            max-width: 300px;
-            height: 260px;
+            max-width: 280px;
+            height: 250px;
           }
 
           .bloom-visual-col {
-            width: 195px !important;
-            height: 195px !important;
+            width: 180px !important;
+            height: 180px !important;
           }
 
           .bloom-main-circle {
-            width: 195px !important;
-            height: 195px !important;
+            width: 180px !important;
+            height: 180px !important;
           }
 
           .bloom-arch-container {
-            width: 145px !important;
-            height: 195px !important;
-            border-radius: 72px 72px 8px 8px !important;
+            width: 135px !important;
+            height: 180px !important;
+            border-radius: 68px 68px 8px 8px !important;
           }
 
           .feature-anim-item {
             width: calc(50% - 0.8rem);
+          }
+
+          .home-about-bloom {
+            padding: 3.25rem 0.85rem;
+          }
+
+          .home-about-container {
+            gap: 1.75rem;
+          }
+
+          .home-about-eyebrow {
+            font-size: 0.76rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.75rem;
+          }
+
+          .home-about-heading {
+            font-size: clamp(1.4rem, 6vw, 1.75rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+          }
+
+          .home-about-desc {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 1.4rem;
+          }
+
+          .home-about-btn {
+            padding: 0.75rem 1.8rem;
+            font-size: 0.78rem;
+            letter-spacing: 1.2px;
+          }
+
+          .home-arch-main {
+            width: 135px;
+            height: 190px;
+            border-radius: 68px 68px 0 0;
+            outline-width: 3px;
+            outline-offset: 2px;
+          }
+
+          .home-arch-accent {
+            width: 110px;
+            height: 160px;
+            margin-left: -16px;
+            border-radius: 55px 55px 14px 14px;
+          }
+
+          .home-flower-icon {
+            width: 20px;
+            height: 20px;
+            left: -6px;
+            bottom: 14px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .home-about-bloom {
+            padding: 2.75rem 0.65rem;
+          }
+
+          .home-about-heading {
+            font-size: 1.3rem;
+          }
+
+          .home-arch-main {
+            width: 125px;
+            height: 175px;
+            border-radius: 62px 62px 0 0;
+          }
+
+          .home-arch-accent {
+            width: 100px;
+            height: 145px;
+            margin-left: -14px;
+            border-radius: 50px 50px 12px 12px;
           }
         }
       `}</style>

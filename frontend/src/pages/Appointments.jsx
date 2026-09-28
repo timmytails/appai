@@ -297,7 +297,6 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
   const editable = canEditAppointmentDate(appointment)
   const status = STATUS[appointment.status] || STATUS.pending
   const petPhoto = appointment.pet?.photoUrl || appointment.petPhotoUrl || appointment.photoUrl
-  const date = appointmentDate(appointment)
   const isCat = appointment.petType?.toLowerCase() === 'cat'
 
   return (
@@ -324,14 +323,14 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
 
           {/* Text & Meta */}
           <div className='min-w-0 text-left'>
-            <div className='flex flex-wrap items-center gap-2.5'>
+            <div className='flex flex-wrap items-center gap-2 sm:gap-2.5'>
               <h3
                 onClick={onOpen}
-                className='cursor-pointer font-serif text-2xl font-medium text-[var(--tt-ink)] transition-colors hover:text-[var(--tt-gold)]'
+                className='cursor-pointer font-serif text-xl sm:text-2xl font-medium text-[var(--tt-ink)] transition-colors hover:text-[var(--tt-gold)]'
               >
                 {appointment.petName}
               </h3>
-              <span className={`inline-block border px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] ${status.className}`}>
+              <span className={`inline-block border px-2 sm:px-2.5 py-0.5 text-[11px] sm:text-[12px] font-bold uppercase tracking-[.08em] ${status.className}`}>
                 {status.label}
               </span>
             </div>
@@ -341,32 +340,27 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
               {appointment.haircutStyle && <span className='italic text-[var(--tt-muted)]'> · {appointment.haircutStyle}</span>}
             </p>
 
-            <div className='mt-2.5 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-[var(--tt-muted)]'>
+            <div className='mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--tt-muted)]'>
               <span className='inline-flex items-center gap-1.5'>
-                <CalendarDays size={13} className='text-[var(--tt-gold-light)]' />
+                <CalendarDays size={13} className='text-[var(--tt-gold-light)] shrink-0' />
                 {formatDateLong(appointment.date)}
               </span>
               <span className='inline-flex items-center gap-1.5'>
-                <Clock3 size={13} className='text-[var(--tt-gold-light)]' />
+                <Clock3 size={13} className='text-[var(--tt-gold-light)] shrink-0' />
                 {formatTimeRange(appointment.time, appointment.endTime)}
               </span>
-              {!Number.isNaN(date.getTime()) && (
-                <span className='capitalize text-[var(--tt-gold)]'>
-                  ({date.toLocaleDateString('en-PH', { weekday: 'long' })})
-                </span>
-              )}
             </div>
 
             {appointment.status === 'in_progress' && (() => {
               const stages = getStagesForService(appointment.serviceId)
               const progress = getStageProgress(stages, appointment.serviceStageKey)
               return (
-                <div className='mt-3 flex items-center gap-2.5 rounded-lg border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] px-3.5 py-2 text-xs text-[#216245]'>
-                  <span className='relative flex h-2 w-2 shrink-0'>
+                <div className='mt-3 flex items-start sm:items-center gap-2.5 rounded-lg border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] px-3 py-2 text-xs text-[#216245]'>
+                  <span className='relative mt-0.5 sm:mt-0 flex h-2 w-2 shrink-0'>
                     <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#216245] opacity-75'></span>
                     <span className='relative inline-flex h-2 w-2 rounded-full bg-[#216245]'></span>
                   </span>
-                  <span className='font-medium text-[#183f2c]'>
+                  <span className='font-medium text-[#183f2c] leading-relaxed break-words'>
                     Live Milestone: <strong className='text-[#216245]'>{appointment.serviceStage || stages[0]?.label}</strong> · Step {progress.currentStep} of {progress.totalSteps}
                   </span>
                 </div>
@@ -383,9 +377,9 @@ function AppointmentEntry({ appointment, onOpen, onCancel, onReschedule }) {
 
         {/* Right: Price & Actions */}
         <div className='flex flex-wrap items-center justify-between gap-3 border-t border-[rgba(210,143,119,0.2)] pt-3 sm:border-t-0 sm:pt-0 sm:justify-end'>
-          <div className='mr-2 text-left sm:text-right'>
-            <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Service Fee</p>
-            <p className='font-serif text-2xl font-semibold text-[var(--tt-ink)]'>
+          <div className='text-left sm:text-right'>
+            <p className='text-[11px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Service Fee</p>
+            <p className='font-serif text-xl sm:text-2xl font-semibold text-[var(--tt-ink)]'>
               ₱{Number(appointment.price || 0).toLocaleString('en-PH')}
             </p>
           </div>
