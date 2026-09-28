@@ -31,7 +31,7 @@ export default function AiPreviewPanel({
             <section className='grid gap-5 border-b border-[var(--tt-border)] pb-8 lg:grid-cols-[minmax(0,1fr)_360px]'>
                 <div>
                     <div className='mb-3'>
-                        <p className='text-[10px] font-bold uppercase tracking-[.18em] text-[var(--tt-gold)]'>Photo reference</p>
+                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Photo reference</p>
                         <h3 className='mt-1 font-serif text-2xl text-[var(--tt-ink)]'>Add a clear photo of your pet</h3>
                         <p className='mt-2 max-w-2xl text-sm leading-6 text-[var(--tt-muted)]'>
                             Use a recent front or three-quarter photo with the face and coat visible. The image is used to prepare the grooming reference shown in this booking.
@@ -89,7 +89,7 @@ export default function AiPreviewPanel({
                                     <CheckCircle2 size={14} className='text-[#5b8767]' />Photo ready for style previews.
                                 </span>
                             ) : verificationStatus === 'error' ? (
-                                <span className='text-[#9E3E3E]'>We could not use this photo. Please choose a clearer image or try again.</span>
+                                <span className='text-[#934b4b]'>We could not use this photo. Please choose a clearer image or try again.</span>
                             ) : photoPreview && !consent ? (
                                 <span className='text-[var(--tt-muted)]'>Accept photo processing to create a preview.</span>
                             ) : photoPreview && consent ? (
@@ -104,7 +104,7 @@ export default function AiPreviewPanel({
                         <button
                             type='button'
                             onClick={onOpenStyleModal}
-                            className='inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-full bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#514b42]'
+                            className='inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-full bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)]'
                         >
                             <Sparkles size={14} className='text-[var(--tt-gold)]' />
                             Choose style & AI preview
@@ -117,7 +117,7 @@ export default function AiPreviewPanel({
             {selectedStyle && (
                 <section className='pt-2'>
                     <div>
-                        <p className='text-[10px] font-bold uppercase tracking-[.18em] text-[var(--tt-gold)]'>Grooming Finish</p>
+                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Grooming Finish</p>
                         <h3 className='mt-1 font-serif text-2xl text-[var(--tt-ink)]'>Haircut Style Reference</h3>
                         <p className='mt-1 max-w-2xl text-xs leading-relaxed text-[var(--tt-muted)]'>
                             Selected finish for your grooming appointment. You can change your choice or generate new previews anytime.
@@ -128,11 +128,11 @@ export default function AiPreviewPanel({
                         <div className='flex flex-wrap items-start justify-between gap-4'>
                             <div className='space-y-1.5'>
                                 <div className='flex items-center gap-2'>
-                                    <span className='inline-flex items-center gap-1 rounded bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200'>
+                                    <span className='inline-flex items-center gap-1 rounded-lg bg-[var(--tt-success-bg)] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-success)] border border-[var(--tt-success-border)]'>
                                         <Check size={12} /> Selected Reference
                                     </span>
                                     {generatedPreview && (
-                                        <span className='inline-flex items-center gap-1 rounded bg-[var(--tt-canvas)] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--tt-gold)] border border-[var(--tt-border)]'>
+                                        <span className='inline-flex items-center gap-1 rounded-lg bg-[var(--tt-canvas)] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)] border border-[var(--tt-border)]'>
                                             <Sparkles size={11} /> AI Preview Ready
                                         </span>
                                     )}
@@ -146,7 +146,7 @@ export default function AiPreviewPanel({
                             <button
                                 type='button'
                                 onClick={onOpenStyleModal}
-                                className='inline-flex items-center gap-2 rounded border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3.5 py-2 text-xs font-semibold text-[var(--tt-ink)] transition hover:bg-white hover:border-[var(--tt-ink)]'
+                                className='inline-flex items-center gap-2 rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] px-3.5 py-2 text-xs font-semibold text-[var(--tt-ink)] transition hover:bg-white hover:border-[var(--tt-ink)]'
                             >
                                 <Scissors size={14} className='text-[var(--tt-gold)]' />
                                 Change Style
@@ -157,13 +157,13 @@ export default function AiPreviewPanel({
                         {generatedPreview && (
                             <div className='mt-6 border-t border-[var(--tt-border)] pt-5'>
                                 <div className='mb-3 flex items-center justify-between'>
-                                    <span className='text-[10px] font-bold uppercase tracking-[.14em] text-[var(--tt-muted)]'>
+                                    <span className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>
                                         Visual Reference Comparison
                                     </span>
                                 </div>
                                 <div className='grid gap-4 sm:grid-cols-2'>
                                     <figure className='overflow-hidden rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)]'>
-                                        <div className='aspect-[4/3] w-full bg-[#242220]'>
+                                        <div className='aspect-[4/3] w-full bg-[var(--tt-ink)]'>
                                             {photoPreview ? (
                                                 <img src={photoPreview} alt='Original pet reference' className='h-full w-full object-contain' />
                                             ) : (
@@ -178,10 +178,10 @@ export default function AiPreviewPanel({
                                     </figure>
 
                                     <figure className='overflow-hidden rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)]'>
-                                        <div className='relative aspect-[4/3] w-full bg-[#242220]'>
+                                        <div className='relative aspect-[4/3] w-full bg-[var(--tt-ink)]'>
                                             <img src={generatedPreview} alt={`${styleName} preview`} className='h-full w-full object-contain' />
                                             {previewFromCache && (
-                                                <span className='absolute bottom-3 left-3 rounded bg-[var(--tt-ink)] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.08em] text-white'>
+                                                <span className='absolute bottom-3 left-3 rounded-lg bg-[var(--tt-ink)] px-2.5 py-1 text-[12px] font-bold uppercase tracking-[.08em] text-white'>
                                                     Saved preview
                                                 </span>
                                             )}
@@ -195,7 +195,7 @@ export default function AiPreviewPanel({
                                                     type='button'
                                                     onClick={onRegenerateSelected}
                                                     disabled={galleryGenerating}
-                                                    className='inline-flex items-center gap-1 text-[11px] text-[var(--tt-muted)] hover:text-[var(--tt-ink)] disabled:opacity-40'
+                                                    className='inline-flex items-center gap-1 text-[12px] text-[var(--tt-muted)] hover:text-[var(--tt-ink)] disabled:opacity-40'
                                                 >
                                                     <RefreshCw size={11} className={galleryGenerating ? 'animate-spin' : ''} />
                                                     Regenerate
@@ -204,7 +204,7 @@ export default function AiPreviewPanel({
                                         </figcaption>
                                     </figure>
                                 </div>
-                                <p className='mt-3 text-[11px] leading-relaxed text-[var(--tt-muted)]'>
+                                <p className='mt-3 text-[12px] leading-relaxed text-[var(--tt-muted)]'>
                                     This style preview is a visual reference, not a guaranteed final result. Scissor lengths and finish will be confirmed with your groomer during consultation.
                                 </p>
                             </div>

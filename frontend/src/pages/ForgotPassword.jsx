@@ -101,7 +101,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className='relative min-h-screen bg-[#fdf4ef] text-[#24211e] selection:bg-[#d1a85b]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
+    <div className='relative min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] selection:bg-[var(--tt-gold-light)]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
       <style>{`
         .gold-underline {
           position: relative;
@@ -115,7 +115,7 @@ export default function ForgotPassword() {
           right: 0;
           bottom: -1px;
           height: 1px;
-          background: #d1a85b;
+          background: var(--tt-gold-light);
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -136,14 +136,14 @@ export default function ForgotPassword() {
       `}</style>
 
       {/* LEFT SHOWCASE PANEL (Identical to Login.jsx) */}
-      <section className='relative hidden min-h-screen overflow-hidden bg-[#1c1a18] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
+      <section className='relative hidden min-h-screen overflow-hidden bg-[var(--tt-ink)] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
         {/* Architectural Hairline Guides */}
         <div className='pointer-events-none absolute left-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
         <div className='pointer-events-none absolute right-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
 
         {/* Ambient Botanicals */}
         <Botanical className='anim-leaf-float pointer-events-none absolute -left-20 top-1/2 -translate-y-1/2 w-80 rotate-12 text-white/[0.04]' />
-        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[#d1a85b]/[0.08]' />
+        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[var(--tt-gold-light)]/[0.08]' />
 
         {/* Logo Header */}
         <div className='relative z-10'>
@@ -163,45 +163,45 @@ export default function ForgotPassword() {
             Restoring safe access to your sanctuary desk.
           </h2>
 
-          <p className='mt-5 max-w-md text-base leading-relaxed text-[#b5aba0]'>
+          <p className='mt-5 max-w-md text-base leading-relaxed text-[var(--tt-muted-soft)]'>
             Protecting your companions&rsquo; grooming profiles, history records, and reserved sanctuary private slots.
           </p>
 
           <div className='mt-10 space-y-4 border-t border-white/10 pt-8'>
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <KeyRound size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Encrypted OTP Verification</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Time-limited security codes delivered to your credentials.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Time-limited security codes delivered to your credentials.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <ShieldCheck size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Companion Data Privacy</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Coat condition and grooming logs remain strictly confidential.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Coat condition and grooming logs remain strictly confidential.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <Lock size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Seamless Account Continuity</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Restore your password without interrupting active bookings.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Restore your password without interrupting active bookings.</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer Notes */}
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[var(--tt-muted-soft)]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -213,9 +213,9 @@ export default function ForgotPassword() {
           {/* Back link */}
           <Link
             to='/login'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
           >
-            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            <ArrowLeft size={14} className='text-[var(--tt-accent)] transition-transform duration-300 group-hover:-translate-x-1' />
             Back to sign in
           </Link>
 
@@ -226,22 +226,22 @@ export default function ForgotPassword() {
               alt='TimmyTails'
               className='h-10 w-10 rounded-full object-cover border border-[rgba(210,143,119,0.4)] shadow-xs'
             />
-            <span className='font-serif text-2xl font-medium text-[#24211e]'>TimmyTails</span>
+            <span className='font-serif text-2xl font-medium text-[var(--tt-ink)]'>TimmyTails</span>
           </div>
 
           {/* ================= STEP 1: REQUEST OTP ================= */}
           {step === 'request' && (
             <div>
-              <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+              <h1 className='font-serif text-4xl font-medium tracking-tight text-[var(--tt-ink)] sm:text-5xl'>
                 Forgot password?
               </h1>
-              <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
+              <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
                 Enter your registered mobile phone number or email address to receive a 6-digit recovery code.
               </p>
 
               <form onSubmit={requestOtp} className='mt-7 space-y-4'>
                 <div>
-                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                     Phone Number or Email
                   </label>
                   <input
@@ -252,18 +252,18 @@ export default function ForgotPassword() {
                     required
                     placeholder='0917 123 4567 or companion@example.com'
                     autoComplete='username'
-                    className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all placeholder:text-[#a89d95] focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                    className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[var(--tt-ink)] outline-none transition-all placeholder:text-[var(--tt-muted-soft)] focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20'
                   />
                 </div>
 
                 <button
                   type='submit'
                   disabled={submitting}
-                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
-                      <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Sending code…
+                      <Loader2 size={16} className='animate-spin text-[var(--tt-gold-light)]' /> Sending code…
                     </>
                   ) : (
                     'Send Recovery Code'
@@ -271,9 +271,9 @@ export default function ForgotPassword() {
                 </button>
               </form>
 
-              <p className='mt-8 text-center text-xs text-[#82746b]'>
+              <p className='mt-8 text-center text-xs text-[var(--tt-muted)]'>
                 Remembered your password?{' '}
-                <Link to='/login' className='gold-underline font-bold text-[#24211e]'>
+                <Link to='/login' className='gold-underline font-bold text-[var(--tt-ink)]'>
                   Sign in here
                 </Link>
               </p>
@@ -283,16 +283,16 @@ export default function ForgotPassword() {
           {/* ================= STEP 2: VERIFY OTP & RESET ================= */}
           {step === 'verify' && (
             <div>
-              <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+              <h1 className='font-serif text-4xl font-medium tracking-tight text-[var(--tt-ink)] sm:text-5xl'>
                 Set new password.
               </h1>
-              <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
-                Enter the 6-digit verification code sent to <strong className='text-[#24211e]'>{form.identifier}</strong> and define your new login password.
+              <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
+                Enter the 6-digit verification code sent to <strong className='text-[var(--tt-ink)]'>{form.identifier}</strong> and define your new login password.
               </p>
 
               <form onSubmit={resetPassword} className='mt-7 space-y-4'>
                 <div>
-                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                     6-Digit Verification Code
                   </label>
                   <input
@@ -304,12 +304,12 @@ export default function ForgotPassword() {
                     inputMode='numeric'
                     maxLength={6}
                     placeholder='000000'
-                    className='h-12 w-full tracking-[4px] font-mono rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all placeholder:text-[#a89d95] focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                    className='h-12 w-full tracking-[4px] font-mono rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[var(--tt-ink)] outline-none transition-all placeholder:text-[var(--tt-muted-soft)] focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20'
                   />
                 </div>
 
                 <div>
-                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                     New Password
                   </label>
                   <div className='relative'>
@@ -321,12 +321,12 @@ export default function ForgotPassword() {
                       required
                       minLength={8}
                       placeholder='At least 8 characters'
-                      className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[#24211e] outline-none transition-all placeholder:text-[#a89d95] focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                      className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[var(--tt-ink)] outline-none transition-all placeholder:text-[var(--tt-muted-soft)] focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20'
                     />
                     <button
                       type='button'
                       onClick={() => setShowPassword((p) => !p)}
-                      className='absolute right-3 top-1/2 -translate-y-1/2 text-[#82746b] transition-colors hover:text-[#24211e]'
+                      className='absolute right-3 top-1/2 -translate-y-1/2 text-[var(--tt-muted)] transition-colors hover:text-[var(--tt-ink)]'
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -335,7 +335,7 @@ export default function ForgotPassword() {
                 </div>
 
                 <div>
-                  <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+                  <label className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                     Confirm New Password
                   </label>
                   <div className='relative'>
@@ -346,12 +346,12 @@ export default function ForgotPassword() {
                       onChange={update}
                       required
                       placeholder='Repeat your new password'
-                      className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[#24211e] outline-none transition-all placeholder:text-[#a89d95] focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20'
+                      className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[var(--tt-ink)] outline-none transition-all placeholder:text-[var(--tt-muted-soft)] focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20'
                     />
                     <button
                       type='button'
                       onClick={() => setShowPassword((p) => !p)}
-                      className='absolute right-3 top-1/2 -translate-y-1/2 text-[#82746b] transition-colors hover:text-[#24211e]'
+                      className='absolute right-3 top-1/2 -translate-y-1/2 text-[var(--tt-muted)] transition-colors hover:text-[var(--tt-ink)]'
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -362,11 +362,11 @@ export default function ForgotPassword() {
                 <button
                   type='submit'
                   disabled={submitting || !canReset}
-                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
-                      <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Updating credentials…
+                      <Loader2 size={16} className='animate-spin text-[var(--tt-gold-light)]' /> Updating credentials…
                     </>
                   ) : (
                     'Update Password'
@@ -382,7 +382,7 @@ export default function ForgotPassword() {
                     type='button'
                     onClick={resendPasswordOtp}
                     disabled={submitting || otpTimer > 0}
-                    className='gold-underline font-semibold text-[#a47d44] transition hover:text-[#24211e] disabled:opacity-40 disabled:no-underline'
+                    className='gold-underline font-semibold text-[var(--tt-gold)] transition hover:text-[var(--tt-ink)] disabled:opacity-40 disabled:no-underline'
                   >
                     {otpTimer > 0 ? `Wait (${otpTimer}s)` : 'Resend Code'}
                   </button>
@@ -392,7 +392,7 @@ export default function ForgotPassword() {
                   <button
                     type='button'
                     onClick={() => setStep('request')}
-                    className='gold-underline text-xs font-semibold text-[#82746b] hover:text-[#24211e]'
+                    className='gold-underline text-xs font-semibold text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
                   >
                     &larr; Use a different phone number or email
                   </button>
@@ -404,21 +404,21 @@ export default function ForgotPassword() {
           {/* ================= STEP 3: SUCCESS ================= */}
           {step === 'success' && (
             <div className='text-center'>
-              <div className='mx-auto grid h-14 w-14 place-items-center rounded-full border border-[#d1a85b]/40 bg-white text-[#a47d44] shadow-sm'>
+              <div className='mx-auto grid h-14 w-14 place-items-center rounded-full border border-[var(--tt-gold-light)]/40 bg-white text-[var(--tt-gold)] shadow-sm'>
                 <CheckCircle2 size={30} />
               </div>
 
-              <h1 className='mt-5 font-serif text-3xl font-medium tracking-tight text-[#24211e] sm:text-4xl'>
+              <h1 className='mt-5 font-serif text-3xl font-medium tracking-tight text-[var(--tt-ink)] sm:text-4xl'>
                 Password reset complete.
               </h1>
-              <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
+              <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
                 Your companion care credentials have been safely renewed. You can now sign in to your sanctuary desk.
               </p>
 
               <button
                 type='button'
                 onClick={() => navigate('/login', { replace: true })}
-                className='mt-8 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99]'
+                className='mt-8 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99]'
               >
                 Return to sign in
               </button>

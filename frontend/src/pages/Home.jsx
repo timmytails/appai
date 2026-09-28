@@ -92,7 +92,7 @@ export default function Home() {
         ====================================================== */
         .bloom-hero-section {
           position: relative;
-          background: #fdf4ef;
+          background: var(--tt-canvas);
           min-height: calc(100vh - 88px);
           overflow: hidden;
           padding: 0;
@@ -157,13 +157,13 @@ export default function Home() {
           font-weight: 600;
           line-height: 1.06;
           letter-spacing: -0.025em;
-          color: #17252d;
+          color: var(--tt-ink);
         }
 
         .bloom-description {
           width: 495px;
           margin-top: 24px;
-          color: #222020;
+          color: var(--tt-ink);
           font-family: Georgia, 'Times New Roman', serif;
           font-size: 17px;
           line-height: 1.42;
@@ -180,8 +180,8 @@ export default function Home() {
           min-width: 130px;
           height: 52px;
           padding: 0 28px;
-          background: #2a2929;
-          color: #ffffff !important;
+          background: var(--tt-ink);
+          color: #fff !important;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -197,7 +197,7 @@ export default function Home() {
         }
 
         .bloom-btn-dark:hover {
-          background: #171717;
+          background: var(--tt-ink);
           transform: translateY(-1px);
         }
 
@@ -206,8 +206,8 @@ export default function Home() {
           min-width: 180px;
           height: 52px;
           padding: 0 26px;
-          background: #cf7c54;
-          color: #ffffff !important;
+          background: var(--tt-accent);
+          color: #fff !important;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -228,7 +228,7 @@ export default function Home() {
         .bloom-btn-gold:hover {
           background: #b85d38;
           border-color: #a74f2c;
-          color: #ffffff !important;
+          color: #fff !important;
           box-shadow: 0 10px 24px rgba(184, 93, 56, 0.32);
           transform: translateY(-1px);
         }
@@ -262,7 +262,7 @@ export default function Home() {
           font-size: 27px;
           font-weight: 500;
           line-height: 1;
-          color: #171717;
+          color: var(--tt-ink);
         }
 
         .bloom-stat-item span {
@@ -271,7 +271,7 @@ export default function Home() {
           font-family: Georgia, 'Times New Roman', serif;
           font-size: 15px;
           line-height: 1.2;
-          color: #383333;
+          color: var(--tt-ink);
         }
 
         .bloom-arch-container {
@@ -453,7 +453,7 @@ export default function Home() {
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: #d1a85b;
+          background: var(--tt-gold-light);
           opacity: 0;
           pointer-events: none;
         }
@@ -471,7 +471,7 @@ export default function Home() {
 
         @keyframes starPop {
           0%, 100% { opacity: 0; transform: scale(0); }
-          50% { opacity: 1; transform: scale(1.4); box-shadow: 0 0 6px #d1a85b; }
+          50% { opacity: 1; transform: scale(1.4); box-shadow: 0 0 6px var(--tt-gold-light); }
         }
 
         /* 4. GENTLE HANDLING SHAKE HANDS & HEART */
@@ -492,7 +492,7 @@ export default function Home() {
           top: -6px;
           right: 2px;
           font-size: 13px;
-          color: #cf7c54;
+          color: var(--tt-accent);
           opacity: 0;
           pointer-events: none;
         }
@@ -548,7 +548,7 @@ export default function Home() {
         ====================================================== */
         .home-about-bloom {
           position: relative;
-          background-color: #fdf4ef;
+          background-color: var(--tt-canvas);
           padding: 6rem 2rem;
           overflow: hidden;
         }
@@ -583,7 +583,7 @@ export default function Home() {
           font-size: 0.82rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 1.25rem;
         }
@@ -592,7 +592,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.6rem, 4vw, 3.8rem);
           line-height: 1.15;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
         }
@@ -604,15 +604,15 @@ export default function Home() {
         .home-about-desc {
           font-size: 1.02rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           max-width: 490px;
           margin: 0 0 2rem 0;
         }
 
         .home-about-btn {
           display: inline-block;
-          background-color: #262626;
-          color: #ffffff !important;
+          background-color: var(--tt-brand-strong);
+          color: #fff !important;
           padding: 0.9rem 2.4rem;
           font-size: 0.85rem;
           letter-spacing: 1.5px;
@@ -623,7 +623,7 @@ export default function Home() {
         }
 
         .home-about-btn:hover {
-          background-color: #3d3d3d;
+          background-color: var(--tt-brand);
           transform: translateY(-1px);
         }
 
@@ -684,7 +684,7 @@ export default function Home() {
           bottom: 25px;
           width: 32px;
           height: 32px;
-          color: #cf7c54;
+          color: var(--tt-accent);
           z-index: 4;
         }
 
@@ -692,7 +692,7 @@ export default function Home() {
            WHY CHOOSE US: 4 FLOATING PILLARS
         ====================================================== */
         .home-why-section {
-          background-color: #fdf4ef;
+          background-color: var(--tt-canvas);
           padding: 6rem 2rem;
           position: relative;
         }
@@ -714,7 +714,7 @@ export default function Home() {
           font-size: 0.8rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.85rem;
@@ -724,7 +724,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.3rem, 3.5vw, 3.1rem);
           line-height: 1.2;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.25rem 0;
         }
@@ -732,7 +732,7 @@ export default function Home() {
         .home-why-subtitle {
           font-size: 1rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -743,7 +743,7 @@ export default function Home() {
         }
 
         .home-why-card {
-          background: #ffffff;
+          background: #fff;
           border-radius: 12px;
           padding: 3rem 2rem 2.5rem;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
@@ -769,7 +769,7 @@ export default function Home() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
+          background: linear-gradient(90deg, var(--tt-accent), var(--tt-gold-light));
           opacity: 0;
           transition: opacity 0.3s ease;
         }
@@ -782,8 +782,8 @@ export default function Home() {
           width: 52px;
           height: 52px;
           border-radius: 50%;
-          background-color: #fdf4ef;
-          color: #a47d44;
+          background-color: var(--tt-canvas);
+          color: var(--tt-gold);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -793,16 +793,16 @@ export default function Home() {
         }
 
         .home-why-card:hover .home-why-icon {
-          background-color: #24211e;
-          color: #ffffff;
-          border-color: #24211e;
+          background-color: var(--tt-ink);
+          color: #fff;
+          border-color: var(--tt-ink);
         }
 
         .home-why-card-title {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.25rem;
           font-weight: 500;
-          color: #24211e;
+          color: var(--tt-ink);
           margin: 0 0 1rem 0;
           line-height: 1.35;
         }
@@ -810,7 +810,7 @@ export default function Home() {
         .home-why-card-desc {
           font-size: 0.92rem;
           line-height: 1.7;
-          color: #6a635b;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -818,7 +818,7 @@ export default function Home() {
            REFINED LUXURY SERVICES SECTION
         ====================================================== */
         .home-services-luxury {
-          background-color: #1e1c1a;
+          background-color: var(--tt-ink);
           color: #f7f1ea;
           padding: 7rem 2rem;
           position: relative;
@@ -829,7 +829,7 @@ export default function Home() {
           position: absolute;
           width: 380px;
           opacity: 0.08;
-          color: #ffffff;
+          color: #fff;
           pointer-events: none;
         }
         .services-botanical-left {
@@ -860,7 +860,7 @@ export default function Home() {
           font-size: 0.82rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.85rem;
@@ -870,7 +870,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.4rem, 4vw, 3.4rem);
           line-height: 1.15;
-          color: #ffffff;
+          color: #fff;
           font-weight: 500;
           margin: 0 0 1.25rem 0;
         }
@@ -878,7 +878,7 @@ export default function Home() {
         .services-luxury-subtitle {
           font-size: 1rem;
           line-height: 1.8;
-          color: #b0a79d;
+          color: var(--tt-muted-soft);
           margin: 0;
         }
 
@@ -890,7 +890,7 @@ export default function Home() {
         }
 
         .service-luxury-card {
-          background: #272422;
+          background: var(--tt-ink);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 12px;
           overflow: hidden;
@@ -918,7 +918,7 @@ export default function Home() {
           height: 260px;
           border-radius: 130px 130px 8px 8px;
           overflow: hidden;
-          background-color: #383431;
+          background-color: var(--tt-ink);
           border: 1px solid rgba(209, 168, 91, 0.2);
           position: relative;
         }
@@ -942,7 +942,7 @@ export default function Home() {
           left: 2rem;
           background: rgba(30, 28, 26, 0.85);
           backdrop-filter: blur(4px);
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           border: 1px solid rgba(209, 168, 91, 0.3);
           font-size: 0.72rem;
           letter-spacing: 1px;
@@ -958,7 +958,7 @@ export default function Home() {
           top: 2rem;
           right: 2rem;
           background: linear-gradient(135deg, rgba(209, 168, 91, 0.9), rgba(164, 125, 68, 0.95));
-          color: #171513;
+          color: var(--tt-ink);
           font-size: 0.72rem;
           font-weight: 700;
           padding: 0.35rem 0.75rem;
@@ -980,7 +980,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.4rem;
           font-weight: 500;
-          color: #ffffff;
+          color: #fff;
           margin: 0 0 0.5rem 0;
           display: flex;
           align-items: center;
@@ -988,20 +988,20 @@ export default function Home() {
         }
 
         .service-card-heading a {
-          color: #ffffff;
+          color: #fff;
           text-decoration: none;
           transition: color 0.2s ease;
         }
 
         .service-card-heading a:hover {
-          color: #d1a85b;
+          color: var(--tt-gold-light);
         }
 
         .service-meta-row {
           display: flex;
           align-items: center;
           gap: 1rem;
-          color: #9c9388;
+          color: var(--tt-muted-soft);
           font-size: 0.85rem;
           margin-bottom: 1.5rem;
         }
@@ -1030,14 +1030,14 @@ export default function Home() {
           font-size: 0.72rem;
           text-transform: uppercase;
           letter-spacing: 1px;
-          color: #8c8378;
+          color: var(--tt-muted-soft);
         }
 
         .service-price-value {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.35rem;
           font-weight: 600;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           margin: 0;
         }
 
@@ -1045,8 +1045,8 @@ export default function Home() {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: #36322e;
-          color: #ffffff;
+          background: var(--tt-ink);
+          color: #fff;
           text-decoration: none;
           padding: 0.65rem 1.2rem;
           font-size: 0.82rem;
@@ -1057,8 +1057,8 @@ export default function Home() {
         }
 
         .service-action-link:hover {
-          background-color: #d1a85b;
-          color: #171513;
+          background-color: var(--tt-gold-light);
+          color: var(--tt-ink);
           transform: translateY(-2px);
         }
 
@@ -1072,8 +1072,8 @@ export default function Home() {
           align-items: center;
           gap: 8px;
           background: transparent;
-          color: #d1a85b;
-          border: 1px solid #d1a85b;
+          color: var(--tt-gold-light);
+          border: 1px solid var(--tt-gold-light);
           padding: 0.95rem 2.8rem;
           font-size: 0.85rem;
           letter-spacing: 2px;
@@ -1084,8 +1084,8 @@ export default function Home() {
         }
 
         .services-view-all-btn:hover {
-          background: #d1a85b;
-          color: #171513;
+          background: var(--tt-gold-light);
+          color: var(--tt-ink);
         }
 
         /* ======================================================
@@ -1093,13 +1093,13 @@ export default function Home() {
         ====================================================== */
         .home-benefits-section {
           padding: 6rem 2rem;
-          background-color: #fdf4ef;
+          background-color: var(--tt-canvas);
         }
 
         .home-benefits-card {
           max-width: 1280px;
           margin: 0 auto;
-          background: #ffffff;
+          background: #fff;
           border-radius: 12px;
           border: 1px solid rgba(210, 143, 119, 0.22);
           box-shadow: 0 16px 40px rgba(50, 32, 22, 0.04);
@@ -1121,7 +1121,7 @@ export default function Home() {
           font-size: 0.82rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 1rem;
         }
@@ -1130,7 +1130,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.3rem, 3.4vw, 3.1rem);
           line-height: 1.2;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.25rem 0;
         }
@@ -1138,7 +1138,7 @@ export default function Home() {
         .benefits-description {
           font-size: 1.02rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0 0 2rem 0;
         }
 
@@ -1157,15 +1157,15 @@ export default function Home() {
           align-items: center;
           gap: 12px;
           font-size: 0.95rem;
-          color: #3b3631;
+          color: var(--tt-ink);
         }
 
         .benefits-check-icon {
           width: 22px;
           height: 22px;
           border-radius: 50%;
-          background: #fdf4ef;
-          color: #a47d44;
+          background: var(--tt-canvas);
+          color: var(--tt-gold);
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -1187,7 +1187,7 @@ export default function Home() {
           overflow: hidden;
           background: #f7ebe1;
           border: 1px solid rgba(210, 143, 119, 0.35);
-          outline: 6px solid #ffffff;
+          outline: 6px solid #fff;
           outline-offset: -3px;
           box-shadow: 0 20px 45px rgba(50, 30, 20, 0.08);
           position: relative;
@@ -1204,7 +1204,7 @@ export default function Home() {
         ====================================================== */
         .home-steps-section {
           padding: 6rem 2rem 7rem;
-          background-color: #fdf4ef;
+          background-color: var(--tt-canvas);
           position: relative;
         }
 
@@ -1223,7 +1223,7 @@ export default function Home() {
           font-size: 0.8rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.85rem;
@@ -1233,7 +1233,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.3rem, 3.5vw, 3.1rem);
           line-height: 1.2;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1rem 0;
         }
@@ -1241,7 +1241,7 @@ export default function Home() {
         .steps-subtitle {
           font-size: 0.98rem;
           line-height: 1.75;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -1253,7 +1253,7 @@ export default function Home() {
         }
 
         .step-editorial-card {
-          background: #ffffff;
+          background: #fff;
           border-radius: 10px;
           padding: 3rem 2rem 2.25rem;
           border: 1px solid rgba(210, 143, 119, 0.22);
@@ -1278,7 +1278,7 @@ export default function Home() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
+          background: linear-gradient(90deg, var(--tt-accent), var(--tt-gold-light));
           opacity: 0;
           transition: opacity 0.3s ease;
         }
@@ -1291,7 +1291,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 2.2rem;
           font-weight: 500;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           line-height: 1;
           margin-bottom: 1.5rem;
         }
@@ -1300,7 +1300,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.3rem;
           font-weight: 500;
-          color: #24211e;
+          color: var(--tt-ink);
           margin: 0 0 0.85rem 0;
           line-height: 1.3;
         }
@@ -1308,7 +1308,7 @@ export default function Home() {
         .step-card-description {
           font-size: 0.92rem;
           line-height: 1.7;
-          color: #6a635b;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -1321,7 +1321,7 @@ export default function Home() {
            EDITORIAL MARQUEE GALLERY WITH ARCHITECTURAL ACCENTS
         ====================================================== */
         .editorial-marquee-section {
-          background-color: #fdf4ef;
+          background-color: var(--tt-canvas);
           padding: 7rem 0 8rem;
           position: relative;
           overflow: hidden;
@@ -1355,7 +1355,7 @@ export default function Home() {
           bottom: -20px;
           width: 320px;
           opacity: 0.38;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
           transform: rotate(-10deg);
@@ -1367,7 +1367,7 @@ export default function Home() {
           top: 15px;
           width: 260px;
           opacity: 0.28;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
           transform: scaleX(-1) rotate(25deg);
@@ -1413,7 +1413,7 @@ export default function Home() {
           font-size: 0.8rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.75rem;
@@ -1423,7 +1423,7 @@ export default function Home() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.3rem, 3.5vw, 3.2rem);
           line-height: 1.18;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1rem 0;
         }
@@ -1431,7 +1431,7 @@ export default function Home() {
         .editorial-marquee-subtext {
           margin: 0 auto;
           max-width: 520px;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           font-size: 0.98rem;
           line-height: 1.75;
         }
@@ -1522,14 +1522,14 @@ export default function Home() {
         .marquee-card-title {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.18rem;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 0.35rem 0;
         }
 
         .marquee-card-sub {
           font-size: 0.8rem;
-          color: #927563;
+          color: var(--tt-muted-soft);
           text-transform: uppercase;
           letter-spacing: 1.8px;
           margin: 0;
@@ -1740,7 +1740,7 @@ export default function Home() {
             font-size: 15px;
             line-height: 1.6;
             margin-top: 14px;
-            color: #423d38;
+            color: var(--tt-ink-soft);
           }
 
           .bloom-button-group {
@@ -2188,7 +2188,7 @@ export default function Home() {
 
                   <div className='service-meta-row'>
                     <span>
-                      <Clock size={13} color='#d1a85b' />
+                      <Clock size={13} color='var(--tt-gold-light)' />
                       {service.duration}
                     </span>
                     <span>•</span>

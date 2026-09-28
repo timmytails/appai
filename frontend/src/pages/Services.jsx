@@ -18,7 +18,7 @@ export default function Services() {
         ====================================================== */
         .package-hero-section {
           position: relative;
-          background: #fdf4ef;
+          background: var(--tt-canvas);
           overflow: hidden;
           padding: 5rem 2rem 5.5rem;
           font-family: Georgia, 'Times New Roman', serif;
@@ -40,7 +40,7 @@ export default function Services() {
           top: -20px;
           width: 250px;
           opacity: 0.35;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
         }
@@ -64,7 +64,7 @@ export default function Services() {
           font-size: 0.82rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: block;
           margin-bottom: 0.9rem;
@@ -74,7 +74,7 @@ export default function Services() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.8rem, 4.8vw, 4.2rem);
           line-height: 1.12;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.35rem 0;
           letter-spacing: -0.02em;
@@ -83,7 +83,7 @@ export default function Services() {
         .package-hero-desc {
           font-size: 1.05rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -128,7 +128,7 @@ export default function Services() {
            2. SLIM & SLEEK MARQUEE (#our-services)
         ====================================================== */
         .services-marquee-showcase {
-          background-color: #22201e;
+          background-color: var(--tt-ink);
           color: #f7f1ea;
           padding: 3.8rem 0 4.2rem;
           position: relative;
@@ -163,7 +163,7 @@ export default function Services() {
           top: 15px;
           width: 250px;
           opacity: 0.15;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           pointer-events: none;
           z-index: 1;
           transform: rotate(20deg);
@@ -175,7 +175,7 @@ export default function Services() {
           bottom: 10px;
           width: 250px;
           opacity: 0.12;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
           transform: scaleX(-1) rotate(-15deg);
@@ -205,7 +205,7 @@ export default function Services() {
           position: absolute;
           font-family: Georgia, serif;
           font-size: 13px;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           line-height: 1;
         }
         .services-showcase-header::before {
@@ -221,7 +221,7 @@ export default function Services() {
           font-size: 0.72rem;
           letter-spacing: 2.5px;
           text-transform: uppercase;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.4rem;
@@ -231,7 +231,7 @@ export default function Services() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(1.8rem, 3vw, 2.4rem);
           line-height: 1.18;
-          color: #ffffff;
+          color: #fff;
           font-weight: 500;
           margin: 0 0 0.5rem 0;
         }
@@ -243,7 +243,7 @@ export default function Services() {
           gap: 0.4rem 0.9rem;
           margin: 0.75rem auto 0;
           font-size: 0.82rem;
-          color: #a89f94;
+          color: var(--tt-muted-soft);
         }
 
         .services-marquee-viewport {
@@ -291,7 +291,7 @@ export default function Services() {
           border-radius: 120px 120px 8px 8px;
           overflow: hidden;
           position: relative;
-          background: #35312e;
+          background: var(--tt-ink);
           border: 1px solid rgba(210, 143, 119, 0.4);
           box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
         }
@@ -316,7 +316,7 @@ export default function Services() {
           right: 12px;
           width: calc(100% - 24px);
           height: auto;
-          background: #ffffff;
+          background: #fff;
           padding: 0.6rem 0.9rem;
           display: flex;
           align-items: center;
@@ -324,7 +324,7 @@ export default function Services() {
           border-radius: 4px;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           text-decoration: none;
-          color: #22201e;
+          color: var(--tt-ink);
           z-index: 2;
         }
 
@@ -332,15 +332,15 @@ export default function Services() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 0.92rem;
           font-weight: 600;
-          color: #22201e;
+          color: var(--tt-ink);
           margin: 0;
         }
 
         .service-floating-arrow {
           width: 20px;
           height: 20px;
-          background: #cf7c54;
-          color: #ffffff;
+          background: var(--tt-accent);
+          color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -360,20 +360,20 @@ export default function Services() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.15rem;
           font-weight: 600;
-          color: #ffffff;
+          color: #fff;
           margin: 0;
         }
 
         .service-price-text span {
           font-family: Georgia, serif;
           font-size: 0.8rem;
-          color: #a89f94;
+          color: var(--tt-muted-soft);
         }
 
         .service-preview-note {
           font-size: 0.74rem;
           letter-spacing: 0.5px;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           display: inline-flex;
           align-items: center;
           gap: 4px;
@@ -428,7 +428,7 @@ export default function Services() {
           bottom: 15px;
           width: 270px;
           opacity: 0.28;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           pointer-events: none;
           z-index: 1;
           transform: rotate(-15deg);
@@ -457,7 +457,7 @@ export default function Services() {
           font-size: 0.8rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.9rem;
@@ -467,7 +467,7 @@ export default function Services() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.4rem, 4vw, 3.4rem);
           line-height: 1.16;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.25rem 0;
           letter-spacing: -0.015em;
@@ -476,7 +476,7 @@ export default function Services() {
         .benefits-lead-copy {
           font-size: 1.02rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0 0 2rem 0;
           max-width: 530px;
         }
@@ -515,7 +515,7 @@ export default function Services() {
         }
 
         .benefits-check-card {
-          background: #ffffff;
+          background: #fff;
           border: 1px solid rgba(210, 143, 119, 0.28);
           border-radius: 8px;
           padding: 1.05rem 1.35rem;
@@ -535,9 +535,9 @@ export default function Services() {
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: #fdf4ef;
+          background: var(--tt-canvas);
           border: 1px solid rgba(164, 125, 68, 0.4);
-          color: #a47d44;
+          color: var(--tt-gold);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -546,7 +546,7 @@ export default function Services() {
 
         .benefits-check-label {
           font-size: 0.93rem;
-          color: #3b3631;
+          color: var(--tt-ink);
           font-weight: 500;
           line-height: 1.45;
         }
@@ -619,7 +619,7 @@ export default function Services() {
           position: absolute;
           bottom: 25px;
           left: -8px;
-          background: #ffffff;
+          background: #fff;
           border: 1px solid rgba(210, 143, 119, 0.35);
           box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
           border-radius: 8px;
@@ -633,13 +633,13 @@ export default function Services() {
         .benefits-floating-pill-badge strong {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1rem;
-          color: #24211e;
+          color: var(--tt-ink);
           display: block;
         }
 
         .benefits-floating-pill-badge span {
           font-size: 0.72rem;
-          color: #8c8378;
+          color: var(--tt-muted-soft);
           text-transform: uppercase;
           letter-spacing: 1px;
         }
@@ -849,7 +849,7 @@ export default function Services() {
                       <Sparkles size={11} /> Style preview available
                     </p>
                   ) : (
-                    <p className='service-preview-note' style={{ color: '#a89f94' }}>
+                    <p className='service-preview-note' style={{ color: 'var(--tt-muted-soft)' }}>
                       <Clock size={11} /> Cage-free session
                     </p>
                   )}
@@ -938,7 +938,7 @@ export default function Services() {
 
               {/* Floating Trust Badge */}
               <div className='benefits-floating-pill-badge'>
-                <div style={{ color: '#d1a85b' }}>
+                <div style={{ color: 'var(--tt-gold-light)' }}>
                   <HeartHandshake size={22} />
                 </div>
                 <div>

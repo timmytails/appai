@@ -24,19 +24,19 @@ const formatImageSrc = (src) => {
 
 const PROFESSIONAL_STYLE_COPY = {
     'puppy-cut': {
-        description: 'An even trim through the body and legs with a softly rounded finish around the face.',
+        description: 'An even trim through the body and legs with a softly rounded-lg finish around the face.',
         note: 'A practical maintenance cut for coats that are kept at a short-to-medium length.'
     },
     'teddy-bear-cut': {
-        description: 'A rounded face and muzzle with a fuller, balanced finish through the body and legs.',
-        note: 'Best suited to coats with enough length and density to hold a rounded shape.'
+        description: 'A rounded-lg face and muzzle with a fuller, balanced finish through the body and legs.',
+        note: 'Best suited to coats with enough length and density to hold a rounded-lg shape.'
     },
     'summer-cut': {
         description: 'A shorter body trim with the head and tail left natural enough to keep the pet recognizable.',
         note: 'Final length should be agreed with the groomer; double coats are not normally clipped short.'
     },
     'asian-fusion-cut': {
-        description: 'A shorter body with a rounded head and fuller, shaped legs for a more stylized finish.',
+        description: 'A shorter body with a rounded-lg head and fuller, shaped legs for a more stylized finish.',
         note: 'Requires regular brushing and enough coat length on the legs for shaping.'
     },
     'poodle-lamb-cut': {
@@ -56,7 +56,7 @@ const PROFESSIONAL_STYLE_COPY = {
         note: 'Length depends on coat condition, tolerance and whether matting is present.'
     },
     'cat-teddy-bear-trim': {
-        description: 'A softly rounded cat trim that keeps a fuller body outline and neatens the face and paws.',
+        description: 'A softly rounded-lg cat trim that keeps a fuller body outline and neatens the face and paws.',
         note: 'Only suitable when the coat condition and the cat’s tolerance allow safe scissor work.'
     },
     'lion-cut': {
@@ -186,32 +186,32 @@ export default function AiStylePreviewModal({
                         {/* 1. Photo Reference Card */}
                         <div className='mb-4 rounded-lg border border-[var(--tt-border)] bg-white p-3.5 shadow-sm'>
                             <div className='mb-2 flex items-center justify-between'>
-                                <span className='text-[10px] font-bold uppercase tracking-[.14em] text-[var(--tt-gold)]'>Pet Photo Reference</span>
-                                <label className='cursor-pointer text-[11px] font-semibold text-[var(--tt-ink)] underline hover:text-[var(--tt-gold)]'>
+                                <span className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Pet Photo Reference</span>
+                                <label className='cursor-pointer text-[12px] font-semibold text-[var(--tt-ink)] underline hover:text-[var(--tt-gold)]'>
                                     {hasPhoto ? 'Change photo' : 'Upload photo'}
                                     <input type='file' accept='image/jpeg,image/png,image/webp' onChange={onPhotoChange} className='sr-only' />
                                 </label>
                             </div>
 
                             {hasPhoto ? (
-                                <div className='relative flex items-center gap-3 overflow-hidden rounded border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-2'>
-                                    <img src={photoPreview} alt='Pet reference' className='h-14 w-14 rounded object-cover' />
+                                <div className='relative flex items-center gap-3 overflow-hidden rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-2'>
+                                    <img src={photoPreview} alt='Pet reference' className='h-14 w-14 rounded-lg object-cover' />
                                     <div className='min-w-0 flex-1 text-xs'>
                                         <p className='truncate font-semibold text-[var(--tt-ink)]'>{pet?.name || 'Pet reference photo'}</p>
-                                        <p className='text-[11px] text-[var(--tt-muted)]'>Photo ready for AI preview</p>
+                                        <p className='text-[12px] text-[var(--tt-muted)]'>Photo ready for AI preview</p>
                                     </div>
                                     <CheckCircle2 size={16} className='text-[#5b8767] shrink-0' />
                                 </div>
                             ) : (
-                                <label className='flex cursor-pointer flex-col items-center justify-center rounded border border-dashed border-[var(--tt-border)] bg-[var(--tt-canvas)] py-4 text-center hover:bg-white'>
+                                <label className='flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-[var(--tt-border)] bg-[var(--tt-canvas)] py-4 text-center hover:bg-white'>
                                     <Upload size={18} className='text-[var(--tt-muted)]' />
                                     <span className='mt-1 text-xs font-semibold text-[var(--tt-ink)]'>Upload pet photo</span>
-                                    <span className='text-[10px] text-[var(--tt-muted)]'>JPG, PNG or WEBP (up to 7MB)</span>
+                                    <span className='text-[12px] text-[var(--tt-muted)]'>JPG, PNG or WEBP (up to 7MB)</span>
                                     <input type='file' accept='image/jpeg,image/png,image/webp' onChange={onPhotoChange} className='sr-only' />
                                 </label>
                             )}
 
-                            <label className='mt-3 flex items-start gap-2 text-[11px] leading-4 text-[var(--tt-muted)]'>
+                            <label className='mt-3 flex items-start gap-2 text-[12px] leading-4 text-[var(--tt-muted)]'>
                                 <input
                                     type='checkbox'
                                     checked={consent}
@@ -224,7 +224,7 @@ export default function AiStylePreviewModal({
 
                         {/* 2. Styles Navigation List */}
                         <div className='flex items-center justify-between pb-2'>
-                            <span className='text-[10px] font-bold uppercase tracking-[.14em] text-[var(--tt-muted)]'>Available Styles ({orderedStyles.length})</span>
+                            <span className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Available Styles ({orderedStyles.length})</span>
                         </div>
 
                         <div className='space-y-2 overflow-y-auto pr-1 flex-1 max-h-[200px] md:max-h-none'>
@@ -247,7 +247,7 @@ export default function AiStylePreviewModal({
                                             <div className='min-w-0'>
                                                 <p className='font-serif text-sm font-semibold text-[var(--tt-ink)] truncate'>{style.name}</p>
                                                 {isRecommended && (
-                                                    <span className='inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[var(--tt-gold)]'>
+                                                    <span className='inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>
                                                         <Sparkles size={10} /> Seasonal pick
                                                     </span>
                                                 )}
@@ -255,15 +255,15 @@ export default function AiStylePreviewModal({
 
                                             <div className='shrink-0 text-right'>
                                                 {isGeneratingThis ? (
-                                                    <span className='inline-flex items-center gap-1 rounded bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-700'>
+                                                    <span className='inline-flex items-center gap-1 rounded-lg bg-[var(--tt-warn-bg)] px-2 py-0.5 text-[12px] font-bold text-[var(--tt-warn)]'>
                                                         <Loader2 size={10} className='animate-spin' /> Generating
                                                     </span>
                                                 ) : isReady ? (
-                                                    <span className='inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700'>
+                                                    <span className='inline-flex items-center gap-1 rounded-lg bg-[var(--tt-success-bg)] px-2 py-0.5 text-[12px] font-bold text-[var(--tt-success)]'>
                                                         <Check size={10} /> Preview ready
                                                     </span>
                                                 ) : isStyleSelected ? (
-                                                    <span className='inline-flex items-center gap-1 rounded bg-[var(--tt-ink)] px-2 py-0.5 text-[10px] font-bold text-white'>
+                                                    <span className='inline-flex items-center gap-1 rounded-lg bg-[var(--tt-ink)] px-2 py-0.5 text-[12px] font-bold text-white'>
                                                         Current choice
                                                     </span>
                                                 ) : null}
@@ -290,16 +290,16 @@ export default function AiStylePreviewModal({
                                     )}
                                     <div className='min-w-0 flex-1 text-xs'>
                                         <p className='truncate font-semibold text-[var(--tt-ink)]'>{pet?.name || 'Pet reference photo'}</p>
-                                        <p className='text-[10px] text-[var(--tt-muted)]'>{hasPhoto ? 'Photo ready for preview' : 'Upload photo to enable AI'}</p>
+                                        <p className='text-[12px] text-[var(--tt-muted)]'>{hasPhoto ? 'Photo ready for preview' : 'Upload photo to enable AI'}</p>
                                     </div>
                                 </div>
-                                <label className='cursor-pointer rounded border border-[var(--tt-border)] bg-white px-2.5 py-1 text-[11px] font-medium text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] shrink-0'>
+                                <label className='cursor-pointer rounded-lg border border-[var(--tt-border)] bg-white px-2.5 py-1 text-[12px] font-medium text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] shrink-0'>
                                     {hasPhoto ? 'Change' : 'Upload'}
                                     <input type='file' accept='image/jpeg,image/png,image/webp' onChange={onPhotoChange} className='sr-only' />
                                 </label>
                             </div>
                             {!consent && (
-                                <label className='mt-2 flex items-start gap-2 border-t border-[var(--tt-border)] pt-2 text-[11px] leading-4 text-[var(--tt-muted)]'>
+                                <label className='mt-2 flex items-start gap-2 border-t border-[var(--tt-border)] pt-2 text-[12px] leading-4 text-[var(--tt-muted)]'>
                                     <input
                                         type='checkbox'
                                         checked={consent}
@@ -314,10 +314,10 @@ export default function AiStylePreviewModal({
                         {/* Mobile Horizontal Styles Carousel */}
                         <div className='mb-3.5 md:hidden'>
                             <div className='mb-1.5 flex items-center justify-between px-0.5'>
-                                <span className='text-[10px] font-bold uppercase tracking-[.14em] text-[var(--tt-muted)]'>
+                                <span className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>
                                     Haircut Styles ({orderedStyles.length})
                                 </span>
-                                <span className='text-[10px] text-[var(--tt-muted)]'>
+                                <span className='text-[12px] text-[var(--tt-muted)]'>
                                     Swipe to explore
                                 </span>
                             </div>
@@ -343,9 +343,11 @@ export default function AiStylePreviewModal({
                                             {isRecommended && <Sparkles size={11} className={isFocused ? 'text-[var(--tt-gold)]' : 'text-[var(--tt-gold)]'} />}
                                             <span>{style.name}</span>
                                             {isGeneratingThis ? (
-                                                <Loader2 size={11} className='animate-spin text-amber-500' />
+                                                <Loader2 size={11} className='animate-spin text-[var(--tt-warn)]' />
                                             ) : isReady ? (
-                                                <span className={`inline-flex h-3.5 w-3.5 items-center justify-center rounded-full text-[9px] font-bold ${isFocused ? 'bg-white/20 text-emerald-300' : 'bg-emerald-50 text-emerald-700'}`}>✓</span>
+                                                <span className={`inline-flex h-3.5 w-3.5 items-center justify-center rounded-full text-[12px] font-bold ${isFocused ? 'bg-white/20 text-[var(--tt-success)]' : 'bg-[var(--tt-success-bg)] text-[var(--tt-success)]'}`}>
+                                                    <Check size={10} strokeWidth={3} aria-hidden='true' />
+                                                </span>
                                             ) : null}
                                         </button>
                                     )
@@ -361,7 +363,7 @@ export default function AiStylePreviewModal({
                                         <div className='flex items-center gap-2'>
                                             <h3 className='font-serif text-2xl font-normal tracking-tight text-[var(--tt-ink)]'>{focusedStyle.name}</h3>
                                             {isSelected && (
-                                                <span className='rounded-full bg-[var(--tt-ink)] px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-[.1em] text-white'>
+                                                <span className='rounded-full bg-[var(--tt-ink)] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-white'>
                                                     Selected Style
                                                 </span>
                                             )}
@@ -371,25 +373,25 @@ export default function AiStylePreviewModal({
 
                                     {/* View Mode Toggle */}
                                     {isFocusedReady && (
-                                        <div className='inline-flex w-full sm:w-auto rounded-md border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-0.5 text-[11px] font-semibold'>
+                                        <div className='inline-flex w-full sm:w-auto rounded-md border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-0.5 text-[12px] font-semibold'>
                                             <button
                                                 type='button'
                                                 onClick={() => setViewMode('comparison')}
-                                                className={`flex-1 sm:flex-initial rounded px-2.5 py-1.5 transition text-center ${viewMode === 'comparison' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
+                                                className={`flex-1 sm:flex-initial rounded-lg px-2.5 py-1.5 transition text-center ${viewMode === 'comparison' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
                                             >
                                                 Side by Side
                                             </button>
                                             <button
                                                 type='button'
                                                 onClick={() => setViewMode('preview-only')}
-                                                className={`flex-1 sm:flex-initial rounded px-2.5 py-1.5 transition text-center ${viewMode === 'preview-only' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
+                                                className={`flex-1 sm:flex-initial rounded-lg px-2.5 py-1.5 transition text-center ${viewMode === 'preview-only' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
                                             >
                                                 Preview Only
                                             </button>
                                             <button
                                                 type='button'
                                                 onClick={() => setViewMode('original-only')}
-                                                className={`flex-1 sm:flex-initial rounded px-2.5 py-1.5 transition text-center ${viewMode === 'original-only' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
+                                                className={`flex-1 sm:flex-initial rounded-lg px-2.5 py-1.5 transition text-center ${viewMode === 'original-only' ? 'bg-white text-[var(--tt-ink)] shadow-xs font-bold' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}
                                             >
                                                 Original Photo
                                             </button>
@@ -403,7 +405,7 @@ export default function AiStylePreviewModal({
                                         <div className='flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-dashed border-[var(--tt-gold)] bg-[var(--tt-canvas)]/60 p-8 text-center sm:min-h-[360px]'>
                                             <div className='relative'>
                                                 <div className='grid h-16 w-16 place-items-center rounded-full bg-white shadow-md'>
-                                                    <Wand2 size={28} className='animate-bounce text-[var(--tt-gold)]' />
+                                                    <Wand2 size={28} className='text-[var(--tt-gold)]' />
                                                 </div>
                                                 <span className='absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--tt-ink)] text-white'>
                                                     <Loader2 size={12} className='animate-spin' />
@@ -418,7 +420,7 @@ export default function AiStylePreviewModal({
                                         <div className={`grid gap-4 ${viewMode === 'comparison' ? 'sm:grid-cols-2' : 'grid-cols-1'}`}>
                                             {(viewMode === 'comparison' || viewMode === 'original-only') && (
                                                 <figure className='overflow-hidden rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]'>
-                                                    <div className='aspect-[4/3] w-full overflow-hidden bg-[#242220]'>
+                                                    <div className='aspect-[4/3] w-full overflow-hidden bg-[var(--tt-ink)]'>
                                                         {photoPreview ? (
                                                             <img src={photoPreview} alt='Original pet reference' className='h-full w-full object-contain' />
                                                         ) : (
@@ -429,17 +431,17 @@ export default function AiStylePreviewModal({
                                                     </div>
                                                     <figcaption className='border-t border-[var(--tt-border)] bg-white px-3.5 py-2 text-xs font-semibold text-[var(--tt-ink)] flex items-center justify-between'>
                                                         <span>Original Pet Photo</span>
-                                                        <span className='text-[10px] text-[var(--tt-muted)] font-normal'>Current coat</span>
+                                                        <span className='text-[12px] text-[var(--tt-muted)] font-normal'>Current coat</span>
                                                     </figcaption>
                                                 </figure>
                                             )}
 
                                             {(viewMode === 'comparison' || viewMode === 'preview-only') && (
                                                 <figure className='overflow-hidden rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]'>
-                                                    <div className='relative aspect-[4/3] w-full overflow-hidden bg-[#242220]'>
+                                                    <div className='relative aspect-[4/3] w-full overflow-hidden bg-[var(--tt-ink)]'>
                                                         <img src={formatImageSrc(focusedPreview.generatedImage)} alt={`${focusedStyle.name} preview`} className='h-full w-full object-contain' />
                                                         {focusedPreview.fromCache && (
-                                                            <span className='absolute bottom-3 left-3 rounded bg-[var(--tt-ink)] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-white'>
+                                                            <span className='absolute bottom-3 left-3 rounded-lg bg-[var(--tt-ink)] px-2.5 py-1 text-[12px] font-bold uppercase tracking-[.08em] text-white'>
                                                                 Saved preview
                                                             </span>
                                                         )}
@@ -448,7 +450,7 @@ export default function AiStylePreviewModal({
                                                         <span className='inline-flex items-center gap-1 text-[var(--tt-gold)]'>
                                                             <Sparkles size={12} /> {focusedStyle.name} Result
                                                         </span>
-                                                        <span className='text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-bold'>Reference</span>
+                                                        <span className='text-[12px] text-[var(--tt-success)] bg-[var(--tt-success-bg)] px-2 py-0.5 rounded-lg font-bold'>Reference</span>
                                                     </figcaption>
                                                 </figure>
                                             )}
@@ -468,7 +470,7 @@ export default function AiStylePreviewModal({
                                             </p>
                                             {hasPhoto ? (
                                                 !consent ? (
-                                                    <div className='mt-5 max-w-sm rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900'>
+                                                    <div className='mt-5 max-w-sm rounded-lg border border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] p-3 text-xs text-[var(--tt-warn)]'>
                                                         Please agree to the photo consent on the left to enable AI generation.
                                                     </div>
                                                 ) : (
@@ -476,13 +478,13 @@ export default function AiStylePreviewModal({
                                                         type='button'
                                                         onClick={handleGenerateClick}
                                                         disabled={generating}
-                                                        className='mt-4 inline-flex min-h-9 items-center gap-2 rounded-md bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#514b42] disabled:opacity-40'
+                                                        className='mt-4 inline-flex min-h-9 items-center gap-2 rounded-md bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)] disabled:opacity-40'
                                                     >
                                                         <Wand2 size={14} /> Generate style preview
                                                     </button>
                                                 )
                                             ) : (
-                                                <label className='mt-4 inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-md bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#514b42]'>
+                                                <label className='mt-4 inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-md bg-[var(--tt-ink)] px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)]'>
                                                     <Upload size={14} /> Upload pet photo first
                                                     <input type='file' accept='image/jpeg,image/png,image/webp' onChange={onPhotoChange} className='sr-only' />
                                                 </label>
@@ -498,7 +500,7 @@ export default function AiStylePreviewModal({
                                         <div>
                                             <strong className='font-semibold text-[var(--tt-ink)]'>Groomer Note: </strong>
                                             {styleCopy?.note}
-                                            <span className='block mt-1 text-[11px] text-[var(--tt-muted)]'>
+                                            <span className='block mt-1 text-[12px] text-[var(--tt-muted)]'>
                                                 Style previews serve as visual guidelines. Actual scissor and clip lengths are adjusted to your companion’s coat texture, matting, and comfort during the salon visit.
                                             </span>
                                         </div>
@@ -517,11 +519,11 @@ export default function AiStylePreviewModal({
                 <div className='border-t border-[var(--tt-border)] bg-white px-3.5 py-2.5 sm:px-6 sm:py-3.5'>
                     {/* Mobile active preview bar */}
                     <div className='mb-2 flex items-center justify-between gap-2 sm:hidden'>
-                        <span className='text-[11px] text-[var(--tt-muted)] truncate'>
+                        <span className='text-[12px] text-[var(--tt-muted)] truncate'>
                             Active preview: <strong className='text-[var(--tt-ink)]'>{focusedStyle?.name}</strong>
                         </span>
                         {isSelected && (
-                            <span className='inline-flex shrink-0 items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700'>
+                            <span className='inline-flex shrink-0 items-center gap-1 rounded-lg bg-[var(--tt-success-bg)] px-2 py-0.5 text-[12px] font-bold text-[var(--tt-success)]'>
                                 <Check size={11} /> Current choice
                             </span>
                         )}
@@ -562,7 +564,7 @@ export default function AiStylePreviewModal({
                                 type='button'
                                 onClick={handleApplyStyle}
                                 disabled={!focusedStyle}
-                                className={`inline-flex min-h-10 sm:min-h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg sm:rounded-md bg-[var(--tt-ink)] px-4 text-xs font-semibold text-white transition hover:bg-[#514b42] disabled:opacity-40 active:scale-[0.98] ${
+                                className={`inline-flex min-h-10 sm:min-h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg sm:rounded-md bg-[var(--tt-ink)] px-4 text-xs font-semibold text-white transition hover:bg-[var(--tt-ink-soft)] disabled:opacity-40 active:scale-[0.98] ${
                                     isFocusedReady ? 'col-span-2 sm:col-span-1 sm:w-auto' : 'col-span-1 sm:w-auto'
                                 }`}
                             >

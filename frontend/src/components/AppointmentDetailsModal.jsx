@@ -40,14 +40,14 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
     const statusStyle =
         appointment.status === 'confirmed'
-            ? 'border-[#cdbd86] bg-[#f5efd9] text-[#675728]'
+            ? 'border-[#cdbd86] bg-[#f5efd9] text-[var(--tt-muted)]'
             : appointment.status === 'in_progress'
-            ? 'border-[#bad5c3] bg-[#f1f7f3] text-[#22573d]'
+            ? 'border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] text-[#216245]'
             : appointment.status === 'pending'
             ? 'border-[#ead7ca] bg-[var(--tt-accent-soft)] text-[#79584b]'
             : appointment.status === 'completed'
             ? 'border-[var(--tt-border)] bg-white text-[var(--tt-muted)]'
-            : 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]'
+            : 'border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b]'
 
     const isUpcoming = ['pending', 'confirmed'].includes(appointment.status)
     const isEditable = secondsLeft > 0 && isUpcoming
@@ -62,11 +62,11 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                 <div className='flex items-start justify-between border-b border-[var(--tt-brand)] pb-3.5 gap-3'>
                     <div>
                         <div className='flex items-center gap-2'>
-                            <span className={`inline-block border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${statusStyle}`}>
+                            <span className={`inline-block border px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] ${statusStyle}`}>
                                 {statusLabel}
                             </span>
                             {appointment._id && (
-                                <span className='text-[10px] font-mono text-[var(--tt-ink-soft)]'>
+                                <span className='text-[12px] font-mono text-[var(--tt-ink-soft)]'>
                                     ID: #{appointment._id.slice(-6).toUpperCase()}
                                 </span>
                             )}
@@ -74,7 +74,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                         <h2 className='mt-1.5 font-serif text-2xl font-bold text-[var(--tt-ink)]'>
                             {appointment.petName}
                         </h2>
-                        <p className='mt-0.5 text-[11px] font-semibold text-[var(--tt-ink-soft)] uppercase tracking-wider'>
+                        <p className='mt-0.5 text-[12px] font-semibold text-[var(--tt-ink-soft)] uppercase tracking-[.08em]'>
                             {appointment.petType === 'cat' ? 'Cat' : 'Dog'} {appointment.breed ? `· ${appointment.breed}` : ''}
                         </p>
                     </div>
@@ -93,13 +93,13 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                         </button>
                     )}
                     {isUpcoming && !isEditable && (
-                        <span className='inline-block text-[11px] font-medium text-[var(--tt-ink-soft)] bg-[var(--tt-canvas)] px-2.5 py-1 rounded-md border border-[var(--tt-border)] shrink-0' title='Rescheduling is only allowed within 3 minutes of booking.'>
+                        <span className='inline-block text-[12px] font-medium text-[var(--tt-ink-soft)] bg-[var(--tt-canvas)] px-2.5 py-1 rounded-md border border-[var(--tt-border)] shrink-0' title='Rescheduling is only allowed within 3 minutes of booking.'>
                             Cannot be edited
                         </span>
                     )}
                     {appointment.status === 'in_progress' && (
-                        <span className='inline-flex items-center gap-1.5 text-[11px] font-bold text-[#22573d] bg-[#f1f7f3] px-3 py-1.5 rounded-md border border-[#bad5c3] shrink-0'>
-                            <span className='h-2 w-2 rounded-full bg-[#22573d] animate-pulse' />
+                        <span className='inline-flex items-center gap-1.5 text-[12px] font-bold text-[#216245] bg-[var(--tt-success-bg)] px-3 py-1.5 rounded-md border border-[var(--tt-success-border)] shrink-0'>
+                            <span className='tt-live text-[#216245]' />
                             Session in progress
                         </span>
                     )}
@@ -143,7 +143,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                 {/* AI Preview Image (if available) */}
                 {(appointment.aiPreviewImage || appointment.aiPreview?.generatedImage) && (
                     <div className='space-y-1.5'>
-                        <div className='flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--tt-brand)]'>
+                        <div className='flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>
                             <Sparkles size={13} />
                             <span>Requested Haircut Style Preview</span>
                         </div>
@@ -159,7 +159,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                 {/* Customer Information */}
                 <div className='space-y-2 pt-0.5'>
-                    <h4 className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'>
+                    <h4 className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-ink-soft)]'>
                         Customer & Appointment Info
                     </h4>
                     <div className='grid gap-2.5 text-xs text-[var(--tt-ink-soft)] sm:grid-cols-2'>
@@ -167,7 +167,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                             <div className='flex items-center gap-2.5 rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-2.5'>
                                 <User size={15} className='shrink-0 text-[var(--tt-brand)]' />
                                 <div>
-                                    <p className='text-[9px] text-[var(--tt-ink-soft)] uppercase font-bold'>Pet Owner</p>
+                                    <p className='text-[12px] text-[var(--tt-ink-soft)] uppercase font-bold'>Pet Owner</p>
                                     <p className='font-bold text-[var(--tt-ink)]'>{appointment.ownerName}</p>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                             <div className='flex items-center gap-2.5 rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-2.5'>
                                 <Phone size={15} className='shrink-0 text-[var(--tt-brand)]' />
                                 <div>
-                                    <p className='text-[9px] text-[var(--tt-ink-soft)] uppercase font-bold'>Mobile Phone</p>
+                                    <p className='text-[12px] text-[var(--tt-ink-soft)] uppercase font-bold'>Mobile Phone</p>
                                     <p className='font-bold text-[var(--tt-ink)]'>{appointment.ownerPhone}</p>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                 {/* Notes */}
                 {appointment.notes && (
                     <div className='rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 text-xs space-y-1'>
-                        <p className='font-bold text-[var(--tt-ink-soft)] uppercase tracking-wider text-[9px]'>Special Instructions</p>
+                        <p className='font-bold text-[var(--tt-ink-soft)] uppercase tracking-[.08em] text-[12px]'>Special Instructions</p>
                         <p className='text-[var(--tt-ink-soft)] leading-relaxed'>&quot;{appointment.notes}&quot;</p>
                     </div>
                 )}
@@ -200,40 +200,37 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                     const activeIndex = currentIdx >= 0 ? currentIdx : 0
 
                     return (
-                        <div className='rounded-xl border border-[#bad5c3] bg-[#f7faf8] p-4.5 space-y-4 text-xs shadow-xs'>
+                        <div className='rounded-xl border border-[var(--tt-success-border)] bg-[#f7faf8] p-4.5 space-y-4 text-xs shadow-xs'>
                             <div className='flex items-center justify-between border-b border-[#d6e7dc] pb-3'>
                                 <div className='flex items-center gap-2.5'>
-                                    <span className='relative flex h-2.5 w-2.5'>
-                                        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3d7f5c] opacity-75'></span>
-                                        <span className='relative inline-flex h-2.5 w-2.5 rounded-full bg-[#22573d]'></span>
-                                    </span>
+                                    <span className='tt-live text-[#216245]' />
                                     <div>
-                                        <p className='text-[10px] font-bold uppercase tracking-wider text-[#22573d]'>
+                                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[#216245]'>
                                             Live Salon Service Tracker
                                         </p>
-                                        <h4 className='font-serif text-base font-bold text-[#143725]'>
+                                        <h4 className='font-serif text-base font-bold text-[#1a4a35]'>
                                             {appointment.service} in Progress
                                         </h4>
                                     </div>
                                 </div>
                                 <div className='text-right'>
-                                    <span className='rounded-full bg-[#e6f0ea] px-2.5 py-1 text-[10px] font-mono font-bold text-[#22573d]'>
+                                    <span className='rounded-full bg-[#e6f0ea] px-2.5 py-1 text-[12px] font-mono font-bold text-[#216245]'>
                                         Step {progress.currentStep} of {progress.totalSteps}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Current Active Milestone Highlight */}
-                            <div className='rounded-lg bg-gradient-to-r from-[#eff6f2] to-[#f5f9f6] border border-[#bad5c3] p-3'>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#22573d]'>Current Milestone</p>
-                                <p className='mt-0.5 font-serif text-base font-bold text-[#143725]'>
+                            <div className='rounded-lg bg-gradient-to-r from-[#eff6f2] to-[#f5f9f6] border border-[var(--tt-success-border)] p-3'>
+                                <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[#216245]'>Current Milestone</p>
+                                <p className='mt-0.5 font-serif text-base font-bold text-[#1a4a35]'>
                                     {appointment.serviceStage || stages[activeIndex]?.label || 'Underway'}
                                 </p>
-                                <p className='mt-1 text-[11px] text-[#426651] leading-relaxed'>
+                                <p className='mt-1 text-[12px] text-[#426651] leading-relaxed'>
                                     {appointment.petName} is currently receiving this step. Our salon specialists provide gentle, professional care at every stage.
                                 </p>
                                 {appointment.serviceStageUpdatedAt && (
-                                    <p className='mt-2 text-[10px] font-mono text-[#5f846f]'>
+                                    <p className='mt-2 text-[12px] font-mono text-[#5f846f]'>
                                         Milestone updated: {new Date(appointment.serviceStageUpdatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </p>
                                 )}
@@ -241,13 +238,13 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                             {/* Progress Bar */}
                             <div className='space-y-1.5'>
-                                <div className='flex justify-between text-[11px] font-semibold text-[#22573d]'>
+                                <div className='flex justify-between text-[12px] font-semibold text-[#216245]'>
                                     <span>Milestone Progress</span>
                                     <span>{progress.percentage}%</span>
                                 </div>
                                 <div className='h-2 w-full overflow-hidden rounded-full bg-[#dceade]'>
                                     <div
-                                        className='h-full rounded-full bg-gradient-to-r from-[#3d7f5c] to-[#22573d] transition-all duration-700 ease-out'
+                                        className='h-full rounded-full bg-gradient-to-r from-[#216245] to-[#216245] transition-all duration-700 ease-out'
                                         style={{ width: `${progress.percentage}%` }}
                                     />
                                 </div>
@@ -255,7 +252,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                             {/* Step-by-Step Milestones List */}
                             <div className='space-y-2 pt-1'>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[#5f7a6b]'>Session Steps</p>
+                                <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[#5f7a6b]'>Session Steps</p>
                                 <div className='space-y-1.5'>
                                     {stages.map((stg, idx) => {
                                         const isDone = idx < activeIndex
@@ -267,39 +264,39 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                                                 key={stg.id}
                                                 className={`flex items-center gap-3 rounded-lg border p-2.5 transition ${
                                                     isCurrent
-                                                        ? 'border-[#22573d] bg-white shadow-xs'
+                                                        ? 'border-[#216245] bg-white shadow-xs'
                                                         : isDone
-                                                        ? 'border-[#cce1d4] bg-[#f2f7f4] text-[#22573d]'
-                                                        : 'border-transparent bg-white/50 text-[#718c7c]'
+                                                        ? 'border-[#cce1d4] bg-[var(--tt-success-bg)] text-[#216245]'
+                                                        : 'border-transparent bg-white/50 text-[var(--tt-success-muted)]'
                                                 }`}
                                             >
                                                 <div className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold ${
                                                     isDone
-                                                        ? 'bg-[#22573d] text-white'
+                                                        ? 'bg-[#216245] text-white'
                                                         : isCurrent
-                                                        ? 'bg-[#22573d] text-white ring-4 ring-[#bad5c3]/40'
-                                                        : 'bg-[#e4ece6] text-[#718c7c]'
+                                                        ? 'bg-[#216245] text-white ring-4 ring-[var(--tt-success-border)]/40'
+                                                        : 'bg-[#e4ece6] text-[var(--tt-success-muted)]'
                                                 }`}>
                                                     {isDone ? <Check size={13} strokeWidth={2.5} /> : idx + 1}
                                                 </div>
                                                 <div className='min-w-0 flex-1'>
-                                                    <p className={`text-xs ${isCurrent ? 'font-bold text-[#143725]' : isDone ? 'font-semibold text-[#22573d]' : 'font-medium text-[#718c7c]'}`}>
+                                                    <p className={`text-xs ${isCurrent ? 'font-bold text-[#1a4a35]' : isDone ? 'font-semibold text-[#216245]' : 'font-medium text-[var(--tt-success-muted)]'}`}>
                                                         {stg.label}
                                                     </p>
                                                 </div>
                                                 <div>
                                                     {isDone && (
-                                                        <span className='rounded-full bg-[#dceade] px-2 py-0.5 text-[9px] font-bold text-[#22573d]'>
+                                                        <span className='rounded-full bg-[#dceade] px-2 py-0.5 text-[12px] font-bold text-[#216245]'>
                                                             Done
                                                         </span>
                                                     )}
                                                     {isCurrent && (
-                                                        <span className='inline-flex items-center gap-1 rounded-full bg-[#22573d] px-2 py-0.5 text-[9px] font-bold text-white shadow-xs animate-pulse'>
+                                                        <span className='inline-flex items-center gap-1 rounded-full bg-[#216245] px-2 py-0.5 text-[12px] font-bold text-white'>
                                                             In Progress
                                                         </span>
                                                     )}
                                                     {isUpcoming && (
-                                                        <span className='text-[10px] text-[#8aa394] font-medium'>
+                                                        <span className='text-[12px] text-[#8aa394] font-medium'>
                                                             Waiting
                                                         </span>
                                                     )}
@@ -315,8 +312,8 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
 
                 {/* Cancellation Reason Alert (if cancelled) */}
                 {appointment.status === 'cancelled' && (
-                    <div className='rounded-lg border border-[#F0CCCC] bg-[#FBEAEA] p-3 text-xs text-[#7F3333] space-y-1'>
-                        <div className='flex items-center gap-1.5 font-bold uppercase tracking-wider text-[9px] text-[#9E3E3E]'>
+                    <div className='rounded-lg border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] p-3 text-xs text-[#7d3f3f] space-y-1'>
+                        <div className='flex items-center gap-1.5 font-bold uppercase tracking-[.08em] text-[12px] text-[#934b4b]'>
                             <XCircle size={14} />
                             <span>Cancellation Explanation</span>
                         </div>
@@ -332,7 +329,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                         <MapPin size={15} className='shrink-0 text-[var(--tt-brand)]' />
                         <span>TimmyTails · Baliuag City, Bulacan</span>
                     </div>
-                    <p className='pl-5 text-[11px] text-[var(--tt-ink)]/90 leading-normal'>
+                    <p className='pl-5 text-[12px] text-[var(--tt-ink)]/90 leading-normal'>
                         Please arrive <strong>5–10 minutes before</strong> your appointment. Late arrival beyond 10 minutes will automatically cancel your booking.
                     </p>
                 </div>
@@ -346,7 +343,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                                 onCancel(appointment)
                                 onClose()
                             }}
-                            className='inline-flex items-center gap-1.5 rounded-lg border border-[#e8c5c5] bg-white px-3.5 py-2 text-xs font-semibold text-[#934b4b] shadow-xs transition-colors hover:border-[#d99b9b] hover:bg-[#fbefef] hover:text-[#7d3f3f]'
+                            className='inline-flex items-center gap-1.5 rounded-lg border border-[var(--tt-danger-border)] bg-white px-3.5 py-2 text-xs font-semibold text-[#934b4b] shadow-xs transition-colors hover:border-[#d99b9b] hover:bg-[var(--tt-danger-bg)] hover:text-[#7d3f3f]'
                         >
                             <XCircle size={14} />
                             <span>Cancel appointment</span>
@@ -355,7 +352,7 @@ export default function AppointmentDetailsModal({ appointment, onClose, onCancel
                     <button
                         type='button'
                         onClick={onClose}
-                        className='rounded-lg bg-[#262626] px-5 py-2 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#3d3d3d]'
+                        className='rounded-lg bg-[var(--tt-brand-strong)] px-5 py-2 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[var(--tt-brand)]'
                     >
                         Close
                     </button>

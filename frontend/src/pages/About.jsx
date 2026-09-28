@@ -58,8 +58,8 @@ export default function About() {
     <>
       <style>{`
         .editorial-about-page {
-          background-color: #fdf4ef;
-          color: #2b2b2b;
+          background-color: var(--tt-canvas);
+          color: var(--tt-ink);
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 1.5rem 1.5rem 6rem;
           overflow-x: hidden;
@@ -95,7 +95,7 @@ export default function About() {
           flex-direction: column;
           gap: 2.5rem;
           opacity: 0.22;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
         }
@@ -136,7 +136,7 @@ export default function About() {
           font-size: 0.82rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 1.2rem;
         }
@@ -145,7 +145,7 @@ export default function About() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.5rem, 4.2vw, 3.8rem);
           line-height: 1.15;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
         }
@@ -157,7 +157,7 @@ export default function About() {
         .hero-description {
           font-size: 1.02rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           max-width: 480px;
           margin: 0;
         }
@@ -225,7 +225,7 @@ export default function About() {
           bottom: 25px;
           width: 32px;
           height: 32px;
-          color: #cf7c54;
+          color: var(--tt-accent);
           z-index: 4;
         }
 
@@ -240,14 +240,14 @@ export default function About() {
           position: relative;
           background: linear-gradient(rgba(26, 24, 23, 0.65), rgba(26, 24, 23, 0.65)),
                       url('/about-vision.jpg') center/cover no-repeat;
-          background-color: #3b332f;
+          background-color: var(--tt-ink);
           border-radius: 8px;
           padding: 4rem 3rem;
           min-height: 270px;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          color: #ffffff;
+          color: #fff;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
         }
 
@@ -256,7 +256,7 @@ export default function About() {
           font-size: 2.2rem;
           font-weight: 500;
           margin: 0 0 1rem 0;
-          color: #ffffff;
+          color: #fff;
         }
 
         .vision-card p {
@@ -268,7 +268,7 @@ export default function About() {
         }
 
         .mission-card {
-          background-color: #ffffff;
+          background-color: #fff;
           border-radius: 8px;
           padding: 4rem 3.5rem;
           min-height: 270px;
@@ -284,20 +284,20 @@ export default function About() {
           font-size: 2.2rem;
           font-weight: 500;
           margin: 0 0 1rem 0;
-          color: #21201e;
+          color: var(--tt-ink);
         }
 
         .mission-card p {
           font-size: 1.05rem;
           line-height: 1.75;
-          color: #59534c;
+          color: var(--tt-ink-soft);
           margin: 0;
           max-width: 460px;
         }
 
         /* Brand Story */
         .brand-story-card {
-          background: #ffffff;
+          background: #fff;
           border-radius: 8px;
           overflow: hidden;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
@@ -331,7 +331,7 @@ export default function About() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(1.9rem, 2.5vw, 2.4rem);
           line-height: 1.3;
-          color: #21201e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
         }
@@ -339,14 +339,14 @@ export default function About() {
         .story-content-wrap p {
           font-size: 0.98rem;
           line-height: 1.8;
-          color: #5e574f;
+          color: var(--tt-ink-soft);
           margin: 0 0 1.25rem 0;
         }
 
         .custom-dark-btn {
           display: inline-block;
-          background-color: #262626;
-          color: #ffffff;
+          background-color: var(--tt-brand-strong);
+          color: #fff;
           padding: 0.85rem 2.2rem;
           font-size: 0.85rem;
           letter-spacing: 1.5px;
@@ -358,13 +358,13 @@ export default function About() {
         }
 
         .custom-dark-btn:hover {
-          background-color: #3d3d3d;
+          background-color: var(--tt-brand);
           transform: translateY(-1px);
         }
 
         /* Comfort & Experience Card */
         .comfort-card {
-          background: #ffffff;
+          background: #fff;
           border-radius: 8px;
           padding: 4rem;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
@@ -385,7 +385,7 @@ export default function About() {
           font-size: 0.8rem;
           letter-spacing: 2px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           margin-bottom: 0.85rem;
         }
@@ -394,7 +394,7 @@ export default function About() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2rem, 2.8vw, 2.6rem);
           line-height: 1.25;
-          color: #21201e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
         }
@@ -402,7 +402,7 @@ export default function About() {
         .comfort-left p {
           font-size: 0.98rem;
           line-height: 1.8;
-          color: #5e574f;
+          color: var(--tt-ink-soft);
           margin: 0 0 1.5rem 0;
         }
 
@@ -437,7 +437,7 @@ export default function About() {
           font-size: 0.8rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.85rem;
@@ -447,7 +447,7 @@ export default function About() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.2rem, 3.5vw, 3rem);
           line-height: 1.2;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.25rem 0;
         }
@@ -455,7 +455,7 @@ export default function About() {
         .why-subtitle {
           font-size: 1rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -466,7 +466,7 @@ export default function About() {
         }
 
         .why-card {
-          background: #ffffff;
+          background: #fff;
           border-radius: 8px;
           padding: 3rem 2rem 2.5rem;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
@@ -492,7 +492,7 @@ export default function About() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
+          background: linear-gradient(90deg, var(--tt-accent), var(--tt-gold-light));
           opacity: 0;
           transition: opacity 0.3s ease;
         }
@@ -505,8 +505,8 @@ export default function About() {
           width: 54px;
           height: 54px;
           border-radius: 50%;
-          background-color: #fdf4ef;
-          color: #a47d44;
+          background-color: var(--tt-canvas);
+          color: var(--tt-gold);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -516,16 +516,16 @@ export default function About() {
         }
 
         .why-card:hover .why-icon-box {
-          background-color: #24211e;
-          color: #ffffff;
-          border-color: #24211e;
+          background-color: var(--tt-ink);
+          color: #fff;
+          border-color: var(--tt-ink);
         }
 
         .why-card-title {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.25rem;
           font-weight: 500;
-          color: #24211e;
+          color: var(--tt-ink);
           margin: 0 0 1rem 0;
           line-height: 1.35;
         }
@@ -533,7 +533,7 @@ export default function About() {
         .why-card-desc {
           font-size: 0.92rem;
           line-height: 1.7;
-          color: #6a635b;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -650,7 +650,7 @@ export default function About() {
                       left: '1rem',
                       backgroundColor: 'rgba(23, 21, 19, 0.8)',
                       backdropFilter: 'blur(4px)',
-                      color: '#d1a85b',
+                      color: 'var(--tt-gold-light)',
                       fontSize: '0.72rem',
                       fontWeight: 600,
                       letterSpacing: '1px',
@@ -677,8 +677,8 @@ export default function About() {
                     position: 'absolute',
                     top: '1rem',
                     right: '1rem',
-                    backgroundColor: '#d1a85b',
-                    color: '#171513',
+                    backgroundColor: 'var(--tt-gold-light)',
+                    color: 'var(--tt-ink)',
                     fontSize: '0.72rem',
                     fontWeight: 700,
                     letterSpacing: '1px',

@@ -25,7 +25,7 @@ export default function BottomNav({ mode = 'public' }) {
         <nav aria-label='Customer mobile navigation' className='fixed inset-x-0 bottom-0 z-40 border-t border-[var(--tt-border)] bg-[var(--tt-canvas)]/98 px-2 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1.5 backdrop-blur md:hidden'>
           <div className='grid min-h-14 grid-cols-4'>
             {items.map(({ label, to, icon: Icon }) => (
-              <NavLink key={to} to={to} end={to === '/dashboard'} className={({ isActive }) => `relative flex flex-col items-center justify-center gap-1 text-[10px] font-medium ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)]'}`}>
+              <NavLink key={to} to={to} end={to === '/dashboard'} className={({ isActive }) => `relative flex flex-col items-center justify-center gap-1 text-[12px] font-medium ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)]'}`}>
                 {({ isActive }) => <>{createElement(Icon, { size: 18, strokeWidth: isActive ? 2 : 1.5 })}<span>{label}</span>{isActive && <span className='absolute inset-x-5 top-0 h-px bg-[var(--tt-gold)]' />}</>}
               </NavLink>
             ))}
@@ -55,7 +55,7 @@ export default function BottomNav({ mode = 'public' }) {
     <nav aria-label='Website mobile navigation' className='fixed inset-x-0 bottom-0 z-40 border-t border-[var(--tt-border)] bg-[var(--tt-canvas)] px-2 pb-[max(.4rem,env(safe-area-inset-bottom))] pt-1.5 md:hidden'>
       <div className='grid min-h-14 grid-cols-4'>
         {publicItems.map(({ label, to, icon: Icon }) => (
-          <NavLink key={`${label}-${to}`} to={to} end={to === '/'} className={({ isActive }) => `flex flex-col items-center justify-center gap-1 text-[10px] font-medium ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)]'}`}>
+          <NavLink key={`${label}-${to}`} to={to} end={to === '/'} className={({ isActive }) => `flex flex-col items-center justify-center gap-1 text-[12px] font-medium ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)]'}`}>
             {createElement(Icon, { size: 18, strokeWidth: 1.6 })}<span>{label}</span>
           </NavLink>
         ))}

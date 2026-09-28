@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ChevronDown, HeartHandshake, Loader2, Scissors, Search, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, Check, ChevronDown, HeartHandshake, Loader2, Scissors, Search, ShieldCheck, Sparkles, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { getErrorMessage, warmupBackendServer } from '../utils/api'
@@ -278,7 +278,7 @@ export default function Signup() {
   }, [googleLogin, routeAfterAuth])
 
   return (
-    <div className='relative min-h-screen bg-[#fdf4ef] text-[#24211e] selection:bg-[#d1a85b]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
+    <div className='relative min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] selection:bg-[var(--tt-gold-light)]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
       <style>{`
         .gold-underline {
           position: relative;
@@ -292,7 +292,7 @@ export default function Signup() {
           right: 0;
           bottom: -1px;
           height: 1px;
-          background: #d1a85b;
+          background: var(--tt-gold-light);
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -313,12 +313,12 @@ export default function Signup() {
       `}</style>
 
       {/* LEFT SHOWCASE PANEL */}
-      <section className='relative hidden min-h-screen overflow-hidden bg-[#1c1a18] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
+      <section className='relative hidden min-h-screen overflow-hidden bg-[var(--tt-ink)] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
         <div className='pointer-events-none absolute left-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
         <div className='pointer-events-none absolute right-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
 
         <Botanical className='anim-leaf-float pointer-events-none absolute -left-20 top-1/2 -translate-y-1/2 w-80 rotate-12 text-white/[0.04]' />
-        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[#d1a85b]/[0.08]' />
+        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[var(--tt-gold-light)]/[0.08]' />
 
         {/* Header Logo */}
         <div className='relative z-10'>
@@ -338,44 +338,44 @@ export default function Signup() {
             Begin a quiet, dedicated standard of grooming care.
           </h2>
 
-          <p className='mt-5 max-w-md text-base leading-relaxed text-[#b5aba0]'>
+          <p className='mt-5 max-w-md text-base leading-relaxed text-[var(--tt-muted-soft)]'>
             Register once to preserve your companion’s health records, haircut references, and tailored handling notes across every visit.
           </p>
 
           <div className='mt-10 space-y-4 border-t border-white/10 pt-8'>
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <HeartHandshake size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Gentle, Patient Handling</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Every ritual is adapted to your companion's temper.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Every ritual is adapted to your companion's temper.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <ShieldCheck size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Cage-Free Sanctuary</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Calm, dedicated care suites with zero chaotic waiting.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Calm, dedicated care suites with zero chaotic waiting.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <Scissors size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Tailored Breed Styling</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Precision hand-sculpting for dogs and cats alike.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Precision hand-sculpting for dogs and cats alike.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[var(--tt-muted-soft)]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -386,9 +386,9 @@ export default function Signup() {
         <div className='relative z-10 w-full max-w-[540px]'>
           <Link
             to='/'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
           >
-            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            <ArrowLeft size={14} className='text-[var(--tt-accent)] transition-transform duration-300 group-hover:-translate-x-1' />
             Back to home
           </Link>
 
@@ -398,14 +398,14 @@ export default function Signup() {
               alt='TimmyTails'
               className='h-10 w-10 rounded-full object-cover border border-[rgba(210,143,119,0.4)] shadow-xs'
             />
-            <span className='font-serif text-2xl font-medium text-[#24211e]'>TimmyTails</span>
+            <span className='font-serif text-2xl font-medium text-[var(--tt-ink)]'>TimmyTails</span>
           </div>
 
           <div>
-            <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+            <h1 className='font-serif text-4xl font-medium tracking-tight text-[var(--tt-ink)] sm:text-5xl'>
               {step === 'details' ? 'Create your account.' : 'Verify your email.'}
             </h1>
-            <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
+            <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
               {step === 'details'
                 ? 'Register with Google or your email address to begin scheduling grooming appointments.'
                 : `We have sent a six-digit verification code to your email address (${form.email}).`}
@@ -418,7 +418,7 @@ export default function Signup() {
                 <GoogleSignInButton onCredential={handleGoogle} disabled={submitting} text='signup_with' />
               </div>
 
-              <div className='my-7 flex items-center gap-3 text-xs font-medium text-[#82746b]'>
+              <div className='my-7 flex items-center gap-3 text-xs font-medium text-[var(--tt-muted)]'>
                 <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
                 <span>or register with details</span>
                 <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
@@ -443,10 +443,10 @@ export default function Signup() {
                   <div>
                     <label className='block'>
                       <span className='mb-1.5 flex items-center gap-1'>
-                        <span className='block text-xs font-semibold text-[#54483e]'>
+                        <span className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                           Mobile Number
                         </span>
-                        <span className='text-[#cf7c54]'>*</span>
+                        <span className='text-[var(--tt-accent)]'>*</span>
                       </span>
                       <PhoneField
                         label=''
@@ -456,7 +456,7 @@ export default function Signup() {
                         placeholder='917 123 4567'
                       />
                     </label>
-                    <span className='mt-1 block text-[11px] text-[#82746b]'>
+                    <span className='mt-1 block text-[12px] text-[var(--tt-muted)]'>
                       Used for appointment updates and SMS reminders.
                     </span>
                   </div>
@@ -465,9 +465,9 @@ export default function Signup() {
                 {/* Cascading Philippine Address Section */}
                 <div className='rounded-xl border border-[rgba(210,143,119,0.3)] bg-white/70 p-5 shadow-[0_4px_16px_rgba(40,26,18,0.02)] backdrop-blur-sm'>
                   <div className='flex items-center gap-2'>
-                    <h2 className='font-serif text-base font-medium text-[#24211e]'>Home Address</h2>
+                    <h2 className='font-serif text-base font-medium text-[var(--tt-ink)]'>Home Address</h2>
                   </div>
-                  <p className='mt-0.5 text-xs text-[#82746b]'>Used for appointment record & verification.</p>
+                  <p className='mt-0.5 text-xs text-[var(--tt-muted)]'>Used for appointment record & verification.</p>
 
                   <div className='mt-4 space-y-4'>
                     {/* Row 1: Province & City/Municipality */}
@@ -550,13 +550,13 @@ export default function Signup() {
                   />
                 </div>
 
-                <div className='rounded-md border border-[rgba(210,143,119,0.3)] bg-white/70 p-3 text-[11px] leading-relaxed text-[#635b53]'>
+                <div className='rounded-md border border-[rgba(210,143,119,0.3)] bg-white/70 p-3 text-[12px] leading-relaxed text-[var(--tt-ink-soft)]'>
                   By creating an account or continuing with Google, you agree to TimmyTails’{' '}
                   <Link
                     to='/terms-of-service'
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='font-semibold text-[#24211e] underline underline-offset-2 hover:text-[#a47d44]'
+                    className='font-semibold text-[var(--tt-ink)] underline underline-offset-2 hover:text-[var(--tt-gold)]'
                   >
                     Terms of Service
                   </Link>{' '}
@@ -565,7 +565,7 @@ export default function Signup() {
                     to='/privacy-policy'
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='font-semibold text-[#24211e] underline underline-offset-2 hover:text-[#a47d44]'
+                    className='font-semibold text-[var(--tt-ink)] underline underline-offset-2 hover:text-[var(--tt-gold)]'
                   >
                     Privacy Policy
                   </Link>.
@@ -574,11 +574,11 @@ export default function Signup() {
                 <button
                   type='submit'
                   disabled={submitting}
-                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
+                  className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99] disabled:opacity-50'
                 >
                   {submitting ? (
                     <>
-                      <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Sending code…
+                      <Loader2 size={16} className='animate-spin text-[var(--tt-gold-light)]' /> Sending code…
                     </>
                   ) : (
                     'Send Verification Code'
@@ -589,9 +589,9 @@ export default function Signup() {
           ) : (
             /* Step 2: OTP Verification */
             <form onSubmit={verifyOtp} className='mt-8 space-y-4'>
-              <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[#675728] shadow-xs'>
+              <div className='rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-4 text-xs leading-relaxed text-[var(--tt-muted)] shadow-xs'>
                 Enter the six-digit verification code sent to your email address{' '}
-                <strong className='font-semibold text-[#24211e]'>
+                <strong className='font-semibold text-[var(--tt-ink)]'>
                   {form.email || 'your email'}
                 </strong>{' '}
                 to confirm and activate your account.
@@ -611,24 +611,24 @@ export default function Signup() {
               <button
                 type='submit'
                 disabled={submitting || otp.length !== 6}
-                className='inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
+                className='inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99] disabled:opacity-50'
               >
                 {submitting ? (
                   <>
-                    <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Confirming…
+                    <Loader2 size={16} className='animate-spin text-[var(--tt-gold-light)]' /> Confirming…
                   </>
                 ) : (
                   'Verify & Create Account'
                 )}
               </button>
 
-              <div className='flex items-center justify-between rounded-lg border border-[rgba(210,143,119,0.3)] bg-white/70 p-3.5 text-xs text-[#82746b]'>
+              <div className='flex items-center justify-between rounded-lg border border-[rgba(210,143,119,0.3)] bg-white/70 p-3.5 text-xs text-[var(--tt-muted)]'>
                 <span>{otpTimer > 0 ? `Resend code in ${otpTimer}s` : "Didn't receive the code?"}</span>
                 <button
                   type='button'
                   onClick={resendOtp}
                   disabled={submitting || otpTimer > 0}
-                  className='font-bold text-[#a47d44] transition hover:text-[#24211e] disabled:opacity-40'
+                  className='font-bold text-[var(--tt-gold)] transition hover:text-[var(--tt-ink)] disabled:opacity-40'
                 >
                   {otpTimer > 0 ? `Resend (${otpTimer}s)` : 'Resend Code'}
                 </button>
@@ -637,19 +637,19 @@ export default function Signup() {
               <button
                 type='button'
                 onClick={() => setStep('details')}
-                className='gold-underline w-full pt-2 text-center text-xs font-semibold text-[#82746b] hover:text-[#24211e]'
+                className='gold-underline w-full pt-2 text-center text-xs font-semibold text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
               >
                 &larr; Edit registration details
               </button>
             </form>
           )}
 
-          <p className='mt-8 text-center text-xs text-[#82746b]'>
+          <p className='mt-8 text-center text-xs text-[var(--tt-muted)]'>
             Already registered with us?{' '}
             <Link
               to='/login'
               state={{ returnTo: requestedReturnTo }}
-              className='gold-underline font-bold text-[#24211e]'
+              className='gold-underline font-bold text-[var(--tt-ink)]'
             >
               Sign in to your care desk
             </Link>
@@ -664,17 +664,17 @@ function Field({ label, help, required = true, className = '', ...props }) {
   return (
     <label className='block'>
       <span className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-xs font-semibold text-[#54483e]'>
+        <span className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
           {label}
         </span>
-        {required && <span className='text-[#cf7c54]'>*</span>}
+        {required && <span className='text-[var(--tt-accent)]'>*</span>}
       </span>
       <input
         required={required}
-        className={`h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 ${className}`}
+        className={`h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[var(--tt-ink)] outline-none transition-all focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20 ${className}`}
         {...props}
       />
-      {help && <span className='mt-1 block text-[11px] text-[#82746b]'>{help}</span>}
+      {help && <span className='mt-1 block text-[12px] text-[var(--tt-muted)]'>{help}</span>}
     </label>
   )
 }
@@ -743,10 +743,10 @@ function AddressSelect({
   return (
     <div className='relative' ref={containerRef}>
       <label htmlFor={id} className='mb-1.5 flex items-center gap-1'>
-        <span className='block text-xs font-semibold text-[#54483e]'>
+        <span className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
           {label}
         </span>
-        {required && <span className='text-[#cf7c54]'>*</span>}
+        {required && <span className='text-[var(--tt-accent)]'>*</span>}
       </label>
 
       <button
@@ -755,18 +755,18 @@ function AddressSelect({
         disabled={disabled || loading}
         onClick={() => setOpen((prev) => !prev)}
         className={`flex h-12 w-full items-center justify-between rounded-md border px-4 text-left text-sm transition-all outline-none ${disabled
-          ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[#a59a8f]'
+          ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[var(--tt-muted-soft)]'
           : open
-            ? 'border-[#d1a85b] bg-white ring-2 ring-[#d1a85b]/20'
-            : 'border-[rgba(210,143,119,0.35)] bg-white text-[#24211e] hover:border-[#a47d44]'
+            ? 'border-[var(--tt-gold-light)] bg-white ring-2 ring-[var(--tt-gold-light)]/20'
+            : 'border-[rgba(210,143,119,0.35)] bg-white text-[var(--tt-ink)] hover:border-[var(--tt-gold)]'
           }`}
         aria-haspopup='listbox'
         aria-expanded={open}
       >
-        <span className={`truncate ${!value ? 'text-[#a59a8f]' : 'text-[#24211e]'}`}>
+        <span className={`truncate ${!value ? 'text-[var(--tt-muted-soft)]' : 'text-[var(--tt-ink)]'}`}>
           {loading ? (
-            <span className='flex items-center gap-2 italic text-[#82746b]'>
-              <Loader2 size={14} className='animate-spin text-[#d1a85b]' />
+            <span className='flex items-center gap-2 italic text-[var(--tt-muted)]'>
+              <Loader2 size={14} className='animate-spin text-[var(--tt-gold-light)]' />
               Loading options...
             </span>
           ) : (
@@ -774,14 +774,14 @@ function AddressSelect({
           )}
         </span>
 
-        <span className='ml-2 flex shrink-0 items-center gap-1 text-[#82746b]'>
+        <span className='ml-2 flex shrink-0 items-center gap-1 text-[var(--tt-muted)]'>
           {value && !disabled && !loading && (
             <span
               role='button'
               tabIndex={0}
               onClick={handleClear}
               onKeyDown={(e) => e.key === 'Enter' && handleClear(e)}
-              className='grid h-5 w-5 place-items-center rounded-full hover:bg-[rgba(210,143,119,0.15)] hover:text-[#24211e]'
+              className='grid h-5 w-5 place-items-center rounded-full hover:bg-[rgba(210,143,119,0.15)] hover:text-[var(--tt-ink)]'
               title='Clear'
             >
               <X size={12} />
@@ -789,7 +789,7 @@ function AddressSelect({
           )}
           <ChevronDown
             size={16}
-            className={`transition-transform duration-200 ${open ? 'rotate-180 text-[#a47d44]' : ''}`}
+            className={`transition-transform duration-200 ${open ? 'rotate-180 text-[var(--tt-gold)]' : ''}`}
           />
         </span>
       </button>
@@ -799,18 +799,18 @@ function AddressSelect({
           className='absolute left-0 top-full z-50 mt-1.5 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white shadow-xl transition-all'
           role='listbox'
         >
-          <div className='flex items-center border-b border-[rgba(210,143,119,0.2)] bg-[#fdf4ef]/80 px-3 py-2'>
-            <Search size={14} className='mr-2 text-[#a47d44]' />
+          <div className='flex items-center border-b border-[rgba(210,143,119,0.2)] bg-[var(--tt-canvas)]/80 px-3 py-2'>
+            <Search size={14} className='mr-2 text-[var(--tt-gold)]' />
             <input
               ref={searchInputRef}
               type='text'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
-              className='w-full bg-transparent text-xs text-[#24211e] placeholder:text-[#a59a8f] outline-none'
+              className='w-full bg-transparent text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted-soft)] outline-none'
             />
             {search && (
-              <button type='button' onClick={() => setSearch('')} className='text-[#82746b] hover:text-[#24211e]'>
+              <button type='button' onClick={() => setSearch('')} className='text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>
                 <X size={12} />
               </button>
             )}
@@ -828,17 +828,17 @@ function AddressSelect({
                     aria-selected={isSelected}
                     onClick={() => handleSelect(item)}
                     className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs transition-colors ${isSelected
-                      ? 'bg-[#fdf4ef] font-semibold text-[#a47d44]'
-                      : 'text-[#24211e] hover:bg-[#fdf4ef] hover:text-[#a47d44]'
+                      ? 'bg-[var(--tt-canvas)] font-semibold text-[var(--tt-gold)]'
+                      : 'text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] hover:text-[var(--tt-gold)]'
                       }`}
                   >
                     <span>{item.name}</span>
-                    {isSelected && <span className='text-[10px] text-[#d1a85b]'>✦</span>}
+                    {isSelected && <Check size={13} className='text-[var(--tt-gold-light)]' aria-hidden='true' />}
                   </button>
                 )
               })
             ) : (
-              <div className='px-4 py-6 text-center text-xs text-[#82746b]'>
+              <div className='px-4 py-6 text-center text-xs text-[var(--tt-muted)]'>
                 No locations match &ldquo;{search}&rdquo;
               </div>
             )}

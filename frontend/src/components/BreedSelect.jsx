@@ -42,11 +42,11 @@ export default function BreedSelect({
     }
 
     const defaultLabelClasses = variant === 'mypets' || variant === 'gold'
-        ? 'mb-1.5 block text-xs font-semibold text-[#635b53]'
+        ? 'mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'
         : 'mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'
 
     const defaultSelectClasses = variant === 'mypets' || variant === 'gold'
-        ? 'field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'
+        ? 'field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[var(--tt-ink)] outline-none transition-colors focus:border-[var(--tt-gold)]'
         : 'field-control h-11 w-full'
 
     const labelClasses = labelClassName || defaultLabelClasses
@@ -84,13 +84,13 @@ export default function BreedSelect({
                         <button
                             type='button'
                             onClick={() => { setIsCustomMode(false); onChange('') }}
-                            className='text-[11px] text-[#a47d44] hover:underline font-medium'
+                            className='text-[12px] text-[var(--tt-gold)] hover:underline font-medium'
                         >
                             &larr; Choose from breed list
                         </button>
                     </div>
                 )}
-                {help && <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>{help}</span>}
+                {help && <span className='mt-1 block text-[12px] text-[var(--tt-ink-soft)]'>{help}</span>}
             </label>
         </div>
     )

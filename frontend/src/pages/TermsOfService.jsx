@@ -55,7 +55,7 @@ export default function TermsOfService() {
         <div className='min-h-screen bg-[var(--tt-canvas)] px-4 py-12 text-[var(--tt-ink)] sm:px-6 lg:px-8'>
             <div className='mx-auto max-w-4xl'>
                 <div className='mb-8 border-b border-[var(--tt-brand)] pb-6 text-center sm:text-left'>
-                    <span className='inline-block rounded-md bg-[var(--tt-brand)]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>
+                    <span className='inline-block rounded-md bg-[var(--tt-brand)]/10 px-3 py-1 text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>
                         Terms &amp; Policies
                     </span>
                     <h1 className='mt-2 font-serif text-3xl font-bold tracking-tight text-[var(--tt-ink)] sm:text-4xl'>

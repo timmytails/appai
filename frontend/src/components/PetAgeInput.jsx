@@ -105,8 +105,8 @@ export default function PetAgeInput({
         <span
           className={
             isGold
-              ? 'mb-1.5 block text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'
-              : 'mb-1.5 block text-xs font-bold uppercase tracking-wider text-[var(--tt-ink-soft)]'
+              ? 'mb-1.5 block text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'
+              : 'mb-1.5 block text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-ink-soft)]'
           }
         >
           {label}
@@ -114,7 +114,7 @@ export default function PetAgeInput({
         <div
           className={`flex overflow-hidden transition-colors ${
             isGold
-              ? 'rounded-md border border-[rgba(210,143,119,0.4)] bg-white focus-within:border-[#a47d44]'
+              ? 'rounded-md border border-[rgba(210,143,119,0.4)] bg-white focus-within:border-[var(--tt-gold)]'
               : 'border border-[var(--tt-border)] bg-white focus-within:border-[var(--tt-ink)]'
           }`}
         >
@@ -126,7 +126,7 @@ export default function PetAgeInput({
             value={rawNumber}
             onChange={handleNumberChange}
             placeholder={unit === 'years' ? 'e.g. 2' : 'e.g. 6'}
-            className='h-11 w-full bg-transparent px-3 text-sm text-[#24211e] outline-none placeholder:text-[#82746b]/50'
+            className='h-11 w-full bg-transparent px-3 text-sm text-[var(--tt-ink)] outline-none placeholder:text-[var(--tt-muted)]/50'
           />
           <select
             value={unit}
@@ -134,7 +134,7 @@ export default function PetAgeInput({
             aria-label='Age unit'
             className={`h-11 border-l text-xs font-semibold outline-none cursor-pointer px-3 transition-colors ${
               isGold
-                ? 'border-[rgba(210,143,119,0.3)] bg-[#fdf4ef] text-[#635b53] hover:text-[#24211e]'
+                ? 'border-[rgba(210,143,119,0.3)] bg-[var(--tt-canvas)] text-[var(--tt-ink-soft)] hover:text-[var(--tt-ink)]'
                 : 'border-[var(--tt-border)] bg-[var(--tt-canvas)] text-[var(--tt-ink-soft)] hover:text-[var(--tt-ink)]'
             }`}
           >

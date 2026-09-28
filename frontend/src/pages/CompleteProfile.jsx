@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle2, ChevronDown, Loader2, Mail, Search, ShieldCheck, X } from 'lucide-react'
+import { Check, CheckCircle2, ChevronDown, Loader2, Mail, Search, ShieldCheck, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { getErrorMessage } from '../utils/api'
@@ -270,9 +270,9 @@ export default function CompleteProfile() {
                                     type='email'
                                     value={user?.email || ''}
                                     disabled
-                                    className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-gray-50 px-3.5 text-sm font-medium text-[var(--tt-ink-soft)] opacity-80 cursor-not-allowed'
+                                    className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-[var(--tt-sage)] px-3.5 text-sm font-medium text-[var(--tt-ink-soft)] opacity-80 cursor-not-allowed'
                                 />
-                                <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>Managed by your Google account.</span>
+                                <span className='mt-1 block text-[12px] text-[var(--tt-ink-soft)]'>Managed by your Google account.</span>
                             </label>
 
                             <div>
@@ -285,7 +285,7 @@ export default function CompleteProfile() {
                                     </span>
                                     <PhoneField label='' name='phone' value={form.phone} onChange={updatePhone} placeholder='917 123 4567' />
                                 </label>
-                                <span className='mt-1 block text-[11px] text-[var(--tt-ink-soft)]'>Used for appointment updates & SMS reminders.</span>
+                                <span className='mt-1 block text-[12px] text-[var(--tt-ink-soft)]'>Used for appointment updates & SMS reminders.</span>
                             </div>
                         </div>
 
@@ -293,7 +293,7 @@ export default function CompleteProfile() {
                         <div className='rounded-lg border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4'>
                             <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
                                 <div className='flex items-start gap-3'>
-                                    <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg ${otpSent ? 'bg-[#E4F1EA] text-[#216245]' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'}`}>
+                                    <span className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg ${otpSent ? 'bg-[var(--tt-success-bg)] text-[#216245]' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'}`}>
                                         {otpSent ? <CheckCircle2 size={18} /> : <Mail size={18} />}
                                     </span>
                                     <div>
@@ -406,7 +406,7 @@ export default function CompleteProfile() {
 
                         <button
                             disabled={submitting || !otpSent || otp.length !== 6}
-                            className='h-12 w-full rounded-md bg-[#262626] px-5 font-bold text-white transition hover:bg-[#3d3d3d] disabled:opacity-60 text-sm'
+                            className='h-12 w-full rounded-md bg-[var(--tt-brand-strong)] px-5 font-bold text-white transition hover:bg-[var(--tt-brand)] disabled:opacity-60 text-sm'
                         >
                             {submitting ? 'Saving Profile...' : 'Verify & Save Profile'}
                         </button>
@@ -430,7 +430,7 @@ function Field({ label, required = true, ...props }) {
             <span className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>{label}</span>
             <input
                 required={required}
-                className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-3.5 text-sm font-medium text-[#24211e] outline-none transition focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 placeholder:text-[var(--tt-muted)]'
+                className='h-12 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white px-3.5 text-sm font-medium text-[var(--tt-ink)] outline-none transition focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20 placeholder:text-[var(--tt-muted)]'
                 {...props}
             />
         </label>
@@ -514,18 +514,18 @@ function AddressSelect({
         onClick={() => setOpen((prev) => !prev)}
         className={`flex h-12 w-full items-center justify-between rounded-md border px-3.5 text-left text-sm transition-all outline-none ${
           disabled
-            ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[#a59a8f]'
+            ? 'cursor-not-allowed border-[rgba(210,143,119,0.2)] bg-[#f7ede6]/50 text-[var(--tt-muted-soft)]'
             : open
-            ? 'border-[#d1a85b] bg-white ring-2 ring-[#d1a85b]/20'
-            : 'border-[rgba(210,143,119,0.35)] bg-white text-[#24211e] hover:border-[#a47d44]'
+            ? 'border-[var(--tt-gold-light)] bg-white ring-2 ring-[var(--tt-gold-light)]/20'
+            : 'border-[rgba(210,143,119,0.35)] bg-white text-[var(--tt-ink)] hover:border-[var(--tt-gold)]'
         }`}
         aria-haspopup='listbox'
         aria-expanded={open}
       >
-        <span className={`truncate ${!value ? 'text-[#a59a8f]' : 'text-[#24211e]'}`}>
+        <span className={`truncate ${!value ? 'text-[var(--tt-muted-soft)]' : 'text-[var(--tt-ink)]'}`}>
           {loading ? (
-            <span className='flex items-center gap-2 italic text-[#82746b]'>
-              <Loader2 size={14} className='animate-spin text-[#d1a85b]' />
+            <span className='flex items-center gap-2 italic text-[var(--tt-muted)]'>
+              <Loader2 size={14} className='animate-spin text-[var(--tt-gold-light)]' />
               Loading options...
             </span>
           ) : (
@@ -533,14 +533,14 @@ function AddressSelect({
           )}
         </span>
 
-        <span className='ml-2 flex shrink-0 items-center gap-1 text-[#82746b]'>
+        <span className='ml-2 flex shrink-0 items-center gap-1 text-[var(--tt-muted)]'>
           {value && !disabled && !loading && (
             <span
               role='button'
               tabIndex={0}
               onClick={handleClear}
               onKeyDown={(e) => e.key === 'Enter' && handleClear(e)}
-              className='grid h-5 w-5 place-items-center rounded-full hover:bg-[rgba(210,143,119,0.15)] hover:text-[#24211e]'
+              className='grid h-5 w-5 place-items-center rounded-full hover:bg-[rgba(210,143,119,0.15)] hover:text-[var(--tt-ink)]'
               title='Clear'
             >
               <X size={12} />
@@ -548,7 +548,7 @@ function AddressSelect({
           )}
           <ChevronDown
             size={16}
-            className={`transition-transform duration-200 ${open ? 'rotate-180 text-[#a47d44]' : ''}`}
+            className={`transition-transform duration-200 ${open ? 'rotate-180 text-[var(--tt-gold)]' : ''}`}
           />
         </span>
       </button>
@@ -558,18 +558,18 @@ function AddressSelect({
           className='absolute left-0 top-full z-50 mt-1.5 w-full rounded-md border border-[rgba(210,143,119,0.35)] bg-white shadow-xl transition-all'
           role='listbox'
         >
-          <div className='flex items-center border-b border-[rgba(210,143,119,0.2)] bg-[#fdf4ef]/80 px-3 py-2'>
-            <Search size={14} className='mr-2 text-[#a47d44]' />
+          <div className='flex items-center border-b border-[rgba(210,143,119,0.2)] bg-[var(--tt-canvas)]/80 px-3 py-2'>
+            <Search size={14} className='mr-2 text-[var(--tt-gold)]' />
             <input
               ref={searchInputRef}
               type='text'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={searchPlaceholder}
-              className='w-full bg-transparent text-xs text-[#24211e] placeholder:text-[#a59a8f] outline-none'
+              className='w-full bg-transparent text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted-soft)] outline-none'
             />
             {search && (
-              <button type='button' onClick={() => setSearch('')} className='text-[#82746b] hover:text-[#24211e]'>
+              <button type='button' onClick={() => setSearch('')} className='text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>
                 <X size={12} />
               </button>
             )}
@@ -588,17 +588,17 @@ function AddressSelect({
                     onClick={() => handleSelect(item)}
                     className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs transition-colors ${
                       isSelected
-                        ? 'bg-[#fdf4ef] font-semibold text-[#a47d44]'
-                        : 'text-[#24211e] hover:bg-[#fdf4ef] hover:text-[#a47d44]'
+                        ? 'bg-[var(--tt-canvas)] font-semibold text-[var(--tt-gold)]'
+                        : 'text-[var(--tt-ink)] hover:bg-[var(--tt-canvas)] hover:text-[var(--tt-gold)]'
                     }`}
                   >
                     <span>{item.name}</span>
-                    {isSelected && <span className='text-[10px] text-[#d1a85b]'>✦</span>}
+                    {isSelected && <Check size={13} className='text-[var(--tt-gold-light)]' aria-hidden='true' />}
                   </button>
                 )
               })
             ) : (
-              <div className='px-4 py-6 text-center text-xs text-[#82746b]'>
+              <div className='px-4 py-6 text-center text-xs text-[var(--tt-muted)]'>
                 No locations match &ldquo;{search}&rdquo;
               </div>
             )}

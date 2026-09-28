@@ -106,7 +106,7 @@ export default function Header() {
                   </span>
                   <span className='hidden xl:inline'>{user?.firstName || 'Account'}</span>
                   {user?.role === 'admin' && (
-                    <span className='hidden sm:inline-block rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                    <span className='hidden sm:inline-block rounded-full bg-[var(--tt-accent)]/15 px-2 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-accent)] border border-[var(--tt-accent)]/30'>
                       Admin
                     </span>
                   )}
@@ -119,12 +119,12 @@ export default function Header() {
                       <div className='flex items-center justify-between gap-2'>
                         <p className='font-serif text-lg text-[var(--tt-ink)] truncate'>{user.firstName} {user.lastName}</p>
                         {user.role === 'admin' && (
-                          <span className='shrink-0 rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                          <span className='shrink-0 rounded-full bg-[var(--tt-accent)]/15 px-2 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-accent)] border border-[var(--tt-accent)]/30'>
                             Admin
                           </span>
                         )}
                       </div>
-                      <p className='mt-1 truncate text-[11px] text-[var(--tt-muted)]'>{user.email || user.phone}</p>
+                      <p className='mt-1 truncate text-[12px] text-[var(--tt-muted)]'>{user.email || user.phone}</p>
                     </div>
                     <div className='py-2'>
                       {user.role === 'admin' ? (
@@ -152,14 +152,14 @@ export default function Header() {
             <div className='hidden md:block'>
               <Link
                 to='/admin'
-                className='inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--tt-ink)] px-5 text-[10px] font-bold uppercase tracking-[.14em] text-white shadow-sm transition hover:bg-[#3d3d3d]'
+                className='inline-flex min-h-11 items-center justify-center rounded-xl bg-[var(--tt-ink)] px-5 text-[12px] font-bold uppercase tracking-[.08em] text-white shadow-sm transition hover:bg-[var(--tt-brand)]'
               >
                 Admin Portal
               </Link>
             </div>
           ) : (
             <div className='hidden md:block'>
-              <BookButton className='!min-h-11 !px-5 !text-[10px] !tracking-[.14em]'>
+              <BookButton className='!min-h-11 !px-5 !text-[12px] !tracking-[.08em]'>
                 Book a visit
               </BookButton>
             </div>
@@ -191,7 +191,7 @@ export default function Header() {
             
             {user ? (
               <>
-                <p className='px-3 pb-1 text-[9px] font-bold uppercase tracking-[.18em] text-[var(--tt-muted)]'>{accountLabel}</p>
+                <p className='px-3 pb-1 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>{accountLabel}</p>
                 {user.role === 'admin' ? (
                   <MobileLink to='/admin'>Admin workspace</MobileLink>
                 ) : (

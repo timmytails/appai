@@ -49,7 +49,7 @@ export default function AvailabilityCalendar({
             </div>
 
             <div className='grid grid-cols-7 gap-1 text-center'>
-                {weekdays.map((day) => <div key={day} className='py-2 text-[11px] font-bold uppercase tracking-wide text-[var(--tt-brand)]'>{day}</div>)}
+                {weekdays.map((day) => <div key={day} className='py-2 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>{day}</div>)}
                 {cells.map((day, index) => {
                     if (!day) return <div key={`blank-${index}`} />
                     const dateKey = toDateKey(new Date(year, month, day, 12))
@@ -96,5 +96,5 @@ export default function AvailabilityCalendar({
 }
 
 function Legend({ className, label }) {
-    return <span className='flex items-center gap-2'><span className={`h-4 w-4 rounded border ${className}`} />{label}</span>
+    return <span className='flex items-center gap-2'><span className={`h-4 w-4 rounded-lg border ${className}`} />{label}</span>
 }

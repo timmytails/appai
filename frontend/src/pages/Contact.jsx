@@ -65,7 +65,7 @@ export default function Contact() {
         ====================================================== */
         .contact-hero-section {
           position: relative;
-          background: #fdf4ef;
+          background: var(--tt-canvas);
           overflow: hidden;
           padding: 5rem 2rem 6rem;
           font-family: Georgia, 'Times New Roman', serif;
@@ -99,7 +99,7 @@ export default function Contact() {
           top: -30px;
           width: 250px;
           opacity: 0.38;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 1;
         }
@@ -112,7 +112,7 @@ export default function Contact() {
           font-size: 0.82rem;
           letter-spacing: 3.5px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: block;
           margin-bottom: 1rem;
@@ -122,7 +122,7 @@ export default function Contact() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.8rem, 4.8vw, 4.4rem);
           line-height: 1.1;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 1.5rem 0;
           letter-spacing: -0.02em;
@@ -131,7 +131,7 @@ export default function Contact() {
         .contact-hero-desc {
           font-size: 1.05rem;
           line-height: 1.8;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0;
         }
 
@@ -176,7 +176,7 @@ export default function Contact() {
           right: -70px;
           bottom: -50px;
           opacity: 0.85;
-          color: #cf7c54;
+          color: var(--tt-accent);
           pointer-events: none;
           z-index: 3;
           transform: rotate(20deg);
@@ -188,7 +188,7 @@ export default function Contact() {
           left: -60px;
           top: -30px;
           opacity: 0.55;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           pointer-events: none;
           z-index: 3;
           transform: scaleX(-1) rotate(-35deg);
@@ -198,7 +198,7 @@ export default function Contact() {
            MAIN CONTACT FORM & DETAILS SECTION
         ====================================================== */
         .contact-main-section {
-          background-color: #ffffff;
+          background-color: #fff;
           padding: 6rem 2rem 7rem;
           position: relative;
         }
@@ -218,7 +218,7 @@ export default function Contact() {
           font-size: 0.8rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #a47d44;
+          color: var(--tt-gold);
           font-weight: 600;
           display: inline-block;
           margin-bottom: 0.75rem;
@@ -228,7 +228,7 @@ export default function Contact() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(2.3rem, 3.5vw, 3.2rem);
           line-height: 1.2;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0;
         }
@@ -242,7 +242,7 @@ export default function Contact() {
 
         /* Info Sanctuary Card */
         .contact-info-card {
-          background: #24211e;
+          background: var(--tt-ink);
           color: #f7f1ea;
           border-radius: 16px;
           padding: 3.25rem 2.75rem;
@@ -258,14 +258,14 @@ export default function Contact() {
           left: 0;
           right: 0;
           height: 3px;
-          background: linear-gradient(90deg, #cf7c54, #d1a85b);
+          background: linear-gradient(90deg, var(--tt-accent), var(--tt-gold-light));
         }
 
         .contact-info-eyebrow {
           font-size: 0.78rem;
           letter-spacing: 3px;
           text-transform: uppercase;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           font-weight: 600;
           margin-bottom: 0.5rem;
           display: block;
@@ -274,7 +274,7 @@ export default function Contact() {
         .contact-info-title {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.85rem;
-          color: #ffffff;
+          color: #fff;
           font-weight: 500;
           margin: 0 0 2rem 0;
         }
@@ -299,7 +299,7 @@ export default function Contact() {
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.06);
           border: 1px solid rgba(209, 168, 91, 0.25);
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -310,14 +310,14 @@ export default function Contact() {
           font-size: 0.72rem;
           letter-spacing: 1.5px;
           text-transform: uppercase;
-          color: #9c9388;
+          color: var(--tt-muted-soft);
           font-weight: 600;
           margin: 0 0 0.25rem 0;
         }
 
         .contact-info-item-value {
           font-size: 0.95rem;
-          color: #ffffff;
+          color: #fff;
           margin: 0;
           line-height: 1.5;
         }
@@ -334,7 +334,7 @@ export default function Contact() {
           gap: 8px;
           font-size: 0.88rem;
           font-weight: 600;
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           text-decoration: none;
           letter-spacing: 0.5px;
           transition: color 0.2s ease, transform 0.2s ease;
@@ -347,7 +347,7 @@ export default function Contact() {
 
         /* Editorial Clean Form */
         .contact-form-card {
-          background: #ffffff;
+          background: #fff;
           border: 1px solid rgba(210, 143, 119, 0.3);
           border-radius: 16px;
           padding: 3.5rem 3rem;
@@ -357,14 +357,14 @@ export default function Contact() {
         .contact-form-heading {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.75rem;
-          color: #24211e;
+          color: var(--tt-ink);
           font-weight: 500;
           margin: 0 0 0.5rem 0;
         }
 
         .contact-form-sub {
           font-size: 0.92rem;
-          color: #635b53;
+          color: var(--tt-ink-soft);
           margin: 0 0 2.25rem 0;
         }
 
@@ -378,7 +378,7 @@ export default function Contact() {
           font-weight: 600;
           letter-spacing: 0.8px;
           text-transform: uppercase;
-          color: #4a453f;
+          color: var(--tt-ink-soft);
           margin-bottom: 0.55rem;
         }
 
@@ -390,7 +390,7 @@ export default function Contact() {
           border-radius: 6px;
           padding: 0.85rem 1.15rem;
           font-size: 0.94rem;
-          color: #24211e;
+          color: var(--tt-ink);
           font-family: inherit;
           outline: none;
           transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
@@ -399,16 +399,16 @@ export default function Contact() {
 
         .contact-input:focus,
         .contact-textarea:focus {
-          border-color: #cf7c54;
-          background-color: #ffffff;
+          border-color: var(--tt-accent);
+          background-color: #fff;
           box-shadow: 0 0 0 4px rgba(207, 124, 84, 0.12);
         }
 
         .contact-submit-btn {
           height: 52px;
           padding: 0 2.25rem;
-          background: #24211e;
-          color: #ffffff !important;
+          background: var(--tt-ink);
+          color: #fff !important;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -425,7 +425,7 @@ export default function Contact() {
         }
 
         .contact-submit-btn:hover:not(:disabled) {
-          background: #3d3d3d;
+          background: var(--tt-brand);
           transform: translateY(-1px);
         }
 
@@ -653,11 +653,11 @@ export default function Contact() {
                   className='contact-textarea'
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.4rem' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#a47d44' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--tt-gold)' }}>
                     <Sparkles size={11} style={{ display: 'inline', marginRight: '4px' }} />
                     We usually respond within 24 hours
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: '#8c8378', fontWeight: 'bold' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--tt-muted-soft)', fontWeight: 'bold' }}>
                     {form.message.length}/1000
                   </span>
                 </div>

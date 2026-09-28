@@ -511,16 +511,16 @@ router.patch('/users/:id/status', async (req, res) => {
             let notifMessage = statusReason || warningMessage || 'Your account status has been updated by salon administration.'
 
             if (accountStatus === 'warned') {
-                notifTitle = '⚠️ Formal Warning Issued'
+                notifTitle = 'Formal warning issued'
                 notifMessage = warningMessage || statusReason || 'You have received a formal warning regarding multiple booking cancellations or no-show policy violations.'
             } else if (accountStatus === 'booking_blocked') {
-                notifTitle = '⛔ Booking Access Suspended'
+                notifTitle = 'Booking access suspended'
                 notifMessage = statusReason || warningMessage || 'Your booking privileges have been suspended due to policy violations.'
             } else if (accountStatus === 'banned') {
-                notifTitle = '🚫 Account Banned'
+                notifTitle = 'Account suspended'
                 notifMessage = statusReason || warningMessage || 'Your customer account has been permanently suspended due to terms violations.'
             } else if (accountStatus === 'active') {
-                notifTitle = '✅ Account Privileges Restored'
+                notifTitle = 'Account privileges restored'
                 notifMessage = 'Your customer account status is active. You may now book appointments.'
             }
 
@@ -1179,7 +1179,7 @@ router.patch(
             // Create in-app notification for the customer
             if (appointment.user && mongoose.isValidObjectId(appointment.user)) {
                 Notification.create({
-                    title: `🐾 ${appointment.petName}'s Grooming Update`,
+                    title: `${appointment.petName}'s grooming update`,
                     message: `${appointment.petName} is now at the "${serviceStage}" stage of their ${appointment.service} session!`,
                     audience: 'user',
                     targetUser: appointment.user,

@@ -10,19 +10,19 @@ const formatImageSrc = (src) => {
 
 const PROFESSIONAL_STYLE_COPY = {
     'puppy-cut': {
-        description: 'An even trim through the body and legs with a softly rounded finish around the face.',
+        description: 'An even trim through the body and legs with a softly rounded-lg finish around the face.',
         note: 'A practical maintenance cut for coats that are kept at a short-to-medium length.'
     },
     'teddy-bear-cut': {
-        description: 'A rounded face and muzzle with a fuller, balanced finish through the body and legs.',
-        note: 'Best suited to coats with enough length and density to hold a rounded shape.'
+        description: 'A rounded-lg face and muzzle with a fuller, balanced finish through the body and legs.',
+        note: 'Best suited to coats with enough length and density to hold a rounded-lg shape.'
     },
     'summer-cut': {
         description: 'A shorter body trim with the head and tail left natural enough to keep the pet recognizable.',
         note: 'Final length should be agreed with the groomer; double coats are not normally clipped short.'
     },
     'asian-fusion-cut': {
-        description: 'A shorter body with a rounded head and fuller, shaped legs for a more stylized finish.',
+        description: 'A shorter body with a rounded-lg head and fuller, shaped legs for a more stylized finish.',
         note: 'Requires regular brushing and enough coat length on the legs for shaping.'
     },
     'poodle-lamb-cut': {
@@ -42,7 +42,7 @@ const PROFESSIONAL_STYLE_COPY = {
         note: 'Length depends on coat condition, tolerance and whether matting is present.'
     },
     'cat-teddy-bear-trim': {
-        description: 'A softly rounded cat trim that keeps a fuller body outline and neatens the face and paws.',
+        description: 'A softly rounded-lg cat trim that keeps a fuller body outline and neatens the face and paws.',
         note: 'Only suitable when the coat condition and the cat’s tolerance allow safe scissor work.'
     },
     'lion-cut': {
@@ -85,7 +85,7 @@ export default function StylePicker({
         <section className='space-y-4'>
             <div className='flex flex-wrap items-end justify-between gap-3'>
                 <div>
-                    <p className='text-[10px] font-bold uppercase tracking-[.18em] text-[var(--tt-gold)]'>Reference style</p>
+                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Reference style</p>
                     <h3 className='mt-1 font-serif text-2xl text-[var(--tt-ink)]'>Choose the finish you want to discuss</h3>
                 </div>
                 {loading && (
@@ -116,13 +116,13 @@ export default function StylePicker({
                                             <div role='status'>
                                                 <Loader2 size={24} className='mx-auto animate-spin text-[var(--tt-ink)]' />
                                                 <p className='mt-3 text-xs font-semibold text-[var(--tt-ink)]'>Preparing preview…</p>
-                                                <p className='mt-1 text-[11px] text-[var(--tt-muted)]'>This can take a short moment.</p>
+                                                <p className='mt-1 text-[12px] text-[var(--tt-muted)]'>This can take a short moment.</p>
                                             </div>
                                         ) : failed ? (
                                             <div>
                                                 <RefreshCw size={22} className='mx-auto text-[var(--tt-muted)]' />
                                                 <p className='mt-3 text-xs font-semibold text-[var(--tt-ink)]'>Preview could not be created</p>
-                                                <p className='mt-1 text-[11px] text-[var(--tt-muted)]'>You can try this style again.</p>
+                                                <p className='mt-1 text-[12px] text-[var(--tt-muted)]'>You can try this style again.</p>
                                             </div>
                                         ) : (
                                             <div>
@@ -133,7 +133,7 @@ export default function StylePicker({
                                     </div>
                                 )}
                                 {selected && (
-                                    <span className='absolute right-3 top-3 inline-flex items-center gap-1 bg-[var(--tt-ink)] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-white'>
+                                    <span className='absolute right-3 top-3 inline-flex items-center gap-1 bg-[var(--tt-ink)] px-2.5 py-1 text-[12px] font-bold uppercase tracking-[.08em] text-white'>
                                         <Check size={11} /> Selected
                                     </span>
                                 )}
@@ -142,7 +142,7 @@ export default function StylePicker({
                             <div className='p-5'>
                                 <h4 className='font-serif text-xl text-[var(--tt-ink)]'>{style.name}</h4>
                                 <p className='mt-2 text-sm leading-6 text-[var(--tt-ink-soft)]'>{copy.description}</p>
-                                <p className='mt-3 border-t border-[var(--tt-border)] pt-3 text-[11px] leading-5 text-[var(--tt-muted)]'>
+                                <p className='mt-3 border-t border-[var(--tt-border)] pt-3 text-[12px] leading-5 text-[var(--tt-muted)]'>
                                     <strong className='font-semibold text-[var(--tt-ink-soft)]'>Groomer note:</strong> {copy.note}
                                 </p>
                                 <button

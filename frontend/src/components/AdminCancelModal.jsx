@@ -40,11 +40,11 @@ export default function AdminCancelModal({
             <div className='my-0 max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-6 text-[var(--tt-ink)] shadow-[0_30px_90px_rgba(51,51,47,.24)] sm:my-auto sm:p-7'>
                 {/* Header */}
                 <div className='flex items-center gap-3.5 border-b border-[var(--tt-border)] pb-3.5'>
-                    <span className='grid h-10 w-10 shrink-0 place-items-center border border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]'>
+                    <span className='grid h-10 w-10 shrink-0 place-items-center border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b]'>
                         <AlertTriangle size={20} />
                     </span>
                     <div>
-                        <p className='text-[9px] font-bold uppercase tracking-[.14em] text-[var(--tt-muted)]'>Admin action</p>
+                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Admin action</p>
                         <h3 className='mt-1 font-serif text-2xl font-normal leading-tight text-[var(--tt-ink)]'>
                             Cancel appointment
                         </h3>
@@ -58,7 +58,7 @@ export default function AdminCancelModal({
                     {/* Reason Input */}
                     <div>
                         <label className='block text-xs font-semibold text-[var(--tt-ink-soft)] mb-1.5'>
-                            Reason for Cancellation <span className='text-[#9E3E3E]'>*</span>
+                            Reason for Cancellation <span className='text-[#934b4b]'>*</span>
                         </label>
                         <textarea
                             value={reason}
@@ -66,9 +66,9 @@ export default function AdminCancelModal({
                             placeholder='State why this booking is being cancelled. This message will be sent via email to the pet owner...'
                             rows={3}
                             required
-                            className='w-full border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 text-xs text-[var(--tt-ink)] outline-none transition focus:border-[#9E3E3E] focus:bg-white focus:ring-1 focus:ring-[#9E3E3E]/20 placeholder:text-[#A6B1AA]'
+                            className='w-full border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-3 text-xs text-[var(--tt-ink)] outline-none transition focus:border-[#934b4b] focus:bg-white focus:ring-1 focus:ring-[#934b4b]/20 placeholder:text-[#A6B1AA]'
                         />
-                        <p className='mt-1 text-[11px] text-[var(--tt-muted)] italic'>
+                        <p className='mt-1 text-[12px] text-[var(--tt-muted)] italic'>
                             This explanation will be stored and emailed directly to the customer.
                         </p>
                     </div>
@@ -86,7 +86,7 @@ export default function AdminCancelModal({
                                     onClick={() => setReason(quickText)}
                                     className={`border px-3 py-1.5 text-xs font-medium transition ${
                                         reason === quickText
-                                            ? 'border-[#9E3E3E] bg-[#FBEAEA] text-[#9E3E3E] font-bold shadow-xs'
+                                            ? 'border-[#934b4b] bg-[var(--tt-danger-bg)] text-[#934b4b] font-bold shadow-xs'
                                             : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:border-[#B8C7BE] hover:bg-[var(--tt-canvas)]'
                                     }`}
                                 >
@@ -109,7 +109,7 @@ export default function AdminCancelModal({
                         <button
                             type='submit'
                             disabled={loading || !reason.trim()}
-                            className='inline-flex items-center justify-center gap-1.5 w-full bg-[#8d4b4b] px-3 py-2.5 text-xs font-bold text-white text-center shadow-xs transition hover:bg-[#7F3333] active:scale-[0.98] disabled:opacity-50'
+                            className='inline-flex items-center justify-center gap-1.5 w-full bg-[#934b4b] px-3 py-2.5 text-xs font-bold text-white text-center shadow-xs transition hover:bg-[#7d3f3f] active:scale-[0.98] disabled:opacity-50'
                         >
                             <XCircle size={15} />
                             <span>{loading ? 'Cancelling...' : 'Confirm Cancel'}</span>

@@ -126,7 +126,7 @@ export default function RescheduleModal({
                         <CalendarIcon size={18} strokeWidth={1.4} />
                     </span>
                     <div>
-                        <p className='text-[9px] font-bold uppercase tracking-[.14em] text-[var(--tt-muted)]'>Appointment change</p>
+                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Appointment change</p>
                         <h3 className='mt-1 font-serif text-2xl font-normal leading-tight text-[var(--tt-ink)]'>
                             Choose another time
                         </h3>
@@ -138,18 +138,18 @@ export default function RescheduleModal({
 
                 {/* 3-Minute Timer Banner */}
                 {!isExpired ? (
-                    <div className='flex items-center justify-between rounded-sm border border-[#F0DEB6] bg-[#FFF8EC] px-3.5 py-2.5 text-xs text-[#8A5D13] shadow-xs'>
+                    <div className='flex items-center justify-between rounded-sm border border-[var(--tt-warn-border)] bg-[#FFF8EC] px-3.5 py-2.5 text-xs text-[var(--tt-warn)] shadow-xs'>
                         <div className='flex items-center gap-2 font-bold'>
-                            <Clock size={15} className='text-[#8A5D13] shrink-0' />
+                            <Clock size={15} className='text-[var(--tt-warn)] shrink-0' />
                             <span>Edit window remaining:</span>
                         </div>
-                        <span className='font-mono font-bold text-[#8A5D13] bg-[#FFF0D1] border border-[#F0DEB6] px-2.5 py-0.5 rounded-lg text-xs'>
+                        <span className='font-mono font-bold text-[var(--tt-warn)] bg-[#FFF0D1] border border-[var(--tt-warn-border)] px-2.5 py-0.5 rounded-lg text-xs'>
                             {formatRemainingTime(secondsLeft)}
                         </span>
                     </div>
                 ) : (
-                    <div className='flex items-center gap-2 rounded-sm border border-[#F0DEB6] bg-[#FFF4DC] p-3 text-xs text-[#6E4A0D] font-medium'>
-                        <AlertCircle size={16} className='text-[#8A5D13] shrink-0' />
+                    <div className='flex items-center gap-2 rounded-sm border border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] p-3 text-xs text-[var(--tt-warn)] font-medium'>
+                        <AlertCircle size={16} className='text-[var(--tt-warn)] shrink-0' />
                         <span>The 3-minute edit window for this booking has expired.</span>
                     </div>
                 )}
@@ -209,7 +209,7 @@ export default function RescheduleModal({
                                             }`}
                                         >
                                             <div className='font-mono font-bold'>{slot.label}</div>
-                                            <div className='text-[10px] mt-0.5 font-medium opacity-85'>
+                                            <div className='text-[12px] mt-0.5 font-medium opacity-85'>
                                                 {statusText}
                                             </div>
                                         </button>

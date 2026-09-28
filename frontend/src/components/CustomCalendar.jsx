@@ -119,7 +119,7 @@ export default function CustomCalendar({
             {/* Days of week header */}
             <div className='grid grid-cols-7 gap-1 text-center mb-1.5'>
                 {dayNames.map((d) => (
-                    <span key={d} className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-muted)]'>
+                    <span key={d} className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>
                         {d}
                     </span>
                 ))}

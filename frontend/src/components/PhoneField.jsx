@@ -41,18 +41,18 @@ export default function PhoneField({
     return (
         <div className={`space-y-1.5 ${className}`}>
             {label && (
-                <label className='block text-xs font-bold uppercase tracking-[0.14em] text-[var(--tt-brand)]'>
+                <label className='block text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>
                     {label}
                 </label>
             )}
             <div
                 className={`flex h-12 items-center rounded-md border bg-white overflow-hidden transition ${
                     error
-                        ? 'border-red-400 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/10'
-                        : 'border-[rgba(210,143,119,0.35)] focus-within:border-[#d1a85b] focus-within:ring-2 focus-within:ring-[#d1a85b]/20'
+                        ? 'border-[var(--tt-danger-border)] focus-within:border-[var(--tt-danger)] focus-within:ring-2 focus-within:ring-[var(--tt-danger)]/15'
+                        : 'border-[rgba(210,143,119,0.35)] focus-within:border-[var(--tt-gold-light)] focus-within:ring-2 focus-within:ring-[var(--tt-gold-light)]/20'
                 } ${disabled ? 'opacity-60' : ''} ${inputContainerClassName}`}
             >
-                <div className='flex h-full items-center gap-1.5 border-r border-[rgba(210,143,119,0.25)] bg-[#fcf9f6] px-3.5 text-xs font-semibold text-[#82746b] select-none shrink-0'>
+                <div className='flex h-full items-center gap-1.5 border-r border-[rgba(210,143,119,0.25)] bg-[#fcf9f6] px-3.5 text-xs font-semibold text-[var(--tt-muted)] select-none shrink-0'>
                     <span className='text-sm leading-none'>🇵🇭</span>
                     <span className='font-mono'>+63</span>
                 </div>
@@ -64,11 +64,11 @@ export default function PhoneField({
                     onChange={handleChange}
                     required={required}
                     disabled={disabled}
-                    className='h-full w-full bg-transparent px-3.5 text-sm font-sans text-[#24211e] outline-none placeholder:text-[#a89b91]'
+                    className='h-full w-full bg-transparent px-3.5 text-sm font-sans text-[var(--tt-ink)] outline-none placeholder:text-[var(--tt-muted-soft)]'
                 />
             </div>
-            {help && <p className='text-xs text-[#82746b]'>{help}</p>}
-            {error && <p className='text-xs font-medium text-red-500'>{error}</p>}
+            {help && <p className='text-xs text-[var(--tt-muted)]'>{help}</p>}
+            {error && <p className='text-xs font-medium text-[var(--tt-danger)]'>{error}</p>}
         </div>
     )
 }

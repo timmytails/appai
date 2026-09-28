@@ -68,7 +68,7 @@ export default function NotificationBell() {
             >
                 <Bell size={17} strokeWidth={1.8} />
                 {unreadCount > 0 && (
-                    <span className='absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#24211e] px-1 text-[9px] font-bold text-white shadow-xs ring-2 ring-white'>
+                    <span className='absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--tt-ink)] px-1 text-[12px] font-bold text-white shadow-xs ring-2 ring-white'>
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
@@ -89,7 +89,7 @@ export default function NotificationBell() {
                             </span>
                             <span className='text-sm font-bold text-[var(--tt-ink)]'>Notifications</span>
                             {unreadCount > 0 && (
-                                <span className='rounded-full bg-[var(--tt-sage)] px-2 py-0.5 text-[10px] font-extrabold text-[var(--tt-brand-strong)] border border-[#D0DFD5]'>
+                                <span className='rounded-full bg-[var(--tt-sage)] px-2 py-0.5 text-[12px] font-bold text-[var(--tt-brand-strong)] border border-[#D0DFD5]'>
                                     {unreadCount} new
                                 </span>
                             )}
@@ -128,7 +128,7 @@ export default function NotificationBell() {
                                     <Bell size={22} strokeWidth={1.5} />
                                 </span>
                                 <p className='text-xs font-bold text-[var(--tt-ink)]'>No notifications yet</p>
-                                <p className='text-[11px] text-[var(--tt-muted)]'>Updates about your bookings and appointments will appear here.</p>
+                                <p className='text-[12px] text-[var(--tt-muted)]'>Updates about your bookings and appointments will appear here.</p>
                             </div>
                         ) : (
                             <div>
@@ -146,7 +146,7 @@ export default function NotificationBell() {
                                                 <p className={`text-xs font-bold leading-snug ${!notif.isRead ? 'text-[var(--tt-brand-strong)]' : 'text-[var(--tt-ink)]'}`}>
                                                     {notif.title}
                                                 </p>
-                                                <span className='shrink-0 text-[10px] font-semibold text-[#809187]'>
+                                                <span className='shrink-0 text-[12px] font-semibold text-[#809187]'>
                                                     {timeAgo(notif.createdAt)}
                                                 </span>
                                             </div>
@@ -166,7 +166,7 @@ export default function NotificationBell() {
                     {/* Footer */}
                     {notifications.length > 0 && (
                         <div className='border-t border-[#E8EEE9] bg-[#FBFDFB] px-4 py-2.5 text-center rounded-b-2xl'>
-                            <p className='text-[10px] font-bold text-[var(--tt-muted)]'>
+                            <p className='text-[12px] font-bold text-[var(--tt-muted)]'>
                                 Showing latest notifications
                             </p>
                         </div>

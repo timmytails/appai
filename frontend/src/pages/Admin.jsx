@@ -8,10 +8,12 @@ import {
 import {
     AlertCircle,
     AlertTriangle,
+    ArrowRight,
     Ban,
     BarChart3,
     Bell,
     CalendarDays,
+    Check,
     CheckCheck,
     CheckCircle2,
     ChevronLeft,
@@ -61,23 +63,23 @@ import AdminCancelModal from '../components/AdminCancelModal'
 const STATUS_META = {
     pending: {
         label: 'Pending',
-        badge: 'bg-[#FFF4DC] text-[#8A5D13] ring-1 ring-[#F0DEB6]'
+        badge: 'bg-[var(--tt-warn-bg)] text-[var(--tt-warn)] ring-1 ring-[var(--tt-warn-border)]'
     },
     confirmed: {
         label: 'Approved',
-        badge: 'bg-[#E4F1EA] text-[#216245] ring-1 ring-[#C9E1D3]'
+        badge: 'bg-[var(--tt-success-bg)] text-[#216245] ring-1 ring-[var(--tt-success-border)]'
     },
     in_progress: {
         label: 'In Service',
-        badge: 'bg-[#F1F7F3] text-[#22573D] ring-1 ring-[#BAD5C3]'
+        badge: 'bg-[var(--tt-success-bg)] text-[#216245] ring-1 ring-[var(--tt-success-border)]'
     },
     completed: {
         label: 'Completed',
-        badge: 'bg-[var(--tt-sage)] text-[var(--tt-ink-soft)] ring-1 ring-[#D7E2DA]'
+        badge: 'bg-[var(--tt-sage)] text-[var(--tt-ink-soft)] ring-1 ring-[var(--tt-success-border)]'
     },
     cancelled: {
         label: 'Cancelled',
-        badge: 'bg-[#FBEAEA] text-[#9E3E3E] ring-1 ring-[#F0CCCC]'
+        badge: 'bg-[var(--tt-danger-bg)] text-[#934b4b] ring-1 ring-[var(--tt-danger-border)]'
     }
 }
 
@@ -856,14 +858,14 @@ export default function Admin() {
                             <span className='font-serif text-lg sm:text-xl font-medium tracking-tight text-[var(--tt-ink)]'>
                                 TimmyTails
                             </span>
-                            <span className='rounded border border-[var(--tt-border)] bg-white px-2 py-0.5 text-[10px] font-medium text-[var(--tt-muted)]'>
+                            <span className='rounded-lg border border-[var(--tt-border)] bg-white px-2 py-0.5 text-[12px] font-medium text-[var(--tt-muted)]'>
                                 Admin
                             </span>
                         </div>
                     </button>
 
                     <div className='flex items-center gap-2 sm:gap-3'>
-                        <span className='hidden text-[10px] font-medium text-[var(--tt-muted)] xl:inline'>{formatDate(new Date())}</span>
+                        <span className='hidden text-[12px] font-medium text-[var(--tt-muted)] xl:inline'>{formatDate(new Date())}</span>
                         <button onClick={() => loadData(true)} disabled={refreshing} className='grid h-10 w-10 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-muted)] hover:text-[var(--tt-ink)] transition disabled:opacity-40 shadow-xs' aria-label='Refresh administration data'>
                             <RefreshCw size={15} className={refreshing ? 'animate-spin' : ''} />
                         </button>
@@ -871,17 +873,17 @@ export default function Admin() {
                             <span className='grid h-8 w-8 place-items-center rounded-full bg-[var(--tt-accent-soft)] font-serif text-sm font-semibold'>{(user?.firstName?.[0] || 'A').toUpperCase()}</span>
                             <div className='hidden lg:block text-left'>
                                 <div className='flex items-center gap-1.5'>
-                                    <p className='text-[11px] font-bold text-[var(--tt-ink)]'>
+                                    <p className='text-[12px] font-bold text-[var(--tt-ink)]'>
                                         {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : (user?.firstName || 'Salon Staff')}
                                     </p>
-                                    <span className='rounded-full bg-[var(--tt-brand,#d28f77)]/15 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider text-[var(--tt-brand,#d28f77)] border border-[var(--tt-brand,#d28f77)]/30'>
+                                    <span className='rounded-full bg-[var(--tt-accent)]/15 px-1.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-accent)] border border-[var(--tt-accent)]/30'>
                                         Admin
                                     </span>
                                 </div>
-                                <p className='max-w-40 truncate text-[9px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p>
+                                <p className='max-w-40 truncate text-[12px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p>
                             </div>
                         </div>
-                        <button type='button' onClick={handleLogout} className='grid h-10 w-10 place-items-center rounded-lg text-[var(--tt-muted)] hover:text-[#934b4b] hover:bg-red-50/50 transition' aria-label='Sign out'><LogOut size={15} /></button>
+                        <button type='button' onClick={handleLogout} className='grid h-10 w-10 place-items-center rounded-lg text-[var(--tt-muted)] hover:text-[#934b4b] hover:bg-[var(--tt-danger-bg)]/50 transition' aria-label='Sign out'><LogOut size={15} /></button>
                     </div>
                 </div>
             </header>
@@ -892,10 +894,10 @@ export default function Admin() {
                         const isActive = activeTab === id
                         const count = id === 'bookings' ? pendingAppointments.length : id === 'messages' ? unreadContactsCount : 0
                         return (
-                            <button key={id} onClick={() => changeTab(id)} className={`relative inline-flex min-h-13 shrink-0 items-center gap-2 px-3.5 text-[11px] font-semibold transition sm:px-4 ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}>
+                            <button key={id} onClick={() => changeTab(id)} className={`relative inline-flex min-h-13 shrink-0 items-center gap-2 px-3.5 text-[12px] font-semibold transition sm:px-4 ${isActive ? 'text-[var(--tt-ink)]' : 'text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'}`}>
                                 {createElement(icon, { size: 14, strokeWidth: 1.7 })}
                                 {label}
-                                {count > 0 && <span className='grid min-w-5 place-items-center rounded-full bg-[var(--tt-accent-soft)] px-1.5 py-0.5 text-[9px] font-bold text-[#79584b]'>{count}</span>}
+                                {count > 0 && <span className='grid min-w-5 place-items-center rounded-full bg-[var(--tt-accent-soft)] px-1.5 py-0.5 text-[12px] font-bold text-[#79584b]'>{count}</span>}
                                 {isActive && <span className='absolute inset-x-3 bottom-0 h-px bg-[var(--tt-gold)]' />}
                             </button>
                         )
@@ -909,7 +911,7 @@ export default function Admin() {
                         <h1 className='font-serif text-4xl font-normal tracking-[-.03em] sm:text-5xl'>{ADMIN_TAB_META[activeTab]?.title}</h1>
                         <p className='mt-3 max-w-2xl text-sm leading-6 text-[var(--tt-muted)]'>{ADMIN_TAB_META[activeTab]?.description}</p>
                     </div>
-                    <div className='flex flex-wrap items-center gap-3 text-[10px] text-[var(--tt-muted)]'>
+                    <div className='flex flex-wrap items-center gap-3 text-[12px] text-[var(--tt-muted)]'>
                         <span className='inline-flex items-center gap-2'><span className='h-1.5 w-1.5 rounded-full bg-[#6c845c]' />Live data</span>
                         {pendingAppointments.length > 0 && <button type='button' onClick={() => changeTab('bookings')} className='inline-flex items-center gap-1.5 border-l border-[var(--tt-border)] pl-3 font-semibold text-[#79584b]'><Clock3 size={12} />{pendingAppointments.length} pending</button>}
                     </div>
@@ -1026,7 +1028,7 @@ function DashboardView({
                 <div>
                     <div className='flex items-end justify-between gap-4 border-b border-[var(--tt-border)] pb-4'>
                         <div><h2 className='font-serif text-3xl font-normal'>Today’s schedule</h2></div>
-                        <button type='button' onClick={onViewBookings} className='text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>All bookings →</button>
+                        <button type='button' onClick={onViewBookings} className='inline-flex items-center gap-1 text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>All bookings<ArrowRight size={12} aria-hidden='true' /></button>
                     </div>
                     {todaysAppointments.length ? (
                         <div>
@@ -1049,17 +1051,17 @@ function DashboardView({
                                     <div className='flex items-start gap-3'>
                                         <PetAvatar appointment={appointment} />
                                         <div className='min-w-0 flex-1'>
-                                            <p className='font-serif text-lg'>{appointment.petName} <span className='font-sans text-[11px] text-[var(--tt-muted)]'>with {getOwnerName(appointment)}</span></p>
-                                            <p className='mt-1 text-[11px] leading-5 text-[var(--tt-muted)]'>{appointment.service} · {formatDate(appointment.date)} · {formatTime(appointment.time)}</p>
+                                            <p className='font-serif text-lg'>{appointment.petName} <span className='font-sans text-[12px] text-[var(--tt-muted)]'>with {getOwnerName(appointment)}</span></p>
+                                            <p className='mt-1 text-[12px] leading-5 text-[var(--tt-muted)]'>{appointment.service} · {formatDate(appointment.date)} · {formatTime(appointment.time)}</p>
                                         </div>
                                     </div>
                                     <div className='mt-4 flex gap-2 pl-[52px]'>
-                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'confirmed')} className='min-h-8 rounded-md bg-[var(--tt-ink)] px-3.5 text-xs font-medium text-white transition hover:bg-[#3d3d3d] disabled:opacity-50'>Approve</button>
-                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'cancelled')} className='min-h-8 rounded-md border border-[#e8c5c5] bg-white px-3.5 text-xs font-medium text-[#934b4b] transition hover:bg-[#fbf4f4] disabled:opacity-50'>Decline</button>
+                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'confirmed')} className='min-h-8 rounded-md bg-[var(--tt-ink)] px-3.5 text-xs font-medium text-white transition hover:bg-[var(--tt-brand)] disabled:opacity-50'>Approve</button>
+                                        <button disabled={updatingId === appointment._id} onClick={() => onStatusUpdate(appointment, 'cancelled')} className='min-h-8 rounded-md border border-[var(--tt-danger-border)] bg-white px-3.5 text-xs font-medium text-[#934b4b] transition hover:bg-[#fbf4f4] disabled:opacity-50'>Decline</button>
                                     </div>
                                 </div>
                             ))}
-                            {pendingAppointments.length > 6 && <button type='button' onClick={onViewBookings} className='mt-5 text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>Review all pending →</button>}
+                            {pendingAppointments.length > 6 && <button type='button' onClick={onViewBookings} className='mt-5 inline-flex items-center gap-1 text-xs font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'>Review all pending<ArrowRight size={12} aria-hidden='true' /></button>}
                         </div>
                     ) : (
                         <div className='py-12'><CheckCircle2 size={24} strokeWidth={1.2} className='text-[#6f7a4f]' /><p className='mt-4 font-serif text-xl'>Everything has been reviewed.</p><p className='mt-2 text-xs text-[var(--tt-muted)]'>No bookings are waiting for approval.</p></div>
@@ -1070,11 +1072,11 @@ function DashboardView({
             <section className='border-t border-[var(--tt-border)] pt-10'>
                 <div className='mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between'>
                     <div><h2 className='font-serif text-3xl font-normal'>Demand and completion</h2></div>
-                    <button type='button' onClick={onViewAnalytics} className='self-start border-b border-[var(--tt-ink)] pb-1 text-xs font-medium sm:self-auto'>Open analytics →</button>
+                    <button type='button' onClick={onViewAnalytics} className='inline-flex items-center gap-1 self-start border-b border-[var(--tt-ink)] pb-1 text-xs font-medium sm:self-auto'>Open analytics<ArrowRight size={12} aria-hidden='true' /></button>
                 </div>
                 <div className='grid gap-10 lg:grid-cols-[1.1fr_.9fr]'>
                     <div>
-                        <p className='mb-4 text-[10px] font-bold uppercase tracking-[.12em] text-[var(--tt-muted)]'>Most booked services</p>
+                        <p className='mb-4 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Most booked services</p>
                         {serviceCounts.length ? serviceCounts.map((service) => (
                             <div key={service.name} className='grid grid-cols-[1fr_auto] items-center gap-x-4 border-b border-[var(--tt-border)] py-3'>
                                 <div><div className='flex items-center justify-between gap-4 text-xs'><span>{service.name}</span><span className='text-[var(--tt-muted)]'>{service.count} bookings</span></div><div className='mt-2 h-px bg-[var(--tt-border)]'><div className='h-px bg-[var(--tt-gold)]' style={{ width: `${Math.max(service.pct, 8)}%` }} /></div></div>
@@ -1095,11 +1097,11 @@ function DashboardView({
 }
 
 function AdminStat({ label, value }) {
-    return <div className='border-b border-[var(--tt-border)] px-1 py-6 sm:border-b-0 sm:border-r sm:px-5 sm:last:border-r-0 xl:py-8'><p className='text-[9px] font-bold uppercase tracking-[.13em] text-[var(--tt-muted)]'>{label}</p><p className='mt-2 font-serif text-4xl font-normal tracking-[-.03em]'>{value}</p></div>
+    return <div className='border-b border-[var(--tt-border)] px-1 py-6 sm:border-b-0 sm:border-r sm:px-5 sm:last:border-r-0 xl:py-8'><p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>{label}</p><p className='mt-2 font-serif text-4xl font-normal tracking-[-.03em]'>{value}</p></div>
 }
 
 function PulseStat({ label, value }) {
-    return <div className='border-b border-r border-[var(--tt-border)] p-5'><p className='text-[9px] font-bold uppercase tracking-[.12em] text-[var(--tt-muted)]'>{label}</p><p className='mt-3 font-serif text-2xl font-normal'>{value}</p></div>
+    return <div className='border-b border-r border-[var(--tt-border)] p-5'><p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>{label}</p><p className='mt-3 font-serif text-2xl font-normal'>{value}</p></div>
 }
 
 function MetricCard({
@@ -1150,7 +1152,7 @@ function ScheduleRow({ appointment }) {
             <div className='shrink-0 text-right'>
                 <p className='font-mono text-sm font-semibold text-[var(--tt-brand)]'>{formatTime(appointment.time)}</p>
                 {appointment.endTime && (
-                    <p className='text-[10px] text-[var(--tt-brand)]'>→ {formatTime(appointment.endTime)}</p>
+                    <p className='inline-flex items-center gap-1 text-[12px] text-[var(--tt-brand)]'><ArrowRight size={11} aria-hidden='true' />{formatTime(appointment.endTime)}</p>
                 )}
             </div>
         </div>
@@ -1312,8 +1314,8 @@ function BookingsView({
                                         <span className='text-xs text-[var(--tt-muted)]'>({appointment.breed})</span>
                                         <StatusBadge status={appointment.status} />
                                         {appointment.status === 'in_progress' && appointment.serviceStage && (
-                                            <span className='inline-flex items-center gap-1 rounded-full bg-[#F1F7F3] px-2.5 py-0.5 text-[10px] font-bold text-[#22573D] ring-1 ring-[#BAD5C3]'>
-                                                <span className='h-1.5 w-1.5 rounded-full bg-[#22573D] animate-pulse' />
+                                            <span className='inline-flex items-center gap-1 rounded-full bg-[var(--tt-success-bg)] px-2.5 py-0.5 text-[12px] font-bold text-[#216245] ring-1 ring-[var(--tt-success-border)]'>
+                                                <span className='tt-live text-[#216245]' />
                                                 {appointment.serviceStage}
                                             </span>
                                         )}
@@ -1330,15 +1332,16 @@ function BookingsView({
                                     <p className='text-xs font-bold text-[var(--tt-ink)]'>
                                         {appointment.service}{appointment.haircutStyle ? ` · ${appointment.haircutStyle}` : ''}
                                     </p>
-                                    <p className='mt-0.5 font-mono text-[11px] text-[var(--tt-muted)]'>
+                                    <p className='mt-0.5 font-mono text-[12px] text-[var(--tt-muted)]'>
                                         {formatDate(appointment.date)} · {formatTime(appointment.time)}{appointment.endTime ? ` – ${formatTime(appointment.endTime)}` : ''}
                                     </p>
                                 </div>
 
                                 <div className='text-right shrink-0'>
                                     <p className='font-serif text-base font-bold text-[var(--tt-ink)]'>{formatPeso(appointment.price)}</p>
-                                    <span className='mt-1 inline-flex items-center gap-1 text-xs font-extrabold text-[var(--tt-brand)] group-hover:underline'>
-                                        View details →
+                                    <span className='mt-1 inline-flex items-center gap-1.5 text-xs font-bold text-[var(--tt-brand)] group-hover:underline'>
+                                        View details
+                                        <ArrowRight size={13} aria-hidden='true' />
                                     </span>
                                 </div>
                             </div>
@@ -1451,7 +1454,7 @@ function BookingDetailModal({
                 <div className='grid gap-4 sm:grid-cols-2'>
                     {/* Customer Information */}
                     <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4 space-y-2.5 text-xs'>
-                        <p className='font-bold uppercase tracking-wider text-[10px] text-[var(--tt-brand)]'>Customer Information</p>
+                        <p className='font-bold uppercase tracking-[.08em] text-[12px] text-[var(--tt-brand)]'>Customer Information</p>
                         <DetailRow label='Name' value={getOwnerName(appointment)} />
                         <DetailRow label='Phone' value={appointment.ownerPhone || '—'} />
                         <DetailRow label='Email' value={appointment.ownerEmail || '—'} />
@@ -1460,7 +1463,7 @@ function BookingDetailModal({
 
                     {/* Booking Details */}
                     <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4 space-y-2.5 text-xs'>
-                        <p className='font-bold uppercase tracking-wider text-[10px] text-[var(--tt-brand)]'>Booking Information</p>
+                        <p className='font-bold uppercase tracking-[.08em] text-[12px] text-[var(--tt-brand)]'>Booking Information</p>
                         <DetailRow label='Service' value={appointment.service} />
                         <DetailRow label='Hairstyle' value={appointment.haircutStyle || 'Standard'} />
                         <DetailRow label='Date' value={formatDate(appointment.date)} />
@@ -1475,7 +1478,7 @@ function BookingDetailModal({
                     <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4'>
                         <div className='flex items-center justify-between gap-3 mb-2'>
                             <div>
-                                <p className='font-mono text-[10px] uppercase tracking-wider text-[var(--tt-brand)] font-bold'>
+                                <p className='font-mono text-[12px] uppercase tracking-[.08em] text-[var(--tt-brand)] font-bold'>
                                     Grooming Reference
                                 </p>
                                 <p className='text-sm font-bold text-[var(--tt-ink)]'>
@@ -1483,7 +1486,7 @@ function BookingDetailModal({
                                 </p>
                             </div>
                             {preview && (
-                                <span className='rounded-full bg-[var(--tt-sage)] px-2.5 py-1 text-[10px] font-bold text-[var(--tt-brand-strong)]'>
+                                <span className='rounded-full bg-[var(--tt-sage)] px-2.5 py-1 text-[12px] font-bold text-[var(--tt-brand-strong)]'>
                                     {preview.seasonLabel || 'Style preview'}
                                 </span>
                             )}
@@ -1515,7 +1518,7 @@ function BookingDetailModal({
                                 {previewError || 'No style preview image is available for this booking.'}
                             </div>
                         )}
-                        <p className='mt-2 text-[11px] leading-relaxed text-[var(--tt-muted)]'>
+                        <p className='mt-2 text-[12px] leading-relaxed text-[var(--tt-muted)]'>
                             Use this customer-selected style preview as a visual reference. Confirm coat condition, length and safety with the customer at check-in.
                         </p>
                     </div>
@@ -1524,15 +1527,15 @@ function BookingDetailModal({
                 {/* Notes */}
                 {appointment.notes && (
                     <div className='rounded-sm border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-4 text-xs'>
-                        <p className='font-bold uppercase tracking-wider text-[10px] text-[var(--tt-brand)]'>Client Notes</p>
+                        <p className='font-bold uppercase tracking-[.08em] text-[12px] text-[var(--tt-brand)]'>Client Notes</p>
                         <p className='mt-1 text-sm text-[var(--tt-ink-soft)] italic'>&ldquo;{appointment.notes}&rdquo;</p>
                     </div>
                 )}
 
                 {/* Cancellation Reason if cancelled */}
                 {appointment.status === 'cancelled' && appointment.cancellationReason && (
-                    <div className='rounded-sm border border-[#F0CCCC] bg-[#FBEAEA] p-4 text-xs text-[#7F3333]'>
-                        <p className='font-bold uppercase tracking-wider text-[10px] text-[#9E3E3E]'>Cancellation Reason</p>
+                    <div className='rounded-sm border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] p-4 text-xs text-[#7d3f3f]'>
+                        <p className='font-bold uppercase tracking-[.08em] text-[12px] text-[#934b4b]'>Cancellation Reason</p>
                         <p className='mt-1 text-sm font-semibold'>{appointment.cancellationReason}</p>
                     </div>
                 )}
@@ -1545,13 +1548,13 @@ function BookingDetailModal({
                                 <p className='text-sm font-bold text-[var(--tt-ink)]'>
                                     Current Stage: <span className='text-[var(--tt-brand-strong)] font-serif'>{appointment.serviceStage || 'Not started'}</span>
                                 </p>
-                                <p className='text-[11px] text-[var(--tt-muted)] mt-0.5'>
+                                <p className='text-[12px] text-[var(--tt-muted)] mt-0.5'>
                                     Select a milestone below to advance the service stage for <strong>{appointment.petName}</strong>:
                                 </p>
                             </div>
                             {appointment.status === 'in_progress' && (
-                                <span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800 ring-1 ring-emerald-200'>
-                                    <span className='h-2 w-2 rounded-full bg-emerald-600 animate-pulse' />
+                                <span className='inline-flex items-center gap-1.5 rounded-full bg-[var(--tt-success-bg)] px-2.5 py-1 text-[12px] font-bold text-[var(--tt-success)] ring-1 ring-[var(--tt-success-border)]'>
+                                    <span className='tt-live text-[var(--tt-success)]' />
                                     In Service
                                 </span>
                             )}
@@ -1571,16 +1574,16 @@ function BookingDetailModal({
                                         onClick={() => setConfirmStage(stage)}
                                         className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
                                             isCurrent
-                                                ? 'bg-[#22573D] text-white border-[#22573D] shadow-xs'
+                                                ? 'bg-[#216245] text-white border-[#216245] shadow-xs'
                                                 : isPast
-                                                ? 'bg-[#F1F7F3] text-[#22573D] border-[#BAD5C3] hover:bg-[#E5F0E9]'
-                                                : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#22573D] hover:text-[#22573D]'
+                                                ? 'bg-[var(--tt-success-bg)] text-[#216245] border-[var(--tt-success-border)] hover:bg-[#E5F0E9]'
+                                                : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#216245] hover:text-[#216245]'
                                         } disabled:opacity-85`}
                                     >
-                                        <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
+                                        <div className='flex items-center justify-between text-[12px] mb-1 opacity-80'>
                                             <span className='font-mono font-bold'>Step {idx + 1}</span>
-                                            {isPast && <span>✓ Done</span>}
-                                            {isCurrent && <span className='font-bold'>● Active</span>}
+                                            {isPast && <span className='inline-flex items-center gap-1'><Check size={11} aria-hidden='true' />Done</span>}
+                                            {isCurrent && <span className='inline-flex items-center gap-1.5 font-bold'><span className='tt-live' />Active</span>}
                                         </div>
                                         <p className='font-bold text-xs leading-snug'>{stage.label}</p>
                                     </button>
@@ -1592,7 +1595,7 @@ function BookingDetailModal({
 
                 {/* Update Status Actions */}
                 <div className='border-t border-[var(--tt-border)] pt-4'>
-                    <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)] mb-2.5'>Update Booking Status</p>
+                    <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)] mb-2.5'>Update Booking Status</p>
                     <div className='grid grid-cols-2 sm:grid-cols-5 gap-2'>
                         {[
                             { key: 'pending', label: 'Set Pending', activeLabel: 'Pending' },
@@ -1613,7 +1616,14 @@ function BookingDetailModal({
                                             : 'border border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[var(--tt-brand-strong)] hover:text-[var(--tt-brand-strong)] active:scale-[0.98]'
                                     } disabled:opacity-85`}
                                 >
-                                    {isCurrent ? `✓ ${activeLabel}` : label}
+                                    {isCurrent ? (
+                                        <span className='inline-flex items-center justify-center gap-1'>
+                                            <Check size={12} aria-hidden='true' />
+                                            {activeLabel}
+                                        </span>
+                                    ) : (
+                                        label
+                                    )}
                                 </button>
                             )
                         })}
@@ -1722,7 +1732,6 @@ function ScheduleView({
     const totalCount = appointments.filter((a) => a.status !== 'cancelled').length
     const approvedCount = appointments.filter((a) => a.status === 'confirmed').length
     const inProgressCount = appointments.filter((a) => a.status === 'in_progress').length
-    const pendingCount = appointments.filter((a) => a.status === 'pending').length
 
     const activeAppointments = appointments.filter((appointment) => {
         if (appointment.status === 'cancelled') return false
@@ -1877,7 +1886,7 @@ function ScheduleView({
                             onClick={() => setStatusFilter('in_progress')}
                             className={`rounded-lg px-3 py-1 text-xs font-bold transition ${
                                 statusFilter === 'in_progress'
-                                    ? 'bg-[#22573D] text-white shadow-xs'
+                                    ? 'bg-[#216245] text-white shadow-xs'
                                     : 'text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)]'
                             }`}
                         >
@@ -1919,7 +1928,7 @@ function ScheduleView({
                 <div className='space-y-6'>
                     <div className='overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-xs'>
                         {/* Day names header */}
-                        <div className='grid grid-cols-7 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/60 text-center text-[11px] font-bold uppercase tracking-wider text-[var(--tt-muted)]'>
+                        <div className='grid grid-cols-7 border-b border-[var(--tt-border)] bg-[var(--tt-canvas)]/60 text-center text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>
                             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                                 <div key={d} className='py-3'>
                                     {d}
@@ -1960,7 +1969,7 @@ function ScheduleView({
                                             </span>
 
                                             {dayAppts.length > 0 && (
-                                                <span className='rounded-full bg-[var(--tt-accent-soft)] px-1.5 py-0.5 text-[9px] font-bold text-[var(--tt-ink)]'>
+                                                <span className='rounded-full bg-[var(--tt-accent-soft)] px-1.5 py-0.5 text-[12px] font-bold text-[var(--tt-ink)]'>
                                                     {dayAppts.length}
                                                 </span>
                                             )}
@@ -1975,7 +1984,7 @@ function ScheduleView({
                                                         e.stopPropagation()
                                                         setSelectedAppointment(a)
                                                     }}
-                                                    className='flex items-center gap-1 truncate rounded-md bg-white border border-[var(--tt-border)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--tt-ink)] shadow-2xs hover:border-[var(--tt-brand)] transition'
+                                                    className='flex items-center gap-1 truncate rounded-md bg-white border border-[var(--tt-border)] px-1.5 py-0.5 text-[12px] font-medium text-[var(--tt-ink)] shadow-2xs hover:border-[var(--tt-brand)] transition'
                                                     title={`${a.petName} (${a.service}) at ${formatTime(a.time)}`}
                                                 >
                                                     <span
@@ -1983,18 +1992,18 @@ function ScheduleView({
                                                             a.status === 'confirmed'
                                                                 ? 'bg-[var(--tt-brand-strong)]'
                                                                 : a.status === 'in_progress'
-                                                                ? 'bg-[#22573D]'
+                                                                ? 'bg-[#216245]'
                                                                 : a.status === 'completed'
                                                                 ? 'bg-[var(--tt-ink-soft)]'
                                                                 : 'bg-[var(--tt-accent)]'
                                                         }`}
                                                     />
                                                     <span className='truncate font-bold'>{a.petName}</span>
-                                                    <span className='text-[9px] text-[var(--tt-muted)] shrink-0'>{formatTime(a.time)}</span>
+                                                    <span className='text-[12px] text-[var(--tt-muted)] shrink-0'>{formatTime(a.time)}</span>
                                                 </div>
                                             ))}
                                             {dayAppts.length > 2 && (
-                                                <p className='text-[9px] font-bold text-[var(--tt-muted)] text-right pr-1'>
+                                                <p className='text-[12px] font-bold text-[var(--tt-muted)] text-right pr-1'>
                                                     +{dayAppts.length - 2} more
                                                 </p>
                                             )}
@@ -2009,7 +2018,7 @@ function ScheduleView({
                     <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 sm:p-6 shadow-xs'>
                         <div className='flex flex-col gap-2 border-b border-[var(--tt-border)] pb-4 sm:flex-row sm:items-center sm:justify-between'>
                             <div>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Day Schedule Details</p>
+                                <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Day Schedule Details</p>
                                 <h3 className='font-serif text-xl sm:text-2xl font-bold text-[var(--tt-ink)] mt-0.5'>
                                     {formatDate(selectedDateKey)}
                                 </h3>
@@ -2034,7 +2043,7 @@ function ScheduleView({
                                                         <PetAvatar appointment={appt} />
                                                         <div>
                                                             <p className='font-bold text-sm text-[var(--tt-ink)]'>{appt.petName}</p>
-                                                            <p className='text-[11px] text-[var(--tt-muted)]'>{appt.breed || 'Pet'}</p>
+                                                            <p className='text-[12px] text-[var(--tt-muted)]'>{appt.breed || 'Pet'}</p>
                                                         </div>
                                                     </div>
                                                     <StatusBadge status={appt.status} />
@@ -2042,10 +2051,10 @@ function ScheduleView({
 
                                                 <div className='mt-3 space-y-1 border-t border-[var(--tt-border)] pt-2.5 text-xs text-[var(--tt-ink-soft)]'>
                                                     <p className='font-semibold text-[var(--tt-ink)]'>{appt.service}</p>
-                                                    <p className='font-mono text-[11px] text-[var(--tt-muted)]'>
+                                                    <p className='font-mono text-[12px] text-[var(--tt-muted)]'>
                                                         Time: {formatTime(appt.time)}{appt.endTime ? ` – ${formatTime(appt.endTime)}` : ''}
                                                     </p>
-                                                    <p className='text-[11px] text-[var(--tt-muted)]'>
+                                                    <p className='text-[12px] text-[var(--tt-muted)]'>
                                                         Client: <strong className='text-[var(--tt-ink)]'>{getOwnerName(appt)}</strong>
                                                     </p>
                                                 </div>
@@ -2053,8 +2062,9 @@ function ScheduleView({
 
                                             <div className='mt-4 flex items-center justify-between border-t border-[var(--tt-border)] pt-2.5 text-xs'>
                                                 <span className='font-serif font-bold text-sm text-[var(--tt-ink)]'>{formatPeso(appt.price || appt.amount)}</span>
-                                                <span className='font-bold text-[var(--tt-brand)] group-hover:underline'>
-                                                    View details →
+                                                <span className='inline-flex items-center gap-1.5 font-bold text-[var(--tt-brand)] group-hover:underline'>
+                                                    View details
+                                                    <ArrowRight size={13} aria-hidden='true' />
                                                 </span>
                                             </div>
                                         </div>
@@ -2141,7 +2151,7 @@ function ScheduleView({
                                                                         className='h-8 w-8 shrink-0 rounded-lg border border-[var(--tt-canvas)] object-cover bg-[var(--tt-canvas)]'
                                                                     />
                                                                 ) : (
-                                                                    <div className='grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-brand)] font-bold text-[10px]'>
+                                                                    <div className='grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-[var(--tt-border)] bg-white text-[var(--tt-brand)] font-bold text-[12px]'>
                                                                         {appointment.petName?.[0] || 'P'}
                                                                     </div>
                                                                 )}
@@ -2154,18 +2164,18 @@ function ScheduleView({
                                                                             appointment.status === 'confirmed'
                                                                                 ? 'bg-[var(--tt-brand-strong)]'
                                                                                 : appointment.status === 'in_progress'
-                                                                                ? 'bg-[#22573D]'
+                                                                                ? 'bg-[#216245]'
                                                                                 : appointment.status === 'completed'
                                                                                 ? 'bg-[var(--tt-ink-soft)]'
                                                                                 : 'bg-[var(--tt-accent)]'
                                                                         }`} />
                                                                     </div>
 
-                                                                    <p className='truncate text-[10px] text-[var(--tt-brand)]'>
+                                                                    <p className='truncate text-[12px] text-[var(--tt-brand)]'>
                                                                         {appointment.service}
                                                                     </p>
 
-                                                                    <p className='font-mono text-[9px] font-bold text-[var(--tt-brand)]'>
+                                                                    <p className='font-mono text-[12px] font-bold text-[var(--tt-brand)]'>
                                                                         {formatTime(appointment.time)}
                                                                         {appointment.endTime ? `–${formatTime(appointment.endTime)}` : ''}
                                                                     </p>
@@ -2221,7 +2231,7 @@ function ScheduleView({
                             {/* Grid Info */}
                             <div className='grid gap-4 sm:grid-cols-2'>
                                 <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4 space-y-2'>
-                                    <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)] flex items-center gap-1.5'>
+                                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)] flex items-center gap-1.5'>
                                         <Scissors size={14} /> Pet Information
                                     </p>
                                     <p className='text-sm font-bold text-[var(--tt-ink)]'>{selectedAppointment.petName}</p>
@@ -2230,7 +2240,7 @@ function ScheduleView({
                                 </div>
 
                                 <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4 space-y-2'>
-                                    <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)] flex items-center gap-1.5'>
+                                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)] flex items-center gap-1.5'>
                                         <UserRound size={14} /> Customer Contact
                                     </p>
                                     <p className='text-sm font-bold text-[var(--tt-ink)]'>{getOwnerName(selectedAppointment)}</p>
@@ -2241,7 +2251,7 @@ function ScheduleView({
 
                             {/* Service & Schedule */}
                             <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4 space-y-3'>
-                                <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)] flex items-center gap-1.5'>
+                                <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)] flex items-center gap-1.5'>
                                     <Scissors size={14} /> Grooming Details
                                 </p>
                                 <div className='grid grid-cols-2 gap-3 text-xs'>
@@ -2272,7 +2282,7 @@ function ScheduleView({
                                             <p className='text-xs text-[var(--tt-brand)]'>Selected Haircut Style:</p>
                                             <p className='font-semibold text-[var(--tt-brand)] text-sm mt-0.5'>{selectedAppointment.haircutStyle}</p>
                                             {aiPreviewImg && (
-                                                <span className='mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-[var(--tt-ink)] bg-[var(--tt-canvas)] px-2.5 py-0.5 rounded-full'>
+                                                <span className='mt-1 inline-flex items-center gap-1 text-[12px] font-bold text-[var(--tt-ink)] bg-[var(--tt-canvas)] px-2.5 py-0.5 rounded-full'>
                                                     Style Preview Attached
                                                 </span>
                                             )}
@@ -2305,7 +2315,7 @@ function ScheduleView({
                             {/* Notes */}
                             {selectedAppointment.notes && (
                                 <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4'>
-                                    <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Notes for Groomer</p>
+                                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Notes for Groomer</p>
                                     <p className='mt-1.5 text-xs text-[var(--tt-ink-soft)] leading-relaxed'>{selectedAppointment.notes}</p>
                                 </div>
                             )}
@@ -2313,7 +2323,7 @@ function ScheduleView({
                             {/* AI Style Preview Image */}
                             {(selectedAppointment.generatedImagePreviewUrl || selectedAppointment.previewImage || selectedAppointment.aiPreviewImage) && (
                                 <div className='rounded-sm border border-[var(--tt-border)] bg-white p-4'>
-                                    <p className='text-[10px] font-bold uppercase tracking-wider text-[var(--tt-brand)] mb-2 flex items-center gap-1.5'>
+                                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)] mb-2 flex items-center gap-1.5'>
                                         <ImageIcon size={14} /> Grooming Style Reference
                                     </p>
                                     <div className='relative overflow-hidden rounded-sm border border-[var(--tt-border)] bg-white'>
@@ -2326,7 +2336,7 @@ function ScheduleView({
                                         <button
                                             type='button'
                                             onClick={() => setEnlargedImage(selectedAppointment.generatedImagePreviewUrl || selectedAppointment.previewImage || selectedAppointment.aiPreviewImage)}
-                                            className='absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-[var(--tt-ink)]/70 px-3 py-1 text-[10px] font-bold text-[var(--tt-canvas)] backdrop-blur-sm'
+                                            className='absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-[var(--tt-ink)]/70 px-3 py-1 text-[12px] font-bold text-[var(--tt-canvas)] backdrop-blur-sm'
                                         >
                                             <ZoomIn size={12} /> Click to Enlarge
                                         </button>
@@ -2342,13 +2352,13 @@ function ScheduleView({
                                             <p className='text-sm font-bold text-[var(--tt-ink)]'>
                                                 Current Stage: <span className='text-[var(--tt-brand-strong)] font-serif'>{selectedAppointment.serviceStage || 'Not started'}</span>
                                             </p>
-                                            <p className='text-[11px] text-[var(--tt-muted)] mt-0.5'>
+                                            <p className='text-[12px] text-[var(--tt-muted)] mt-0.5'>
                                                 Select a milestone below to advance the service stage for <strong>{selectedAppointment.petName}</strong>:
                                             </p>
                                         </div>
                                         {selectedAppointment.status === 'in_progress' && (
-                                            <span className='inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-800 ring-1 ring-emerald-200'>
-                                                <span className='h-2 w-2 rounded-full bg-emerald-600 animate-pulse' />
+                                            <span className='inline-flex items-center gap-1.5 rounded-full bg-[var(--tt-success-bg)] px-2.5 py-1 text-[12px] font-bold text-[var(--tt-success)] ring-1 ring-[var(--tt-success-border)]'>
+                                                <span className='tt-live text-[var(--tt-success)]' />
                                                 In Service
                                             </span>
                                         )}
@@ -2368,16 +2378,16 @@ function ScheduleView({
                                                     onClick={() => setConfirmStage(stage)}
                                                     className={`rounded-sm p-2.5 text-left text-xs font-semibold transition border ${
                                                         isCurrent
-                                                            ? 'bg-[#22573D] text-white border-[#22573D] shadow-xs'
+                                                            ? 'bg-[#216245] text-white border-[#216245] shadow-xs'
                                                             : isPast
-                                                            ? 'bg-[#F1F7F3] text-[#22573D] border-[#BAD5C3] hover:bg-[#E5F0E9]'
-                                                            : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#22573D] hover:text-[#22573D]'
+                                                            ? 'bg-[var(--tt-success-bg)] text-[#216245] border-[var(--tt-success-border)] hover:bg-[#E5F0E9]'
+                                                            : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink-soft)] hover:bg-[var(--tt-canvas)] hover:border-[#216245] hover:text-[#216245]'
                                                     } disabled:opacity-85`}
                                                 >
-                                                    <div className='flex items-center justify-between text-[10px] mb-1 opacity-80'>
+                                                    <div className='flex items-center justify-between text-[12px] mb-1 opacity-80'>
                                                         <span className='font-mono font-bold'>Step {idx + 1}</span>
-                                                        {isPast && <span>✓ Done</span>}
-                                                        {isCurrent && <span className='font-bold'>● Active</span>}
+                                                        {isPast && <span className='inline-flex items-center gap-1'><Check size={11} aria-hidden='true' />Done</span>}
+                                                        {isCurrent && <span className='inline-flex items-center gap-1.5 font-bold'><span className='tt-live' />Active</span>}
                                                     </div>
                                                     <p className='font-bold text-xs leading-snug'>{stage.label}</p>
                                                 </button>
@@ -2405,7 +2415,7 @@ function ScheduleView({
                                             type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'in_progress'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'in_progress')}
-                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'in_progress' ? 'bg-[#22573D] text-white' : 'border border-[var(--tt-border)] bg-white text-[#22573D] hover:bg-[#F1F7F3]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'in_progress' ? 'bg-[#216245] text-white' : 'border border-[var(--tt-border)] bg-white text-[#216245] hover:bg-[var(--tt-success-bg)]'}`}
                                         >
                                             Start Service
                                         </button>
@@ -2423,7 +2433,7 @@ function ScheduleView({
                                             type='button'
                                             disabled={updatingId === selectedAppointment._id || selectedAppointment.status === 'cancelled'}
                                             onClick={() => onStatusUpdate(selectedAppointment, 'cancelled')}
-                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'cancelled' ? 'bg-[#9E3E3E] text-white' : 'border border-[var(--tt-border)] bg-white text-[#9E3E3E] hover:bg-[#FBEAEA]'}`}
+                                            className={`rounded-sm px-2.5 py-2.5 text-xs font-bold transition disabled:opacity-50 ${selectedAppointment.status === 'cancelled' ? 'bg-[#934b4b] text-white' : 'border border-[var(--tt-border)] bg-white text-[#934b4b] hover:bg-[var(--tt-danger-bg)]'}`}
                                         >
                                             Cancel
                                         </button>
@@ -2478,15 +2488,15 @@ function ScheduleView({
 function CustomerStatusBadge({ status, reason }) {
     const normalized = status || 'active'
     const config = {
-        active: { label: 'Active', icon: CheckCircle2, className: 'border border-[#C9E1D3] bg-[#E4F1EA] text-[#216245]' },
-        warned: { label: 'Warned', icon: AlertTriangle, className: 'border border-[#F0DEB6] bg-[#FFF4DC] text-[#8A5D13]' },
+        active: { label: 'Active', icon: CheckCircle2, className: 'border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] text-[#216245]' },
+        warned: { label: 'Warned', icon: AlertTriangle, className: 'border border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] text-[var(--tt-warn)]' },
         booking_blocked: { label: 'Booking blocked', icon: Ban, className: 'border border-[#F2D2C8] bg-[var(--tt-accent-soft)] text-[#A84D39]' },
-        banned: { label: 'Banned', icon: ShieldAlert, className: 'border border-[#F0CCCC] bg-[#FBEAEA] text-[#9E3E3E]' }
-    }[normalized] || { label: 'Active', icon: CheckCircle2, className: 'border border-[#C9E1D3] bg-[#E4F1EA] text-[#216245]' }
+        banned: { label: 'Banned', icon: ShieldAlert, className: 'border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b]' }
+    }[normalized] || { label: 'Active', icon: CheckCircle2, className: 'border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)] text-[#216245]' }
 
     const Icon = config.icon
     return (
-        <span title={reason || config.label} className={`inline-flex min-h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-extrabold ${config.className}`}>
+        <span title={reason || config.label} className={`inline-flex min-h-7 items-center gap-1.5 rounded-full px-2.5 text-[12px] font-bold ${config.className}`}>
             <Icon size={12} /> {config.label}
         </span>
     )
@@ -2551,7 +2561,7 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
             <div className='relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--tt-border)] bg-white shadow-2xl' role='dialog' aria-modal='true' aria-labelledby='customer-status-title'>
                 <div className='grid gap-5 border-b border-[var(--tt-border)] p-5 sm:grid-cols-[1fr_auto] sm:items-start sm:p-6'>
                     <div>
-                        <p className='text-[11px] font-extrabold uppercase tracking-[.16em] text-[var(--tt-brand)]'>Account Access Control</p>
+                        <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Account Access Control</p>
                         <h3 id='customer-status-title' className='mt-1 font-serif text-2xl font-bold text-[var(--tt-ink)]'>Manage {customer.firstName} {customer.lastName}</h3>
                         <div className='mt-3 flex flex-wrap items-center gap-2'>
                             <CustomerStatusBadge status={customer.accountStatus} reason={customer.statusReason} />
@@ -2565,7 +2575,7 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
 
                 <div className='space-y-6 p-5 sm:p-6'>
                     <fieldset>
-                        <legend className='text-sm font-extrabold text-[var(--tt-ink)]'>Choose new account status</legend>
+                        <legend className='text-sm font-bold text-[var(--tt-ink)]'>Choose new account status</legend>
                         <div className='mt-3 grid gap-2 sm:grid-cols-2'>
                             {actions.map(({ id, label, detail, icon }) => {
                                 const Icon = icon
@@ -2580,7 +2590,7 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
                                     >
                                         <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${selected ? 'bg-[var(--tt-brand)] text-white' : 'bg-[var(--tt-canvas)] text-[var(--tt-brand)]'}`}><Icon size={18} /></span>
                                         <span>
-                                            <span className='block text-sm font-extrabold'>{label}</span>
+                                            <span className='block text-sm font-bold'>{label}</span>
                                             <span className='block text-xs font-semibold opacity-80'>{detail}</span>
                                         </span>
                                     </button>
@@ -2597,7 +2607,7 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
                                 Mandatory Reason Justification <span className='text-[var(--tt-brand)]'>*</span>
                             </p>
                         </div>
-                        <p className='text-[11px] text-[var(--tt-muted)]'>
+                        <p className='text-[12px] text-[var(--tt-muted)]'>
                             An explicit administrative reason is required for audit logs and customer records before this status update is committed.
                         </p>
 
@@ -2640,12 +2650,12 @@ function CustomerActionModal({ isOpen, customer, loading, onConfirm, onClose }) 
                                     placeholder={isCustom ? 'Describe the reason for this action (min 5 chars)…' : 'Add concise notes for customer history…'}
                                     className={`mt-1.5 w-full rounded-xl border bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:outline-none ${
                                         isCustom && customReason.trim().length < 5
-                                            ? 'border-red-300 focus:border-red-500'
+                                            ? 'border-[var(--tt-danger-border)] focus:border-[var(--tt-danger)]'
                                             : 'border-[var(--tt-border)] focus:border-[var(--tt-brand)]'
                                     }`}
                                 />
                                 {isCustom && customReason.trim().length < 5 && (
-                                    <p className='mt-1 text-[10px] text-red-600 font-semibold'>
+                                    <p className='mt-1 text-[12px] text-[var(--tt-danger)] font-semibold'>
                                         Please provide at least 5 characters for custom justification.
                                     </p>
                                 )}
@@ -2770,7 +2780,7 @@ function CustomersView({ customers, onRefresh }) {
                     <div key={status} className='border-b border-[var(--tt-border)] p-5 last:border-b-0 sm:border-r sm:border-[var(--tt-border)] sm:last:border-r-0 xl:border-b-0'>
                         <div className='flex items-center justify-between gap-3'>
                             <div>
-                                <p className='text-[10px] font-extrabold uppercase tracking-[.13em] text-[var(--tt-muted)]'>{label}</p>
+                                <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>{label}</p>
                                 <p className='mt-2 font-serif text-3xl font-bold text-[var(--tt-ink)]'>{value}</p>
                             </div>
                             <CustomerStatusBadge status={status} />
@@ -2811,7 +2821,7 @@ function CustomersView({ customers, onRefresh }) {
                                     <p className='mt-1 text-xs leading-5 text-[var(--tt-muted)]'>{getCustomerAddress(customer)}</p>
 
                                     {customer.accountStatus && customer.accountStatus !== 'active' && customer.statusReason && (
-                                        <p className='mt-2.5 max-w-2xl rounded-xl border border-[#F0DEB6] bg-[#FFF4DC] px-3 py-1.5 text-xs font-medium leading-5 text-[#6E4A0D]'>
+                                        <p className='mt-2.5 max-w-2xl rounded-xl border border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] px-3 py-1.5 text-xs font-medium leading-5 text-[var(--tt-warn)]'>
                                             Status reason: <strong>{customer.statusReason}</strong>
                                         </p>
                                     )}
@@ -2826,9 +2836,9 @@ function CustomersView({ customers, onRefresh }) {
 
                             <div className='grid gap-4 border-t border-[var(--tt-border)] pt-4 sm:grid-cols-[1fr_auto] sm:items-center lg:min-w-[420px] lg:border-l lg:border-[var(--tt-border)] lg:border-t-0 lg:pl-6 lg:pt-0'>
                                 <dl className='grid grid-cols-3 gap-3'>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Bookings</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{customer.visits || 0}</dd></div>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Spend</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{formatPeso(customer.totalSpend)}</dd></div>
-                                    <div><dt className='text-[10px] font-extrabold uppercase tracking-wider text-[var(--tt-muted)]'>Last visit</dt><dd className='mt-1 font-serif text-sm font-bold text-[var(--tt-ink)]'>{formatShortDate(customer.lastVisit)}</dd></div>
+                                    <div><dt className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Bookings</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{customer.visits || 0}</dd></div>
+                                    <div><dt className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Spend</dt><dd className='mt-1 font-serif text-lg font-bold text-[var(--tt-ink)]'>{formatPeso(customer.totalSpend)}</dd></div>
+                                    <div><dt className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Last visit</dt><dd className='mt-1 font-serif text-sm font-bold text-[var(--tt-ink)]'>{formatShortDate(customer.lastVisit)}</dd></div>
                                 </dl>
                                 <button
                                     type='button'
@@ -3069,8 +3079,6 @@ function AnalyticsView({
             toast.error('Failed to export summary: ' + (err?.message || 'Unknown error'))
         }
     }
-
-    const handleExportCSV = handleExportAppointmentsCSV
 
     return (
         <div className='space-y-6'>
@@ -3591,7 +3599,7 @@ function PetAvatar({
 function StatusBadge({ status }) {
     const meta = STATUS_META[status] || STATUS_META.pending
     return (
-        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wide ${meta.badge}`}>
+        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[12px] font-bold tracking-[.08em] ${meta.badge}`}>
             {meta.label}
         </span>
     )
@@ -3642,13 +3650,14 @@ function ContactsView({ contacts = [], onRefresh }) {
         setPage(1)
     }, [filter, search])
 
-    // Update reply subject when selectedContact changes
+    // Update reply subject when the selected conversation changes
+    const selectedContactId = selectedContact?._id
     useEffect(() => {
-        if (selectedContact) {
-            setReplySubject(`Re: Inquiry from ${selectedContact.name} - Timmy Tails Salon`)
+        if (selectedContactId) {
+            setReplySubject(`Re: Inquiry from ${selectedContact?.name} - Timmy Tails Salon`)
             setReplyMessage('')
         }
-    }, [selectedContact?._id])
+    }, [selectedContactId, selectedContact?.name])
 
     const filteredContacts = useMemo(() => {
         return safeContacts
@@ -3752,7 +3761,7 @@ function ContactsView({ contacts = [], onRefresh }) {
             <div className='grid gap-4 sm:grid-cols-3'>
                 <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
-                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Total Messages</p>
+                        <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Total Messages</p>
                         <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-ink)]'>
                             <Mail size={18} />
                         </span>
@@ -3762,7 +3771,7 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                 <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
-                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Unread Inquiries</p>
+                        <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Unread Inquiries</p>
                         <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[var(--tt-brand)]'>
                             <MessageSquare size={18} />
                         </span>
@@ -3772,7 +3781,7 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                 <div className='rounded-2xl border border-[var(--tt-border)] bg-white p-5 shadow-xs'>
                     <div className='flex items-center justify-between'>
-                        <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-brand)]'>Replied to Client</p>
+                        <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-brand)]'>Replied to Client</p>
                         <span className='grid h-9 w-9 place-items-center rounded-xl bg-[var(--tt-canvas)] text-[#216245]'>
                             <CheckCheck size={18} />
                         </span>
@@ -3859,7 +3868,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                                                     <span className='h-2 w-2 rounded-full bg-[var(--tt-brand)]' title='Unread message' />
                                                 )}
                                                 {contact.replied && (
-                                                    <span className='rounded-full bg-[#E4F1EA] px-1.5 py-0.2 text-[9px] font-bold text-[#216245]'>
+                                                    <span className='rounded-full bg-[var(--tt-success-bg)] px-1.5 py-0.2 text-[12px] font-bold text-[#216245]'>
                                                         Replied
                                                     </span>
                                                 )}
@@ -3867,7 +3876,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                                             <p className='text-xs text-[var(--tt-muted)] mt-0.5'>{contact.email}</p>
                                         </div>
 
-                                        <span className='font-mono text-[11px] text-[var(--tt-muted)] shrink-0'>
+                                        <span className='font-mono text-[12px] text-[var(--tt-muted)] shrink-0'>
                                             {new Date(contact.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                         </span>
                                     </div>
@@ -3900,14 +3909,14 @@ function ContactsView({ contacts = [], onRefresh }) {
                                     <div className='flex items-center gap-2'>
                                         <h3 className='font-serif text-2xl font-bold text-[var(--tt-ink)]'>{selectedContact.name}</h3>
                                         <span
-                                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                                            className={`rounded-full px-2.5 py-0.5 text-[12px] font-bold ${
                                                 selectedContact.read ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]' : 'bg-[var(--tt-brand)]/15 text-[var(--tt-brand)]'
                                             }`}
                                         >
                                             {selectedContact.read ? 'Read' : 'Unread'}
                                         </span>
                                         {selectedContact.replied && (
-                                            <span className='rounded-full bg-[#E4F1EA] px-2 py-0.5 text-[10px] font-bold text-[#216245] flex items-center gap-1'>
+                                            <span className='rounded-full bg-[var(--tt-success-bg)] px-2 py-0.5 text-[12px] font-bold text-[#216245] flex items-center gap-1'>
                                                 <CheckCheck size={11} /> Replied via Email
                                             </span>
                                         )}
@@ -3923,7 +3932,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                                         type='button'
                                         onClick={() => setConfirmDeleteId(selectedContact._id)}
                                         disabled={deletingId === selectedContact._id}
-                                        className='grid h-9 w-9 place-items-center rounded-xl border border-[#F0CCCC] bg-[#FBEAEA] text-[#9E3E3E] transition hover:bg-[#F6DADA] disabled:opacity-50'
+                                        className='grid h-9 w-9 place-items-center rounded-xl border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b] transition hover:bg-[var(--tt-danger-bg)] disabled:opacity-50'
                                         title='Delete message'
                                     >
                                         <Trash2 size={16} />
@@ -3934,7 +3943,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                             {/* Contact Details Card */}
                             <div className='grid gap-3 sm:grid-cols-2 rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]/40 p-4 text-xs'>
                                 <div>
-                                    <p className='text-[var(--tt-brand)] font-bold uppercase tracking-wider text-[10px]'>Client Email</p>
+                                    <p className='text-[var(--tt-brand)] font-bold uppercase tracking-[.08em] text-[12px]'>Client Email</p>
                                     <a
                                         href={`mailto:${selectedContact.email}`}
                                         className='mt-1 block font-semibold text-[var(--tt-ink)] hover:underline truncate'
@@ -3945,7 +3954,7 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                                 {selectedContact.phone && (
                                     <div>
-                                        <p className='text-[var(--tt-brand)] font-bold uppercase tracking-wider text-[10px] flex items-center gap-1'>
+                                        <p className='text-[var(--tt-brand)] font-bold uppercase tracking-[.08em] text-[12px] flex items-center gap-1'>
                                             <Phone size={11} /> Phone Number
                                         </p>
                                         <a
@@ -3960,7 +3969,7 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                             {/* Message Body */}
                             <div>
-                                <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-muted)] mb-2'>Client Message</p>
+                                <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-muted)] mb-2'>Client Message</p>
                                 <div className='rounded-xl border border-[var(--tt-border)] bg-white p-4 text-sm text-[var(--tt-ink)] leading-relaxed whitespace-pre-wrap shadow-2xs'>
                                     {selectedContact.message}
                                 </div>
@@ -3968,18 +3977,18 @@ function ContactsView({ contacts = [], onRefresh }) {
 
                             {/* Sent Reply History (Audit) */}
                             {selectedContact.replied && selectedContact.replyMessage && (
-                                <div className='rounded-xl border border-[#C9E1D3] bg-[#E4F1EA]/50 p-4 space-y-2'>
+                                <div className='rounded-xl border border-[var(--tt-success-border)] bg-[var(--tt-success-bg)]/50 p-4 space-y-2'>
                                     <div className='flex items-center justify-between text-xs'>
                                         <span className='font-bold text-[#216245] flex items-center gap-1.5'>
                                             <CheckCheck size={14} /> Official Salon Reply Sent
                                         </span>
                                         {selectedContact.repliedAt && (
-                                            <span className='font-mono text-[10px] text-[#216245]'>
+                                            <span className='font-mono text-[12px] text-[#216245]'>
                                                 {new Date(selectedContact.repliedAt).toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' })}
                                             </span>
                                         )}
                                     </div>
-                                    <p className='text-xs text-[var(--tt-ink-soft)] leading-relaxed whitespace-pre-wrap border-t border-[#C9E1D3] pt-2'>
+                                    <p className='text-xs text-[var(--tt-ink-soft)] leading-relaxed whitespace-pre-wrap border-t border-[var(--tt-success-border)] pt-2'>
                                         {selectedContact.replyMessage}
                                     </p>
                                 </div>
@@ -3988,15 +3997,15 @@ function ContactsView({ contacts = [], onRefresh }) {
                             {/* In-App Email Reply Composer */}
                             <form onSubmit={handleSendReply} className='space-y-3 rounded-xl border border-[var(--tt-border)] bg-[var(--tt-canvas)]/30 p-4'>
                                 <div className='flex items-center justify-between'>
-                                    <p className='text-xs font-bold uppercase tracking-wider text-[var(--tt-ink)] flex items-center gap-1.5'>
+                                    <p className='text-xs font-bold uppercase tracking-[.08em] text-[var(--tt-ink)] flex items-center gap-1.5'>
                                         <Mail size={13} className='text-[var(--tt-brand)]' />
                                         {selectedContact.replied ? 'Send Follow-up Reply Email' : 'Compose Email Reply'}
                                     </p>
-                                    <span className='text-[10px] text-[var(--tt-muted)]'>Sent via Timmy Tails Mailer</span>
+                                    <span className='text-[12px] text-[var(--tt-muted)]'>Sent via Timmy Tails Mailer</span>
                                 </div>
 
                                 <div>
-                                    <label className='block text-[11px] font-bold text-[var(--tt-muted)] mb-1'>Subject</label>
+                                    <label className='block text-[12px] font-bold text-[var(--tt-muted)] mb-1'>Subject</label>
                                     <input
                                         type='text'
                                         value={replySubject}
@@ -4008,7 +4017,7 @@ function ContactsView({ contacts = [], onRefresh }) {
                                 </div>
 
                                 <div>
-                                    <label className='block text-[11px] font-bold text-[var(--tt-muted)] mb-1'>Message to Client</label>
+                                    <label className='block text-[12px] font-bold text-[var(--tt-muted)] mb-1'>Message to Client</label>
                                     <textarea
                                         value={replyMessage}
                                         onChange={(e) => setReplyMessage(e.target.value)}
@@ -4255,7 +4264,7 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     required
                                     className='w-full rounded-xl border border-[var(--tt-border)] bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:border-[var(--tt-brand)] focus:outline-none'
                                 />
-                                <p className='mt-1 text-right text-[10px] text-[var(--tt-muted)]'>{title.length}/120</p>
+                                <p className='mt-1 text-right text-[12px] text-[var(--tt-muted)]'>{title.length}/120</p>
                             </div>
 
                             {/* Message */}
@@ -4272,13 +4281,13 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                     required
                                     className='w-full resize-none rounded-xl border border-[var(--tt-border)] bg-white px-3 py-2 text-xs text-[var(--tt-ink)] placeholder:text-[var(--tt-muted)] focus:border-[var(--tt-brand)] focus:outline-none'
                                 />
-                                <p className='mt-1 text-right text-[10px] text-[var(--tt-muted)]'>{message.length}/1000</p>
+                                <p className='mt-1 text-right text-[12px] text-[var(--tt-muted)]'>{message.length}/1000</p>
                             </div>
 
                             {/* Preview */}
                             {(title || message) && (
                                 <div className='rounded-xl border border-dashed border-[var(--tt-border)] bg-[var(--tt-canvas)]/40 p-3'>
-                                    <p className='mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--tt-muted)]'>Preview Notice</p>
+                                    <p className='mb-1 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Preview Notice</p>
                                     <p className='text-xs font-bold text-[var(--tt-ink)]'>{title || '—'}</p>
                                     <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)] leading-relaxed'>{message || '—'}</p>
                                 </div>
@@ -4311,7 +4320,7 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                             <div className='flex items-center gap-2'>
                                 <Bell size={15} className='text-[var(--tt-ink)]' />
                                 <h3 className='font-bold text-[var(--tt-ink)]'>Sent History</h3>
-                                <span className='rounded-full bg-[var(--tt-canvas)] px-2 py-0.5 text-[10px] font-bold text-[var(--tt-brand)]'>
+                                <span className='rounded-full bg-[var(--tt-canvas)] px-2 py-0.5 text-[12px] font-bold text-[var(--tt-brand)]'>
                                     {(notifications || []).length}
                                 </span>
                             </div>
@@ -4347,11 +4356,11 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                         <div className='flex-1 min-w-0'>
                                             <div className='flex items-start justify-between gap-2'>
                                                 <p className='text-xs font-bold text-[var(--tt-ink)] leading-snug'>{n.title}</p>
-                                                <span className='shrink-0 text-[10px] text-[var(--tt-muted)] whitespace-nowrap'>{timeAgo(n.createdAt)}</span>
+                                                <span className='shrink-0 text-[12px] text-[var(--tt-muted)] whitespace-nowrap'>{timeAgo(n.createdAt)}</span>
                                             </div>
                                             <p className='mt-0.5 text-xs text-[var(--tt-ink-soft)] leading-relaxed line-clamp-2'>{n.message}</p>
                                             <div className='mt-1.5 flex items-center gap-2'>
-                                                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-bold ${
                                                     n.audience === 'all-users'
                                                         ? 'bg-[var(--tt-canvas)] text-[var(--tt-ink)]'
                                                         : 'bg-[var(--tt-brand)]/15 text-[var(--tt-brand)]'
@@ -4360,7 +4369,7 @@ function NotificationsView({ notifications, customers, loading, onSend }) {
                                                     {n.audience === 'all-users' ? 'Broadcast' : 'Targeted'}
                                                 </span>
                                                 {n.readBy?.length > 0 && (
-                                                    <span className='inline-flex items-center gap-1 rounded-full bg-[#E4F1EA] px-2 py-0.5 text-[10px] font-bold text-[#216245]'>
+                                                    <span className='inline-flex items-center gap-1 rounded-full bg-[var(--tt-success-bg)] px-2 py-0.5 text-[12px] font-bold text-[#216245]'>
                                                         <CheckCheck size={9} />
                                                         {n.readBy.length} read
                                                     </span>

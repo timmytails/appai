@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Camera, ChevronRight, Pencil, Plus, Trash2, Upload, X } from 'lucide-react'
+import { Camera, ChevronRight, PawPrint, Pencil, Plus, Trash2, Upload, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { getErrorMessage, petsApi } from '../utils/api'
 import ConfirmModal from '../components/ConfirmModal'
@@ -96,7 +96,7 @@ export default function MyPets() {
   }
 
   return (
-    <div className='relative min-h-screen overflow-hidden bg-[#fdf4ef] text-[#24211e] selection:bg-[#d1a85b]/20'>
+    <div className='relative min-h-screen overflow-hidden bg-[var(--tt-canvas)] text-[var(--tt-ink)] selection:bg-[var(--tt-gold-light)]/20'>
       <style>{`
         /* Gallery Matting & Crosshair Styles */
         .gallery-card {
@@ -122,7 +122,7 @@ export default function MyPets() {
           right: 0;
           bottom: -1px;
           height: 1px;
-          background: #d1a85b;
+          background: var(--tt-gold-light);
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -178,18 +178,18 @@ export default function MyPets() {
         <path d='M-100,140 C300,220 600,40 980,160 C1250,240 1400,120 1600,180' stroke='#ecdcd0' strokeWidth='1.5' strokeDasharray='5 5' />
         <path d='M-50,400 C350,480 700,300 1080,440 C1300,520 1450,420 1650,460' stroke='#f2e2d7' strokeWidth='1.2' strokeDasharray='5 5' />
       </svg>
-      <Botanical className='anim-float-bg pointer-events-none absolute -left-12 top-20 z-0 w-72 text-[#cf7c54] opacity-25' />
-      <Botanical className='anim-float-bg pointer-events-none absolute -right-16 top-[550px] z-0 w-96 rotate-12 -scale-x-100 text-[#d1a85b] opacity-20' />
+      <Botanical className='anim-float-bg pointer-events-none absolute -left-12 top-20 z-0 w-72 text-[var(--tt-accent)] opacity-25' />
+      <Botanical className='anim-float-bg pointer-events-none absolute -right-16 top-[550px] z-0 w-96 rotate-12 -scale-x-100 text-[var(--tt-gold-light)] opacity-20' />
 
       <div className='relative z-10 mx-auto max-w-[1280px] px-4 py-8 sm:px-6 md:py-12 lg:px-8'>
         {/* Editorial Header */}
         <header className='relative border-b border-[rgba(210,143,119,0.4)] pb-10'>
           <div className='flex flex-col justify-between gap-8 md:flex-row md:items-end'>
             <div>
-              <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5.5vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#24211e]'>
+              <h1 className='font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.4rem,5.5vw,4.6rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[var(--tt-ink)]'>
                 Your pets, <span className='italic'>all in one place</span>.
               </h1>
-              <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[#635b53]'>
+              <p className='mt-3 sm:mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-[var(--tt-ink-soft)]'>
                 Add and manage your pets' details, breed info, coat type, and special grooming instructions.
               </p>
             </div>
@@ -198,9 +198,9 @@ export default function MyPets() {
               <button
                 type='button'
                 onClick={openNew}
-                className='group inline-flex min-h-[46px] sm:min-h-[48px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-lg bg-[#262626] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3d3d3d] hover:shadow-lg active:scale-[0.99]'
+                className='group inline-flex min-h-[46px] sm:min-h-[48px] w-full sm:w-auto items-center justify-center gap-2.5 rounded-lg bg-[var(--tt-brand-strong)] px-6 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--tt-brand)] hover:shadow-lg active:scale-[0.99]'
               >
-                <Plus size={15} className='text-[#d1a85b] transition-transform duration-300 group-hover:rotate-90' />
+                <Plus size={15} className='text-[var(--tt-gold-light)] transition-transform duration-300 group-hover:rotate-90' />
                 Add a pet
               </button>
             </div>
@@ -229,23 +229,23 @@ export default function MyPets() {
           <section className='grid min-h-[460px] place-items-center py-16 text-center'>
             <div className='max-w-md rounded-2xl border border-[rgba(210,143,119,0.35)] bg-white/70 p-10 shadow-[0_12px_36px_rgba(71,46,31,0.05)] backdrop-blur-sm'>
               {/* Museum Mat Empty Plate */}
-              <div className='relative mx-auto flex h-36 w-32 items-center justify-center rounded-lg border border-[rgba(210,143,119,0.35)] bg-[#fdf4ef] p-2'>
-                <span className='pointer-events-none absolute left-1 top-1 font-serif text-[10px] text-[#cf7c54]/70'>+</span>
-                <span className='pointer-events-none absolute right-1 bottom-1 font-serif text-[10px] text-[#cf7c54]/70'>+</span>
-                <div className='flex h-full w-full items-center justify-center rounded bg-[#f7ebe1] shadow-inner'>
-                  <DogPawBotanical className='h-20 w-20 text-[#cf7c54]' />
+              <div className='relative mx-auto flex h-36 w-32 items-center justify-center rounded-lg border border-[rgba(210,143,119,0.35)] bg-[var(--tt-canvas)] p-2'>
+                <span className='pointer-events-none absolute left-1 top-1 font-serif text-[12px] text-[var(--tt-accent)]/70'>+</span>
+                <span className='pointer-events-none absolute right-1 bottom-1 font-serif text-[12px] text-[var(--tt-accent)]/70'>+</span>
+                <div className='flex h-full w-full items-center justify-center rounded-lg bg-[#f7ebe1] shadow-inner'>
+                  <DogPawBotanical className='h-20 w-20 text-[var(--tt-accent)]' />
                 </div>
               </div>
-              <h2 className='mt-6 font-serif text-3xl font-medium text-[#24211e]'>Add your first pet</h2>
-              <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
+              <h2 className='mt-6 font-serif text-3xl font-medium text-[var(--tt-ink)]'>Add your first pet</h2>
+              <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
                 Add your pet once so their breed, age, and grooming preferences are saved for future bookings.
               </p>
               <button
                 type='button'
                 onClick={openNew}
-                className='gold-underline mt-6 inline-flex items-center gap-2 pb-1 text-xs font-semibold text-[#24211e]'
+                className='gold-underline mt-6 inline-flex items-center gap-2 pb-1 text-xs font-semibold text-[var(--tt-ink)]'
               >
-                <Plus size={14} className='text-[#a47d44]' /> Add your first pet
+                <Plus size={14} className='text-[var(--tt-gold)]' /> Add your first pet
               </button>
             </div>
           </section>
@@ -254,22 +254,22 @@ export default function MyPets() {
 
       {/* EDIT / CREATE PET MODAL */}
       {open && (
-        <div className='fixed inset-0 z-[70] flex items-end justify-center bg-[#1e1c1a]/60 p-0 backdrop-blur-[4px] sm:items-center sm:p-5'>
+        <div className='fixed inset-0 z-[70] flex items-end justify-center bg-[var(--tt-ink)]/60 p-0 backdrop-blur-[4px] sm:items-center sm:p-5'>
           <form
             onSubmit={save}
-            className='max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-t-2xl border border-[rgba(210,143,119,0.4)] bg-[#fdf4ef] shadow-[0_30px_90px_rgba(40,26,18,0.25)] sm:rounded-2xl'
+            className='max-h-[92vh] w-full max-w-3xl overflow-y-auto rounded-t-2xl border border-[rgba(210,143,119,0.4)] bg-[var(--tt-canvas)] shadow-[0_30px_90px_rgba(40,26,18,0.25)] sm:rounded-2xl'
           >
             {/* Modal Header */}
-            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-[rgba(210,143,119,0.3)] bg-[#fdf4ef]/95 px-6 py-4 backdrop-blur sm:px-8'>
+            <div className='sticky top-0 z-10 flex items-center justify-between border-b border-[rgba(210,143,119,0.3)] bg-[var(--tt-canvas)]/95 px-6 py-4 backdrop-blur sm:px-8'>
               <div>
-                <h2 className='font-serif text-2xl font-medium text-[#24211e]'>
+                <h2 className='font-serif text-2xl font-medium text-[var(--tt-ink)]'>
                   {editingId ? `Update ${form.name || 'pet'}` : 'Add a new pet'}
                 </h2>
               </div>
               <button
                 type='button'
                 onClick={() => setOpen(false)}
-                className='grid h-9 w-9 place-items-center rounded-full border border-[rgba(210,143,119,0.4)] bg-white/80 text-[#635b53] transition-colors hover:bg-white hover:text-[#24211e]'
+                className='grid h-9 w-9 place-items-center rounded-full border border-[rgba(210,143,119,0.4)] bg-white/80 text-[var(--tt-ink-soft)] transition-colors hover:bg-white hover:text-[var(--tt-ink)]'
                 aria-label='Close editor'
               >
                 <X size={16} />
@@ -281,24 +281,24 @@ export default function MyPets() {
               {/* Photo Area */}
               <div>
                 <div className='relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-[rgba(210,143,119,0.3)] bg-[#fbf5ee] p-2 shadow-inner'>
-                  <span className='pointer-events-none absolute left-1.5 top-1.5 font-serif text-[10px] text-[#cf7c54]/70'>+</span>
-                  <span className='pointer-events-none absolute right-1.5 bottom-1.5 font-serif text-[10px] text-[#cf7c54]/70'>+</span>
-                  <div className='relative h-full w-full overflow-hidden rounded border border-[rgba(210,143,119,0.25)] bg-[#f7eee6] shadow-sm'>
+                  <span className='pointer-events-none absolute left-1.5 top-1.5 font-serif text-[12px] text-[var(--tt-accent)]/70'>+</span>
+                  <span className='pointer-events-none absolute right-1.5 bottom-1.5 font-serif text-[12px] text-[var(--tt-accent)]/70'>+</span>
+                  <div className='relative h-full w-full overflow-hidden rounded-lg border border-[rgba(210,143,119,0.25)] bg-[var(--tt-sage)] shadow-sm'>
                     {form.photoUrl ? (
                       <img src={form.photoUrl} alt='Preview' className='h-full w-full object-cover' />
                     ) : (
-                      <div className='grid h-full place-items-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] text-[#a47d44]'>
+                      <div className='grid h-full place-items-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] text-[var(--tt-gold)]'>
                         <Camera size={36} strokeWidth={1} />
                       </div>
                     )}
                   </div>
                 </div>
-                <label className='mt-4 inline-flex min-h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-4 text-xs font-semibold text-[#24211e] shadow-sm transition-all hover:border-[#a47d44] hover:bg-[#fbf5ee]'>
-                  <Upload size={14} className='text-[#a47d44]' />
+                <label className='mt-4 inline-flex min-h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-4 text-xs font-semibold text-[var(--tt-ink)] shadow-sm transition-all hover:border-[var(--tt-gold)] hover:bg-[#fbf5ee]'>
+                  <Upload size={14} className='text-[var(--tt-gold)]' />
                   {form.photoUrl ? 'Change Photo' : 'Upload Photo'}
                   <input type='file' accept='image/*' onChange={handlePhotoChange} className='hidden' />
                 </label>
-                <p className='mt-2 text-center text-[10px] leading-relaxed text-[#82746b]'>
+                <p className='mt-2 text-center text-[12px] leading-relaxed text-[var(--tt-muted)]'>
                   JPG, PNG or WEBP (Max 8MB)
                 </p>
               </div>
@@ -312,7 +312,7 @@ export default function MyPets() {
                     <select
                       value={form.type}
                       onChange={(event) => setForm({ ...form, type: event.target.value, breed: '' })}
-                      className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'
+                      className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[var(--tt-ink)] outline-none transition-colors focus:border-[var(--tt-gold)]'
                     >
                       <option value='dog'>Dog</option>
                       <option value='cat'>Cat</option>
@@ -344,7 +344,7 @@ export default function MyPets() {
                     <select
                       value={form.vaccinated}
                       onChange={(event) => setForm({ ...form, vaccinated: event.target.value })}
-                      className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'
+                      className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3 text-sm text-[var(--tt-ink)] outline-none transition-colors focus:border-[var(--tt-gold)]'
                     >
                       <option value='yes'>Fully Vaccinated</option>
                       <option value='no'>Pending / Incomplete</option>
@@ -359,7 +359,7 @@ export default function MyPets() {
                     placeholder='Sensitive skin, ear cleaning preferences, anxiety cues, or gentle handling instructions.'
                     onChange={(event) => setForm({ ...form, notes: event.target.value })}
                     rows={4}
-                    className='field-control w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white p-3.5 text-sm leading-relaxed text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'
+                    className='field-control w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white p-3.5 text-sm leading-relaxed text-[var(--tt-ink)] outline-none transition-colors focus:border-[var(--tt-gold)]'
                   />
                 </label>
               </div>
@@ -370,13 +370,13 @@ export default function MyPets() {
               <button
                 type='button'
                 onClick={() => setOpen(false)}
-                className='min-h-10 px-5 text-xs font-semibold text-[#82746b] transition-colors hover:text-[#24211e]'
+                className='min-h-10 px-5 text-xs font-semibold text-[var(--tt-muted)] transition-colors hover:text-[var(--tt-ink)]'
               >
                 Cancel
               </button>
               <button
                 disabled={saving}
-                className='min-h-10 rounded-md bg-[#262626] px-6 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[#3d3d3d] disabled:opacity-50'
+                className='min-h-10 rounded-md bg-[var(--tt-brand-strong)] px-6 text-xs font-semibold text-white shadow-sm transition-all hover:bg-[var(--tt-brand)] disabled:opacity-50'
               >
                 {saving ? 'Saving…' : 'Save pet'}
               </button>
@@ -410,14 +410,14 @@ function PetPortrait({ pet, onEdit, onDelete }) {
     <article className='gallery-card group relative rounded-xl border border-[rgba(210,143,119,0.35)] bg-white p-4 shadow-[0_4px_20px_rgba(40,26,18,0.03)]'>
 
       {/* MUSEUM MATTING PHOTO CONTAINER */}
-      <div className='relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-[rgba(210,143,119,0.25)] bg-[#fdf4ef] p-2.5 shadow-inner'>
+      <div className='relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-[rgba(210,143,119,0.25)] bg-[var(--tt-canvas)] p-2.5 shadow-inner'>
         
         {/* Atelier Registration Marks (Top-Left & Bottom-Right Crosshairs) */}
-        <span className='pointer-events-none absolute left-1.5 top-1.5 font-serif text-[11px] leading-none text-[#cf7c54]/60 transition-transform duration-300 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#a47d44]'>+</span>
-        <span className='pointer-events-none absolute right-1.5 bottom-1.5 font-serif text-[11px] leading-none text-[#cf7c54]/60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:text-[#a47d44]'>+</span>
+        <span className='pointer-events-none absolute left-1.5 top-1.5 font-serif text-[12px] leading-none text-[var(--tt-accent)]/60 transition-transform duration-300 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--tt-gold)]'>+</span>
+        <span className='pointer-events-none absolute right-1.5 bottom-1.5 font-serif text-[12px] leading-none text-[var(--tt-accent)]/60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:text-[var(--tt-gold)]'>+</span>
 
         {/* Inner Picture Canvas */}
-        <div className='relative h-full w-full overflow-hidden rounded-md border border-[rgba(210,143,119,0.2)] bg-[#f7eee6] shadow-sm'>
+        <div className='relative h-full w-full overflow-hidden rounded-md border border-[rgba(210,143,119,0.2)] bg-[var(--tt-sage)] shadow-sm'>
           {pet.photoUrl ? (
             <img
               src={pet.photoUrl}
@@ -429,12 +429,12 @@ function PetPortrait({ pet, onEdit, onDelete }) {
             <div className='flex h-full flex-col items-center justify-center bg-gradient-to-b from-[#fbf1ea] to-[#f4e2d4] p-4 text-center'>
               <div className='transition-transform duration-500 group-hover:scale-105'>
                 {isCat ? (
-                  <FullBodyCatBotanical className='h-32 w-32 text-[#a47d44]' />
+                  <FullBodyCatBotanical className='h-32 w-32 text-[var(--tt-gold)]' />
                 ) : (
-                  <DogPawBotanical className='h-32 w-32 text-[#cf7c54]' />
+                  <DogPawBotanical className='h-32 w-32 text-[var(--tt-accent)]' />
                 )}
               </div>
-              <p className='mt-2 font-serif text-[10px] font-bold uppercase tracking-widest text-[#82746b]'>
+              <p className='mt-2 font-serif text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>
                 {isCat ? 'Feline Registry' : 'Canine Registry'}
               </p>
             </div>
@@ -442,13 +442,13 @@ function PetPortrait({ pet, onEdit, onDelete }) {
 
           {/* Luxury Wax-Seal Stamp (Dog Paw / Cat Silhouette) */}
           <div
-            className='absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(210,143,119,0.5)] bg-[#fdf4ef]/95 shadow-[0_4px_12px_rgba(71,46,31,0.12)] backdrop-blur-sm transition-transform duration-300 group-hover:scale-110'
+            className='absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(210,143,119,0.5)] bg-[var(--tt-canvas)]/95 shadow-[0_4px_12px_rgba(71,46,31,0.12)] backdrop-blur-sm transition-transform duration-300 group-hover:scale-110'
             title={isCat ? 'Cat' : 'Dog'}
           >
             {isCat ? (
-              <CatIconMini className='h-5 w-5 text-[#a47d44]' />
+              <CatIconMini className='h-5 w-5 text-[var(--tt-gold)]' />
             ) : (
-              <DogPawIconMini className='h-4 w-4 text-[#cf7c54]' />
+              <DogPawIconMini className='h-4 w-4 text-[var(--tt-accent)]' />
             )}
           </div>
 
@@ -457,7 +457,7 @@ function PetPortrait({ pet, onEdit, onDelete }) {
             <button
               type='button'
               onClick={onEdit}
-              className='grid h-7 w-7 place-items-center rounded-full text-[#635b53] transition-colors hover:bg-[#fdf4ef] hover:text-[#a47d44]'
+              className='grid h-7 w-7 place-items-center rounded-full text-[var(--tt-ink-soft)] transition-colors hover:bg-[var(--tt-canvas)] hover:text-[var(--tt-gold)]'
               aria-label={`Edit ${pet.name}`}
             >
               <Pencil size={12} />
@@ -466,7 +466,7 @@ function PetPortrait({ pet, onEdit, onDelete }) {
             <button
               type='button'
               onClick={onDelete}
-              className='grid h-7 w-7 place-items-center rounded-full text-[#934b4b] transition-colors hover:bg-[#fbefef]'
+              className='grid h-7 w-7 place-items-center rounded-full text-[#934b4b] transition-colors hover:bg-[var(--tt-danger-bg)]'
               aria-label={`Delete ${pet.name}`}
             >
               <Trash2 size={12} />
@@ -479,21 +479,21 @@ function PetPortrait({ pet, onEdit, onDelete }) {
       <div className='mt-4 px-1'>
         <div className='flex items-baseline justify-between gap-2'>
           <div className='flex items-center gap-2'>
-            <h2 className='font-serif text-2xl font-medium tracking-tight text-[#24211e] transition-colors duration-300 group-hover:text-[#a47d44]'>
+            <h2 className='font-serif text-2xl font-medium tracking-tight text-[var(--tt-ink)] transition-colors duration-300 group-hover:text-[var(--tt-gold)]'>
               {pet.name}
             </h2>
-            <span className='text-[10px] text-[#cf7c54] transition-transform duration-300 group-hover:rotate-45'>✦</span>
+            <PawPrint size={14} className='text-[var(--tt-accent)] transition-transform duration-300 group-hover:-rotate-12' aria-hidden='true' />
           </div>
 
           {pet.ageMonths !== undefined && pet.ageMonths !== null && pet.ageMonths !== '' && (
-            <span className='rounded-full border border-[rgba(210,143,119,0.35)] bg-[#fdf4ef] px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-[1.5px] text-[#a47d44]'>
+            <span className='rounded-full border border-[rgba(210,143,119,0.35)] bg-[var(--tt-canvas)] px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>
               {formatAge(pet.ageMonths)}
             </span>
           )}
         </div>
 
-        <p className='mt-1 text-xs text-[#82746b]'>
-          <span className='font-medium text-[#24211e]'>{isCat ? 'Cat' : 'Dog'}</span>
+        <p className='mt-1 text-xs text-[var(--tt-muted)]'>
+          <span className='font-medium text-[var(--tt-ink)]'>{isCat ? 'Cat' : 'Dog'}</span>
           <span className='mx-1.5 opacity-40'>•</span>
           <span>{pet.breed || 'Registered Companion'}</span>
           {pet.coatType && <span className='italic opacity-80'> ({pet.coatType})</span>}
@@ -501,19 +501,19 @@ function PetPortrait({ pet, onEdit, onDelete }) {
 
         {/* Status Pills */}
         <div className='mt-3 flex items-center gap-2'>
-          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-[1px] ${
+          <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[12px] font-bold uppercase tracking-[.08em] ${
             pet.vaccinated === false 
-              ? 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' 
-              : 'border-[#cdbd86] bg-[#fdf8eb] text-[#675728]'
+              ? 'border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b]' 
+              : 'border-[#cdbd86] bg-[#fdf8eb] text-[var(--tt-muted)]'
           }`}>
-            <span className={`h-1.5 w-1.5 rounded-full ${pet.vaccinated === false ? 'bg-[#934b4b]' : 'bg-[#675728]'}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${pet.vaccinated === false ? 'bg-[#934b4b]' : 'bg-[var(--tt-muted)]'}`} />
             {pet.vaccinated === false ? 'Vaccination Pending' : 'Fully Vaccinated'}
           </span>
         </div>
 
         {/* Note Excerpt */}
         {pet.notes && (
-          <p className='mt-3 line-clamp-2 border-l-2 border-[rgba(210,143,119,0.4)] pl-2.5 text-xs italic leading-relaxed text-[#635b53]'>
+          <p className='mt-3 line-clamp-2 border-l-2 border-[rgba(210,143,119,0.4)] pl-2.5 text-xs italic leading-relaxed text-[var(--tt-ink-soft)]'>
             “{pet.notes}”
           </p>
         )}
@@ -533,7 +533,7 @@ function formatAge(months) {
 
 function FieldLabel({ children }) {
   return (
-    <span className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+    <span className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
       {children}
     </span>
   )
@@ -548,7 +548,7 @@ function Field({ label, value, onChange, placeholder, required = true, ...props 
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3.5 text-sm text-[#24211e] outline-none transition-colors focus:border-[#a47d44]'
+        className='field-control h-11 w-full rounded-md border border-[rgba(210,143,119,0.4)] bg-white px-3.5 text-sm text-[var(--tt-ink)] outline-none transition-colors focus:border-[var(--tt-gold)]'
         {...props}
       />
     </label>
@@ -562,23 +562,23 @@ function DogPawBotanical({ className = 'w-24 h-24' }) {
   return (
     <svg viewBox='0 0 100 100' fill='none' className={className}>
       <g className='anim-botanical-sway'>
-        <path d='M28 72C25 58 30 45 35 38M25 60C20 57 18 50 20 45M28 50C24 45 24 38 28 34' stroke='#cf7c54' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
-        <circle cx='18' cy='45' r='1.5' fill='#cf7c54' opacity='0.8' />
-        <circle cx='28' cy='34' r='1.5' fill='#cf7c54' opacity='0.8' />
+        <path d='M28 72C25 58 30 45 35 38M25 60C20 57 18 50 20 45M28 50C24 45 24 38 28 34' stroke='var(--tt-accent)' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
+        <circle cx='18' cy='45' r='1.5' fill='var(--tt-accent)' opacity='0.8' />
+        <circle cx='28' cy='34' r='1.5' fill='var(--tt-accent)' opacity='0.8' />
       </g>
       <g className='anim-botanical-sway'>
-        <path d='M72 72C75 58 70 45 65 38M75 60C80 57 82 50 80 45M72 50C76 45 76 38 72 34' stroke='#cf7c54' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
-        <circle cx='82' cy='45' r='1.5' fill='#cf7c54' opacity='0.8' />
-        <circle cx='72' cy='34' r='1.5' fill='#cf7c54' opacity='0.8' />
+        <path d='M72 72C75 58 70 45 65 38M75 60C80 57 82 50 80 45M72 50C76 45 76 38 72 34' stroke='var(--tt-accent)' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
+        <circle cx='82' cy='45' r='1.5' fill='var(--tt-accent)' opacity='0.8' />
+        <circle cx='72' cy='34' r='1.5' fill='var(--tt-accent)' opacity='0.8' />
       </g>
-      <path d='M35 78 C45 83 55 83 65 78' stroke='#d1a85b' strokeWidth='1.5' strokeLinecap='round' />
-      <circle cx='50' cy='82' r='2' fill='#d1a85b' />
+      <path d='M35 78 C45 83 55 83 65 78' stroke='var(--tt-gold-light)' strokeWidth='1.5' strokeLinecap='round' />
+      <circle cx='50' cy='82' r='2' fill='var(--tt-gold-light)' />
       <g className='anim-paw-pulse'>
-        <ellipse cx='50' cy='56' rx='14' ry='11' fill='#cf7c54' opacity='0.88' />
-        <circle cx='34' cy='41' r='5.5' fill='#cf7c54' opacity='0.88' />
-        <circle cx='45' cy='33' r='5.5' fill='#cf7c54' opacity='0.88' />
-        <circle cx='55' cy='33' r='5.5' fill='#cf7c54' opacity='0.88' />
-        <circle cx='66' cy='41' r='5.5' fill='#cf7c54' opacity='0.88' />
+        <ellipse cx='50' cy='56' rx='14' ry='11' fill='var(--tt-accent)' opacity='0.88' />
+        <circle cx='34' cy='41' r='5.5' fill='var(--tt-accent)' opacity='0.88' />
+        <circle cx='45' cy='33' r='5.5' fill='var(--tt-accent)' opacity='0.88' />
+        <circle cx='55' cy='33' r='5.5' fill='var(--tt-accent)' opacity='0.88' />
+        <circle cx='66' cy='41' r='5.5' fill='var(--tt-accent)' opacity='0.88' />
       </g>
     </svg>
   )
@@ -588,21 +588,21 @@ function FullBodyCatBotanical({ className = 'w-24 h-24' }) {
   return (
     <svg viewBox='0 0 100 100' fill='none' className={className}>
       <g className='anim-botanical-sway'>
-        <path d='M20 78C35 76 65 76 80 78M28 77C24 72 23 66 26 62M72 77C76 72 77 66 74 62' stroke='#a47d44' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
-        <circle cx='25' cy='62' r='1.8' fill='#d1a85b' />
-        <circle cx='75' cy='62' r='1.8' fill='#d1a85b' />
-        <path d='M68 60C74 52 75 42 70 32M72 45C76 43 80 38 78 33' stroke='#a47d44' strokeWidth='1.4' strokeLinecap='round' opacity='0.65' />
-        <circle cx='70' cy='32' r='1.5' fill='#cf7c54' />
+        <path d='M20 78C35 76 65 76 80 78M28 77C24 72 23 66 26 62M72 77C76 72 77 66 74 62' stroke='var(--tt-gold)' strokeWidth='1.5' strokeLinecap='round' opacity='0.75' />
+        <circle cx='25' cy='62' r='1.8' fill='var(--tt-gold-light)' />
+        <circle cx='75' cy='62' r='1.8' fill='var(--tt-gold-light)' />
+        <path d='M68 60C74 52 75 42 70 32M72 45C76 43 80 38 78 33' stroke='var(--tt-gold)' strokeWidth='1.4' strokeLinecap='round' opacity='0.65' />
+        <circle cx='70' cy='32' r='1.5' fill='var(--tt-accent)' />
       </g>
       <path
         d='M46 25C46 25 43 19 41 19C40 19 41 23 42 26C40 28 39 31 39 34C39 39 42 43 45 45C42 49 40 56 40 64C40 69 41 73 43 76C47 77 53 77 57 76C57 72 56 65 58 57C60 48 64 45 64 39C64 33 60 27 55 26C56 23 57 19 56 19C54 19 51 25 51 25C49 24 48 24 46 25Z'
-        fill='#a47d44'
+        fill='var(--tt-gold)'
         opacity='0.88'
       />
       <path
         className='anim-cat-tail'
         d='M56 74C65 74 72 68 72 60C72 54 67 50 63 53C60 55 62 60 65 59C67 58 68 60 68 62C68 65 64 69 56 70'
-        fill='#a47d44'
+        fill='var(--tt-gold)'
         opacity='0.88'
       />
     </svg>

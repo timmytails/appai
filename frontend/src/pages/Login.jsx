@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Ban, Eye, EyeOff, Loader2, Sparkles, HeartHandshake, ShieldCheck, Scissors } from 'lucide-react'
+import { ArrowLeft, Ban, Eye, EyeOff, Loader2, HeartHandshake, ShieldCheck, Scissors } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { getErrorMessage, warmupBackendServer } from '../utils/api'
@@ -35,11 +35,17 @@ export default function Login() {
   }, [submitting])
 
   const loadingStatusText = useMemo(() => {
-    if (loadingElapsed < 3) return 'Verifying credentials & securing session…'
-    if (loadingElapsed < 7) return 'Connecting to sanctuary care cloud…'
-    if (loadingElapsed < 22) return 'Waking cloud services (Render free tier wakes on-demand — starting up, ~15–25s)…'
-    return 'Almost ready! Finalizing secure session tokens…'
+    if (loadingElapsed < 3) return 'Checking your details…'
+    if (loadingElapsed < 8) return 'Still connecting. The server sleeps when nobody is using it, so the first sign-in of the day takes longer…'
+    return 'Almost there. Waking the server is the slow part, not your account…'
   }, [loadingElapsed])
+
+  // Progress follows real elapsed time, so the bar never claims to be done while
+  // the request is still running. It stops short of 100% until sign-in succeeds.
+  const loadingProgress = useMemo(
+    () => Math.min(92, Math.round((1 - Math.exp(-loadingElapsed / 7)) * 100)),
+    [loadingElapsed]
+  )
 
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search])
   const urlReason = searchParams.get('reason')
@@ -119,7 +125,7 @@ export default function Login() {
   }, [finishLogin, googleLogin])
 
   return (
-    <div className='relative min-h-screen bg-[#fdf4ef] text-[#24211e] selection:bg-[#d1a85b]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
+    <div className='relative min-h-screen bg-[var(--tt-canvas)] text-[var(--tt-ink)] selection:bg-[var(--tt-gold-light)]/20 lg:grid lg:grid-cols-[1.05fr_0.95fr]'>
       <style>{`
         .gold-underline {
           position: relative;
@@ -133,7 +139,7 @@ export default function Login() {
           right: 0;
           bottom: -1px;
           height: 1px;
-          background: #d1a85b;
+          background: var(--tt-gold-light);
           transform: scaleX(0);
           transform-origin: left;
           transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -154,14 +160,14 @@ export default function Login() {
       `}</style>
 
       {/* LEFT SHOWCASE PANEL */}
-      <section className='relative hidden min-h-screen overflow-hidden bg-[#1c1a18] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
+      <section className='relative hidden min-h-screen overflow-hidden bg-[var(--tt-ink)] text-[#f7f1ea] lg:flex lg:flex-col lg:justify-between lg:p-14 xl:p-16'>
         {/* Architectural Hairline Guides */}
         <div className='pointer-events-none absolute left-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
         <div className='pointer-events-none absolute right-12 top-0 h-full w-px bg-white/5' aria-hidden='true' />
 
         {/* Ambient Botanicals */}
         <Botanical className='anim-leaf-float pointer-events-none absolute -left-20 top-1/2 -translate-y-1/2 w-80 rotate-12 text-white/[0.04]' />
-        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[#d1a85b]/[0.08]' />
+        <Botanical className='anim-leaf-float pointer-events-none absolute -right-20 bottom-12 w-96 -scale-x-100 rotate-45 text-[var(--tt-gold-light)]/[0.08]' />
 
         {/* Logo Header */}
         <div className='relative z-10'>
@@ -181,45 +187,45 @@ export default function Login() {
             A quieter place for grooming, care, and the companions you love.
           </h2>
 
-          <p className='mt-5 max-w-md text-base leading-relaxed text-[#b5aba0]'>
+          <p className='mt-5 max-w-md text-base leading-relaxed text-[var(--tt-muted-soft)]'>
             Appointments, coat notes, breed-standard styling, and visit history remain safely connected to your account.
           </p>
 
           <div className='mt-10 space-y-4 border-t border-white/10 pt-8'>
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <HeartHandshake size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Gentle, Low-Stress Handling</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Sessions adapted to your pet's comfort and pace.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Sessions adapted to your pet's comfort and pace.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <ShieldCheck size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Cage-Free Sanctuary</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Peaceful, dedicated space with zero crowded waiting.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Peaceful, dedicated space with zero crowded waiting.</p>
               </div>
             </div>
 
             <div className='flex items-start gap-3.5'>
-              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[#d1a85b]'>
+              <div className='grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-[var(--tt-gold-light)]'>
                 <Scissors size={15} />
               </div>
               <div>
                 <h3 className='font-serif text-base font-medium text-white'>Precision Breed Styling</h3>
-                <p className='mt-0.5 text-xs text-[#9c9388]'>Tailored outlines and coat care for dogs and cats.</p>
+                <p className='mt-0.5 text-xs text-[var(--tt-muted-soft)]'>Tailored outlines and coat care for dogs and cats.</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Footer Notes */}
-        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[#8e857c]'>
+        <div className='relative z-10 flex items-center justify-between border-t border-white/10 pt-6 text-xs text-[var(--tt-muted-soft)]'>
           <span>Open Mon – Sat</span>
           <span>Baliuag, Bulacan</span>
         </div>
@@ -230,9 +236,9 @@ export default function Login() {
         <div className='relative z-10 w-full max-w-[430px]'>
           <Link
             to='/'
-            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[#736357] hover:text-[#24211e]'
+            className='gold-underline group mb-8 inline-flex items-center gap-2 pb-0.5 text-sm font-medium text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
           >
-            <ArrowLeft size={14} className='text-[#cf7c54] transition-transform duration-300 group-hover:-translate-x-1' />
+            <ArrowLeft size={14} className='text-[var(--tt-accent)] transition-transform duration-300 group-hover:-translate-x-1' />
             Back to home
           </Link>
 
@@ -242,32 +248,32 @@ export default function Login() {
               alt='TimmyTails'
               className='h-10 w-10 rounded-full object-cover border border-[rgba(210,143,119,0.4)] shadow-xs'
             />
-            <span className='font-serif text-2xl font-medium text-[#24211e]'>TimmyTails</span>
+            <span className='font-serif text-2xl font-medium text-[var(--tt-ink)]'>TimmyTails</span>
           </div>
 
           <div>
-            <h1 className='font-serif text-4xl font-medium tracking-tight text-[#24211e] sm:text-5xl'>
+            <h1 className='font-serif text-4xl font-medium tracking-tight text-[var(--tt-ink)] sm:text-5xl'>
               Sign in to your care desk.
             </h1>
-            <p className='mt-3 text-sm leading-relaxed text-[#635b53]'>
+            <p className='mt-3 text-sm leading-relaxed text-[var(--tt-ink-soft)]'>
               Review appointments, manage companion medical notes, and configure grooming preferences in one quiet place.
             </p>
           </div>
 
           {location.state?.reason === 'booking-required' && (
-            <div className='mt-5 rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-3.5 text-xs font-medium text-[#675728] shadow-xs'>
-              ✦ Please sign in first, and we will direct you straight to your appointment reservation.
+            <div className='mt-5 rounded-lg border border-[#cdbd86] bg-[#fdf8eb] p-3.5 text-xs font-medium text-[var(--tt-muted)] shadow-xs'>
+              Please sign in first, and we will take you straight to your appointment reservation.
             </div>
           )}
 
           {banErrorMsg && (
-            <div className='mt-5 rounded-lg border border-[#e8c5c5] bg-[#fbefef] p-4 text-left shadow-xs'>
+            <div className='mt-5 rounded-lg border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] p-4 text-left shadow-xs'>
               <div className='flex items-start gap-3'>
                 <span className='grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-[#934b4b] shadow-xs'>
                   <Ban size={16} />
                 </span>
                 <div>
-                  <h4 className='font-serif text-sm font-semibold uppercase tracking-wide text-[#7d3f3f]'>
+                  <h4 className='font-serif text-sm font-semibold uppercase tracking-[.08em] text-[#7d3f3f]'>
                     Account Access Suspended
                   </h4>
                   <p className='mt-1 text-xs leading-relaxed text-[#7d3f3f]'>{banErrorMsg}</p>
@@ -300,7 +306,7 @@ export default function Login() {
           {/* Form */}
           <form onSubmit={handleSubmit} className='mt-7 space-y-4'>
             <div>
-              <label className='mb-1.5 block text-xs font-semibold text-[#54483e]'>
+              <label className='mb-1.5 block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                 Phone Number or Email
               </label>
               <input
@@ -311,18 +317,18 @@ export default function Login() {
                 onFocus={() => warmupBackendServer()}
                 required
                 autoComplete='username'
-                className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 shadow-xs'
+                className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white px-4 text-sm text-[var(--tt-ink)] outline-none transition-all focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20 shadow-xs'
               />
             </div>
 
             <div>
               <div className='mb-1.5 flex items-center justify-between'>
-                <label className='block text-xs font-semibold text-[#54483e]'>
+                <label className='block text-xs font-semibold text-[var(--tt-ink-soft)]'>
                   Password
                 </label>
                 <Link
                   to='/forgot-password'
-                  className='gold-underline text-[11px] font-semibold text-[#82746b] hover:text-[#24211e]'
+                  className='gold-underline text-[12px] font-semibold text-[var(--tt-muted)] hover:text-[var(--tt-ink)]'
                 >
                   Forgot password?
                 </Link>
@@ -336,12 +342,12 @@ export default function Login() {
                   onFocus={() => warmupBackendServer()}
                   required
                   autoComplete='current-password'
-                  className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[#24211e] outline-none transition-all focus:border-[#d1a85b] focus:ring-2 focus:ring-[#d1a85b]/20 shadow-xs'
+                  className='h-12 w-full rounded-xl border border-[rgba(210,143,119,0.35)] bg-white pl-4 pr-11 text-sm text-[var(--tt-ink)] outline-none transition-all focus:border-[var(--tt-gold-light)] focus:ring-2 focus:ring-[var(--tt-gold-light)]/20 shadow-xs'
                 />
                 <button
                   type='button'
                   onClick={() => setShowPassword((p) => !p)}
-                  className='absolute right-3.5 top-1/2 -translate-y-1/2 text-[#82746b] transition-colors hover:text-[#24211e]'
+                  className='absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--tt-muted)] transition-colors hover:text-[var(--tt-ink)]'
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -352,11 +358,11 @@ export default function Login() {
             <button
               type='submit'
               disabled={submitting}
-              className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[#262626] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[#3d3d3d] active:scale-[0.99] disabled:opacity-50'
+              className='mt-2 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] text-sm font-semibold text-white antialiased shadow-sm transition-all duration-200 hover:bg-[var(--tt-brand)] active:scale-[0.99] disabled:opacity-50'
             >
               {submitting ? (
                 <>
-                  <Loader2 size={16} className='animate-spin text-[#d1a85b]' /> Signing in…
+                  <Loader2 size={16} className='animate-spin text-[var(--tt-gold-light)]' /> Signing in…
                 </>
               ) : (
                 'Sign In'
@@ -364,69 +370,56 @@ export default function Login() {
             </button>
           </form>
 
-          {/* PROFESSIONAL LOADING OVERLAY */}
+          {/* Loading overlay. The backend sleeps when idle, so the wait is real;
+              this shows honest progress instead of decorative animation. */}
           {submitting && (
             <div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-[#1c1a18]/75 backdrop-blur-md px-4 transition-all'
-              role='dialog'
+              className='fixed inset-0 z-50 flex items-center justify-center bg-[var(--tt-ink)]/70 px-4'
+              role='status'
               aria-live='polite'
-              aria-label='Signing into TimmyTails'
+              aria-label='Signing in'
             >
-              <div className='relative w-full max-w-md overflow-hidden rounded-2xl border border-[#d1a85b]/30 bg-[#24211e] p-7 text-center shadow-2xl text-[#f7f1ea]'>
-                {/* Ambient Aura */}
-                <div className='pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 h-36 w-36 rounded-full bg-[#d1a85b]/15 blur-3xl' />
+              <div className='w-full max-w-sm rounded-lg border border-[var(--tt-border)] bg-[var(--tt-surface)] p-7 text-center shadow-[var(--tt-elev-3)]'>
+                <h3 className='font-serif text-xl text-[var(--tt-ink)]'>Signing you in</h3>
 
-                {/* Pulsing Brand Emblem */}
-                <div className='relative mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-b from-[#2e2a26] to-[#1c1a18] border border-[#d1a85b]/40 shadow-lg shadow-[#d1a85b]/10'>
-                  <div className='absolute inset-0 rounded-2xl border border-[#d1a85b]/50 animate-ping opacity-25' />
-                  <Scissors size={26} className='text-[#d1a85b] animate-pulse' />
-                </div>
-
-                <h3 className='mt-3 font-serif text-2xl font-medium tracking-tight text-white'>
-                  Welcome Back to TimmyTails
-                </h3>
-
-                <p className='mt-2 min-h-[40px] text-xs leading-relaxed text-[#b5aba0] transition-all duration-300'>
+                <p className='mt-2 h-10 text-xs leading-5 text-[var(--tt-muted)]'>
                   {loadingStatusText}
                 </p>
 
-                {/* Smooth Shimmer Progress Bar */}
-                <div className='relative mt-5 h-2 w-full overflow-hidden rounded-full bg-white/10'>
+                <div
+                  className='mt-5 h-1 w-full overflow-hidden rounded-full bg-[var(--tt-sage)]'
+                  role='progressbar'
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={loadingProgress}
+                >
                   <div
-                    className='absolute top-0 bottom-0 rounded-full bg-gradient-to-r from-[#d1a85b] via-[#e2c180] to-[#cf7c54]'
-                    style={{
-                      width: loadingElapsed < 3 ? '35%' : loadingElapsed < 12 ? '65%' : loadingElapsed < 25 ? '88%' : '96%',
-                      transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)'
-                    }}
+                    className='h-full origin-left rounded-full bg-[var(--tt-gold)] transition-transform duration-700 ease-out'
+                    style={{ transform: `scaleX(${loadingProgress / 100})` }}
                   />
-                  <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse' />
                 </div>
 
-                <div className='mt-5 flex items-center justify-center gap-2 text-[11px] text-[#8e857c]'>
-                  <ShieldCheck size={14} className='text-[#d1a85b]' />
-                  <span>Encrypted session • Verified sanctuary care</span>
-                </div>
+                <p className='mt-4 text-[12px] text-[var(--tt-muted-soft)]'>
+                  {loadingElapsed >= 20
+                    ? 'This is taking longer than usual.'
+                    : 'Usually under a few seconds.'}
+                </p>
 
                 {loadingElapsed >= 20 && (
-                  <div className='mt-4 pt-3 border-t border-white/10'>
-                    <p className='text-[10px] text-[#9c9388] leading-relaxed'>
-                      Render cloud services wake on demand after idling. You will be redirected immediately once the connection completes.
-                    </p>
-                    <button
-                      type='button'
-                      onClick={() => setSubmitting(false)}
-                      className='mt-2.5 text-xs text-[#d1a85b] underline underline-offset-4 hover:text-white transition'
-                    >
-                      Cancel and retry
-                    </button>
-                  </div>
+                  <button
+                    type='button'
+                    onClick={() => setSubmitting(false)}
+                    className='mt-3 text-xs font-semibold text-[var(--tt-gold)] underline underline-offset-4 transition-colors hover:text-[var(--tt-ink)]'
+                  >
+                    Cancel and try again
+                  </button>
                 )}
               </div>
             </div>
           )}
 
           {/* Divider */}
-          <div className='my-6 flex items-center gap-3 text-xs font-medium text-[#82746b]'>
+          <div className='my-6 flex items-center gap-3 text-xs font-medium text-[var(--tt-muted)]'>
             <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
             <span>or continue with</span>
             <span className='h-px flex-1 bg-[rgba(210,143,119,0.3)]' />
@@ -438,25 +431,25 @@ export default function Login() {
           </div>
 
           {/* Registration Link */}
-          <p className='mt-8 text-center text-xs text-[#82746b]'>
+          <p className='mt-8 text-center text-xs text-[var(--tt-muted)]'>
             First time booking with us?{' '}
             <Link
               to='/signup'
               state={{ returnTo: requestedReturnTo }}
-              className='gold-underline font-bold text-[#24211e]'
+              className='gold-underline font-bold text-[var(--tt-ink)]'
             >
               Register a companion account
             </Link>
           </p>
 
           {/* Terms & Privacy Agreement Notice */}
-          <p className='mt-6 border-t border-[rgba(210,143,119,0.2)] pt-4 text-center text-[11px] leading-relaxed text-[#8e857c]'>
+          <p className='mt-6 border-t border-[rgba(210,143,119,0.2)] pt-4 text-center text-[12px] leading-relaxed text-[var(--tt-muted-soft)]'>
             By signing in, you agree to TimmyTails’{' '}
             <Link
               to='/terms-of-service'
               target='_blank'
               rel='noopener noreferrer'
-              className='underline underline-offset-2 transition-colors hover:text-[#24211e]'
+              className='underline underline-offset-2 transition-colors hover:text-[var(--tt-ink)]'
             >
               Terms of Service
             </Link>{' '}
@@ -465,7 +458,7 @@ export default function Login() {
               to='/privacy-policy'
               target='_blank'
               rel='noopener noreferrer'
-              className='underline underline-offset-2 transition-colors hover:text-[#24211e]'
+              className='underline underline-offset-2 transition-colors hover:text-[var(--tt-ink)]'
             >
               Privacy Policy
             </Link>.

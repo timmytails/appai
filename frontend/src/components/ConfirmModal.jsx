@@ -21,7 +21,7 @@ export default function ConfirmModal({
         >
             <div className='w-full max-w-md rounded-t-2xl sm:rounded-2xl border border-[var(--tt-border)] bg-[var(--tt-canvas)] p-6 shadow-[0_30px_90px_rgba(51,51,47,.24)] sm:p-7 pb-safe'>
                 <div className='flex items-start gap-4'>
-                    <span className={`grid h-10 w-10 shrink-0 place-items-center border ${isDanger ? 'border-[#e8c5c5] bg-[#fbefef] text-[#934b4b]' : 'border-[var(--tt-border)] bg-white text-[var(--tt-gold)]'}`}>
+                    <span className={`grid h-10 w-10 shrink-0 place-items-center border ${isDanger ? 'border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#934b4b]' : 'border-[var(--tt-border)] bg-white text-[var(--tt-gold)]'}`}>
                         <AlertTriangle size={18} strokeWidth={1.5} />
                     </span>
                     <div>
@@ -33,7 +33,7 @@ export default function ConfirmModal({
 
                 <div className='mt-7 flex flex-col-reverse gap-2 border-t border-[var(--tt-border)] pt-4 sm:flex-row sm:justify-end'>
                     <button type='button' onClick={onClose} disabled={loading} className='min-h-10 rounded-lg border border-[var(--tt-border)] bg-white px-5 text-xs font-semibold text-[var(--tt-muted)] hover:bg-[var(--tt-canvas)] transition-colors disabled:opacity-50'>{cancelText}</button>
-                    <button type='button' onClick={onConfirm} disabled={loading} className={`min-h-10 rounded-lg px-5 text-xs font-semibold text-white shadow-xs transition-colors disabled:opacity-60 ${isDanger ? 'bg-[#934b4b] hover:bg-[#7d3f3f]' : 'bg-[#262626] hover:bg-[#3d3d3d]'}`}>{loading ? 'Processing…' : confirmText}</button>
+                    <button type='button' onClick={onConfirm} disabled={loading} className={`min-h-10 rounded-lg px-5 text-xs font-semibold text-white shadow-xs transition-colors disabled:opacity-60 ${isDanger ? 'bg-[#934b4b] hover:bg-[#7d3f3f]' : 'bg-[var(--tt-brand-strong)] hover:bg-[var(--tt-brand)]'}`}>{loading ? 'Processing…' : confirmText}</button>
                 </div>
             </div>
         </div>

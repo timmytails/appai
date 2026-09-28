@@ -85,7 +85,7 @@ export default function CustomerHeader() {
               >
                 <div className='border-b border-[var(--tt-border)] px-2 pb-3 pt-1'>
                   <p className='font-serif text-lg text-[var(--tt-ink)]'>{user?.firstName} {user?.lastName}</p>
-                  <p className='mt-1 truncate text-[11px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p>
+                  <p className='mt-1 truncate text-[12px] text-[var(--tt-muted)]'>{user?.email || user?.phone}</p>
                 </div>
                 <div className='py-2'>
                   {customerLinks.map(([label, to]) => (

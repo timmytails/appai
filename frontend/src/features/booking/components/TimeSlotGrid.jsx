@@ -17,9 +17,9 @@ export default function TimeSlotGrid({ slots, selectedTime, onSelect, loading })
                 const className = selected
                     ? 'border-[var(--tt-gold)] bg-[var(--tt-brand-strong)] text-white'
                     : slot.status === 'booked'
-                        ? 'border-red-200 bg-red-50 text-red-500'
+                        ? 'border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[var(--tt-danger)]'
                         : slot.status === 'past'
-                            ? 'border-stone-200 bg-stone-100 text-stone-400'
+                            ? 'border-[var(--tt-border)] bg-[var(--tt-sage)] text-[var(--tt-muted-soft)]'
                             : 'border-[var(--tt-border)] bg-white text-[var(--tt-ink)] hover:border-[var(--tt-gold)]'
 
                 return (

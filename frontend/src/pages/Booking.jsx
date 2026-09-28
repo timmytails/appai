@@ -187,29 +187,6 @@ export default function Booking() {
         if (refreshUser) refreshUser()
     }, [refreshUser])
 
-    if (user?.role === 'admin') {
-        return (
-            <div className='mx-auto max-w-2xl px-4 py-20 text-center'>
-                <div className='mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#fbeee6] text-[#d28f77] border border-[#d28f77]/30 shadow-sm'>
-                    <Ban size={28} />
-                </div>
-                <h2 className='font-serif text-3xl font-bold text-[var(--tt-ink)]'>Administrator Notice</h2>
-                <p className='mt-3 text-sm text-[var(--tt-muted)] leading-relaxed max-w-md mx-auto'>
-                    Appointment reservations are reserved for salon clients only. As an administrator, you manage appointments and salon schedules directly from the Admin Workspace.
-                </p>
-                <div className='mt-8 flex justify-center gap-3'>
-                    <button
-                        type='button'
-                        onClick={() => navigate('/admin')}
-                        className='inline-flex items-center gap-2 rounded-xl bg-[var(--tt-ink)] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#3d3d3d]'
-                    >
-                        Open Admin Schedule & Bookings
-                    </button>
-                </div>
-            </div>
-        )
-    }
-
     const season = getPhilippineSeason()
     const today = useMemo(() => new Date(), [])
     const minDate = useMemo(() => toDateKey(today), [today])
@@ -1305,9 +1282,34 @@ export default function Booking() {
         }
     }
 
+    /* This guard must stay below every hook in this component. Returning here
+       earlier would change the number of hooks React sees between renders. */
+    if (user?.role === 'admin') {
+        return (
+            <div className='mx-auto max-w-2xl px-4 py-20 text-center'>
+                <div className='mx-auto mb-5 grid h-16 w-16 place-items-center rounded-lg bg-[var(--tt-sage)] text-[var(--tt-accent)] border border-[var(--tt-border)]'>
+                    <Ban size={26} />
+                </div>
+                <h2 className='font-serif text-3xl font-bold text-[var(--tt-ink)]'>Administrator notice</h2>
+                <p className='mt-3 text-sm text-[var(--tt-muted)] leading-relaxed max-w-md mx-auto'>
+                    Appointments are booked by salon clients. As an administrator you confirm, reschedule and cancel visits from the Admin workspace.
+                </p>
+                <div className='mt-8 flex justify-center gap-3'>
+                    <button
+                        type='button'
+                        onClick={() => navigate('/admin')}
+                        className='inline-flex items-center gap-2 rounded-lg bg-[var(--tt-brand-strong)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--tt-brand)]'
+                    >
+                        Open Admin schedule
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     if (booked) {
         return (
-            <div className='booking-page min-h-screen bg-[#fdf4ef] px-4 py-12 text-[var(--tt-ink)] sm:px-6 lg:px-8'>
+            <div className='booking-page min-h-screen bg-[var(--tt-canvas)] px-4 py-12 text-[var(--tt-ink)] sm:px-6 lg:px-8'>
                 <div className='mx-auto max-w-xl rounded-sm border border-[var(--tt-border)] bg-white p-7 text-center shadow-xs sm:p-10 space-y-6'>
                     <span className='mx-auto grid h-16 w-16 place-items-center rounded-sm bg-[var(--tt-sage)] text-[var(--tt-brand-strong)]'>
                         <Check size={30} strokeWidth={2.5} />
@@ -1327,19 +1329,19 @@ export default function Booking() {
                     </div>
 
                     {/* Arrival Policy Notice Banner */}
-                    <div className='rounded-sm border border-[#F0DEB6] bg-[#FFF9EC] p-4 text-left flex items-start gap-3.5 text-[#6E4A0D] shadow-xs'>
-                        <span className='grid h-9 w-9 shrink-0 place-items-center rounded-sm bg-[#FFF0D1] text-[#8A5D13]'>
+                    <div className='rounded-sm border border-[var(--tt-warn-border)] bg-[#FFF9EC] p-4 text-left flex items-start gap-3.5 text-[var(--tt-warn)] shadow-xs'>
+                        <span className='grid h-9 w-9 shrink-0 place-items-center rounded-sm bg-[#FFF0D1] text-[var(--tt-warn)]'>
                             <Clock size={17} />
                         </span>
                         <div className='text-xs leading-relaxed'>
-                            <p className='font-bold text-[#8A5D13] text-sm'>Arrival Guideline</p>
-                            <p className='mt-0.5 text-[#6E4A0D]'>Please arrive <strong>5–10 minutes before</strong> your scheduled appointment time.</p>
-                            <p className='mt-1 text-[11px] font-semibold text-[#8A5D13]/90'>Late arrival beyond 10 minutes may result in cancellation to respect other reserved slots.</p>
+                            <p className='font-bold text-[var(--tt-warn)] text-sm'>Arrival Guideline</p>
+                            <p className='mt-0.5 text-[var(--tt-warn)]'>Please arrive <strong>5–10 minutes before</strong> your scheduled appointment time.</p>
+                            <p className='mt-1 text-[12px] font-semibold text-[var(--tt-warn)]/90'>Late arrival beyond 10 minutes may result in cancellation to respect other reserved slots.</p>
                         </div>
                     </div>
 
                     <div className='flex flex-col justify-center gap-3 sm:flex-row pt-2'>
-                        <button onClick={() => navigate('/appointments')} className='rounded-lg bg-[var(--tt-ink)] px-6 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#514b42]'>
+                        <button onClick={() => navigate('/appointments')} className='rounded-lg bg-[var(--tt-ink)] px-6 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)]'>
                             View Appointments
                         </button>
                         <button onClick={() => navigate('/dashboard')} className='rounded-lg border border-[var(--tt-border)] bg-white px-6 py-2.5 text-xs font-semibold text-[var(--tt-ink)] transition hover:bg-[var(--tt-canvas)]'>
@@ -1352,19 +1354,19 @@ export default function Booking() {
     }
 
     return (
-        <div className='booking-page relative min-h-screen overflow-hidden bg-[#fdf4ef] text-[var(--tt-ink)] selection:bg-[#d1a85b]/20'>
+        <div className='booking-page relative min-h-screen overflow-hidden bg-[var(--tt-canvas)] text-[var(--tt-ink)] selection:bg-[var(--tt-gold-light)]/20'>
             {/* Same decorative background as UserDashboard */}
             <svg className='pointer-events-none absolute inset-0 z-0 h-full w-full' viewBox='0 0 1440 900' fill='none' preserveAspectRatio='none'>
                 <path d='M-100,160 C300,240 600,60 980,180 C1250,260 1400,140 1600,200' stroke='#ecdcd0' strokeWidth='1.5' strokeDasharray='5 5' />
                 <path d='M-50,420 C350,500 700,320 1080,460 C1300,540 1450,440 1650,480' stroke='#f2e2d7' strokeWidth='1.2' strokeDasharray='5 5' />
             </svg>
-            <Botanical className='pointer-events-none absolute -left-12 top-24 z-0 w-72 text-[#cf7c54] opacity-25' />
-            <Botanical className='pointer-events-none absolute -right-16 top-[650px] z-0 w-96 rotate-12 -scale-x-100 text-[#d1a85b] opacity-20' />
+            <Botanical className='pointer-events-none absolute -left-12 top-24 z-0 w-72 text-[var(--tt-accent)] opacity-25' />
+            <Botanical className='pointer-events-none absolute -right-16 top-[650px] z-0 w-96 rotate-12 -scale-x-100 text-[var(--tt-gold-light)] opacity-20' />
 
             <div className='relative z-10 px-4 py-8 pb-28 sm:px-6 md:py-10 lg:px-8 lg:pb-16'>
                 <div className='booking-container mx-auto max-w-[1080px]'>
                 <header className='mb-8 lg:mb-10'>
-                    <p className='text-[10px] font-bold uppercase tracking-[.2em] text-[var(--tt-gold)]'>Book a grooming visit</p>
+                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Book a grooming visit</p>
                     <div className='mt-3 flex flex-col gap-4 border-b border-[var(--tt-border)] pb-7 lg:flex-row lg:items-end lg:justify-between'>
                         <div>
                             <h1 className='max-w-3xl font-serif text-[clamp(1.75rem,5.5vw,3.75rem)] sm:text-[clamp(2.35rem,5vw,4.3rem)] font-normal leading-[.98] tracking-[-.04em] text-[var(--tt-ink)]'>Choose what they need, then pick a time.</h1>
@@ -1374,7 +1376,7 @@ export default function Booking() {
                 </header>
 
                 {user?.accountStatus === 'warned' && (
-                    <div className='mb-6 flex items-start gap-3 border border-[#F0DEB6] bg-[#FFF4DC] p-4 text-xs text-[#6E4A0D]'>
+                    <div className='mb-6 flex items-start gap-3 border border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] p-4 text-xs text-[var(--tt-warn)]'>
                         <AlertTriangle className='mt-0.5 h-5 w-5 shrink-0' />
                         <div>
                             <p className='font-semibold text-[var(--tt-ink)]'>Account notice</p>
@@ -1384,7 +1386,7 @@ export default function Booking() {
                 )}
 
                 {(user?.accountStatus === 'booking_blocked' || user?.accountStatus === 'banned') && (
-                    <div className='mb-6 flex items-start gap-3 border border-[#F0CCCC] bg-[#FBEAEA] p-5 text-sm text-[#7F3333]'>
+                    <div className='mb-6 flex items-start gap-3 border border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] p-5 text-sm text-[#7d3f3f]'>
                         <Ban className='mt-0.5 h-5 w-5 shrink-0' />
                         <div>
                             <p className='font-semibold'>Booking is currently unavailable for this account.</p>
@@ -1428,7 +1430,7 @@ export default function Booking() {
                                                     <span className='font-semibold text-[var(--tt-ink)]'>₱{Number(service.price || 0).toLocaleString('en-PH')}</span>
                                                     <span className='inline-flex items-center gap-1.5 text-[var(--tt-muted)]'><Clock3 size={13} />about {service.durationMinutes} min</span>
                                                 </div>
-                                                {service.supportsAiPreview && <p className='mt-3 text-[10px] font-semibold uppercase tracking-[.12em] text-[var(--tt-gold)]'>Style preview available</p>}
+                                                {service.supportsAiPreview && <p className='mt-3 text-[12px] font-semibold uppercase tracking-[.08em] text-[var(--tt-gold)]'>Style preview available</p>}
                                             </button>
                                         )
                                     })}
@@ -1461,7 +1463,7 @@ export default function Booking() {
                                                     <span className='min-w-0 flex-1'>
                                                         <span className='block font-serif text-lg text-[var(--tt-ink)]'>{pet.name}</span>
                                                         <span className='mt-0.5 block text-xs text-[var(--tt-muted)]'>{pet.type === 'cat' ? 'Cat' : 'Dog'} · {pet.breed}{petAge !== null ? ` · ${petAge} mo` : ''}</span>
-                                                        {(tooYoung || unvaccinated) && <span className='mt-2 block text-[10px] font-semibold text-[#9E3E3E]'>{tooYoung ? 'Minimum age is 3 months. ' : ''}{unvaccinated ? 'Vaccination required.' : ''}</span>}
+                                                        {(tooYoung || unvaccinated) && <span className='mt-2 block text-[12px] font-semibold text-[#934b4b]'>{tooYoung ? 'Minimum age is 3 months. ' : ''}{unvaccinated ? 'Vaccination required.' : ''}</span>}
                                                     </span>
                                                     {selected && <Check size={16} className='shrink-0' />}
                                                 </button>
@@ -1502,8 +1504,8 @@ export default function Booking() {
                                             <Label>Pet notes (optional)</Label>
                                             <textarea value={newPet.notes} onChange={(event) => setNewPet({ ...newPet, notes: event.target.value })} rows={2} className='field-control min-h-20 py-2.5' placeholder='Handling preferences, coat or skin notes' />
                                         </label>
-                                        <p className='text-[11px] text-[var(--tt-muted)] sm:col-span-2'>
-                                            ✦ This companion will be automatically saved to your registered pets profile for future bookings.
+                                        <p className='text-[12px] text-[var(--tt-muted)] sm:col-span-2'>
+                                            This companion will be saved to your registered pets profile for future bookings.
                                         </p>
                                     </div>
                                 )}
@@ -1570,7 +1572,7 @@ export default function Booking() {
                                                 <p className='mt-2 leading-relaxed'>
                                                     Scheduled for <strong>{(userDayAppointment || myBookedDateMap.get(selectedDate))?.petName}</strong> ({(userDayAppointment || myBookedDateMap.get(selectedDate))?.service} at {(userDayAppointment || myBookedDateMap.get(selectedDate))?.time}).
                                                 </p>
-                                                <p className='mt-2.5 font-medium text-[11px] text-[#8c3d20]/90 border-t border-[#e8c4b8]/60 pt-2'>
+                                                <p className='mt-2.5 font-medium text-[12px] text-[#8c3d20]/90 border-t border-[#e8c4b8]/60 pt-2'>
                                                     Customers are limited to one appointment per day. Please select another date from the calendar.
                                                 </p>
                                             </div>
@@ -1584,7 +1586,7 @@ export default function Booking() {
                             <label className='mt-7 block border-t border-[var(--tt-border)] pt-6'>
                                 <Label>Notes for the groomer (optional)</Label>
                                 <textarea value={notes} onChange={(event) => setNotes(event.target.value)} rows={3} maxLength={500} placeholder='For example: skin sensitivity, handling notes, or a preferred length.' className='field-control min-h-24 py-3' />
-                                <span className='mt-1 block text-right text-[10px] text-[var(--tt-muted)]'>{notes.length}/500</span>
+                                <span className='mt-1 block text-right text-[12px] text-[var(--tt-muted)]'>{notes.length}/500</span>
                             </label>
                         </Section>
                     )}
@@ -1629,11 +1631,11 @@ export default function Booking() {
                             ) : <div />}
                         </div>
                         {mobileStep === 4 ? (
-                            <button type='button' onClick={submitBooking} disabled={submitting} className='inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-medium text-white shadow-sm transition hover:bg-[#514b42] disabled:opacity-45'>
+                            <button type='button' onClick={submitBooking} disabled={submitting} className='inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-medium text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)] disabled:opacity-45'>
                                 {submitting ? 'Confirming…' : 'Confirm booking'}
                             </button>
                         ) : (
-                            <button type='button' onClick={goToNextStep} className='inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-medium text-white shadow-sm transition hover:bg-[#514b42]'>
+                            <button type='button' onClick={goToNextStep} className='inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-[var(--tt-ink)] px-5 text-xs font-medium text-white shadow-sm transition hover:bg-[var(--tt-ink-soft)]'>
                                 {mobileStep === 3 ? 'Review booking' : 'Continue'} <ChevronRight size={15} />
                             </button>
                         )}
@@ -1686,10 +1688,10 @@ function BookingProgress({ steps, currentIndex }) {
         <div className='mb-6'>
             <div className='flex items-end justify-between gap-4'>
                 <div>
-                    <p className='text-[10px] font-bold uppercase tracking-[.16em] text-[var(--tt-muted)]'>Step {currentIndex + 1} of {steps.length}</p>
+                    <p className='text-[12px] font-bold uppercase tracking-[.08em] text-[var(--tt-muted)]'>Step {currentIndex + 1} of {steps.length}</p>
                     <p className='mt-1 font-serif text-xl text-[var(--tt-ink)]'>{steps[currentIndex]?.label}</p>
                 </div>
-                <div className='hidden items-center gap-5 text-[11px] md:flex'>
+                <div className='hidden items-center gap-5 text-[12px] md:flex'>
                     {steps.map((step, index) => (
                         <span key={step.id} className={index === currentIndex ? 'font-semibold text-[var(--tt-ink)]' : index < currentIndex ? 'text-[var(--tt-ink-soft)]' : 'text-[var(--tt-muted)]'}>
                             {step.label}
@@ -1707,7 +1709,7 @@ function BookingProgress({ steps, currentIndex }) {
 function InlineNotice({ tone = 'warning', children }) {
     const danger = tone === 'danger'
     return (
-        <div className={`mt-4 flex items-start gap-3 border p-3.5 text-xs leading-5 ${danger ? 'border-[#F0CCCC] bg-[#FBEAEA] text-[#7F3333]' : 'border-[#F0DEB6] bg-[#FFF4DC] text-[#6E4A0D]'}`}>
+        <div className={`mt-4 flex items-start gap-3 border p-3.5 text-xs leading-5 ${danger ? 'border-[var(--tt-danger-border)] bg-[var(--tt-danger-bg)] text-[#7d3f3f]' : 'border-[var(--tt-warn-border)] bg-[var(--tt-warn-bg)] text-[var(--tt-warn)]'}`}>
             <AlertTriangle size={15} className='mt-0.5 shrink-0' />
             <span>{children}</span>
         </div>

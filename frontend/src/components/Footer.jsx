@@ -17,7 +17,7 @@ export default function Footer() {
     <>
       <style>{`
         .editorial-footer {
-          background-color: #21201e;
+          background-color: var(--tt-ink);
           color: #e6e1da;
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           padding: 2.75rem 2rem 1.5rem;
@@ -51,7 +51,7 @@ export default function Footer() {
         }
 
         .footer-brand p {
-          color: #a49e96;
+          color: var(--tt-muted-soft);
           font-size: 0.88rem;
           line-height: 1.6;
           margin: 0;
@@ -63,7 +63,7 @@ export default function Footer() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1.05rem;
           font-weight: 500;
-          color: #ffffff;
+          color: #fff;
           margin: 0 0 0.85rem 0;
           letter-spacing: 0.5px;
           position: relative;
@@ -74,7 +74,7 @@ export default function Footer() {
           display: block;
           width: 26px;
           height: 1.5px;
-          background-color: #d1a85b;
+          background-color: var(--tt-gold-light);
           margin-top: 0.35rem;
         }
 
@@ -86,7 +86,7 @@ export default function Footer() {
         }
 
         .footer-nav a {
-          color: #b5ada4;
+          color: var(--tt-muted-soft);
           text-decoration: none;
           font-size: 0.88rem;
           display: inline-flex;
@@ -97,14 +97,14 @@ export default function Footer() {
         }
 
         .footer-nav a span {
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           font-size: 1rem;
           line-height: 1;
           transition: transform 0.2s ease;
         }
 
         .footer-nav a:hover {
-          color: #ffffff;
+          color: #fff;
           transform: translateX(3px);
         }
 
@@ -117,7 +117,7 @@ export default function Footer() {
 
         .footer-contact p,
         .footer-contact a {
-          color: #b5ada4;
+          color: var(--tt-muted-soft);
           font-size: 0.88rem;
           text-decoration: none;
           margin: 0;
@@ -129,11 +129,11 @@ export default function Footer() {
         }
 
         .footer-contact a:hover {
-          color: #ffffff;
+          color: #fff;
         }
 
         .footer-contact svg {
-          color: #d1a85b;
+          color: var(--tt-gold-light);
           flex-shrink: 0;
         }
 
@@ -145,7 +145,7 @@ export default function Footer() {
         }
 
         .footer-copyright {
-          color: #827b73;
+          color: var(--tt-muted-soft);
           font-size: 0.82rem;
           letter-spacing: 0.4px;
         }
