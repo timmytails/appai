@@ -967,10 +967,10 @@ const sendContactAcknowledgementEmail = async ({ to, name, message }) => {
             <p style="margin:20px 0 0;font-size:14px;line-height:1.6;color:#5C4B40;">
               In the meantime, you can also reach us at:
             </p>
-            <ul style="margin:12px 0 0;padding-left:20px;font-size:14px;color:#5C4B40;line-height:1.8;">
-              <li>📍 Tangos, Baliuag City, Bulacan, Philippines</li>
-              <li>📞 +63 975 669 2647</li>
-              <li>📧 timmytails.cs@gmail.com</li>
+            <ul style="margin:12px 0 0;padding-left:0;list-style:none;font-size:14px;color:#5C4B40;line-height:1.8;">
+              <li style="margin-bottom:4px;"><span style="color:#D4A373;font-weight:bold;margin-right:6px;">&#9679;</span> Tangos, Baliuag City, Bulacan, Philippines</li>
+              <li style="margin-bottom:4px;"><span style="color:#D4A373;font-weight:bold;margin-right:6px;">&#9679;</span> +63 975 669 2647</li>
+              <li><span style="color:#D4A373;font-weight:bold;margin-right:6px;">&#9679;</span> timmytails.cs@gmail.com</li>
             </ul>
             <p style="margin:28px 0 0;font-size:14px;color:#2C221E;">
               Warm regards,<br>
