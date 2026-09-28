@@ -622,12 +622,13 @@ export default function Services() {
           background: #fff;
           border: 1px solid rgba(210, 143, 119, 0.35);
           box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-          border-radius: 8px;
-          padding: 0.85rem 1.25rem;
+          border-radius: 999px;
+          padding: 0.8rem 1.35rem;
           display: flex;
           align-items: center;
           gap: 12px;
           z-index: 6;
+          white-space: nowrap;
         }
 
         .benefits-floating-pill-badge strong {
@@ -635,6 +636,7 @@ export default function Services() {
           font-size: 1rem;
           color: var(--tt-ink);
           display: block;
+          white-space: nowrap;
         }
 
         .benefits-floating-pill-badge span {
@@ -642,6 +644,34 @@ export default function Services() {
           color: var(--tt-muted-soft);
           text-transform: uppercase;
           letter-spacing: 1px;
+          display: block;
+          white-space: nowrap;
+        }
+
+        /* CTA Actions */
+        .services-cta-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.15rem;
+          margin-top: 2.25rem;
+          width: 100%;
+        }
+
+        .services-contact-link {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-size: 0.95rem;
+          color: var(--tt-ink);
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          transition: color 0.2s ease, transform 0.2s ease;
+          display: inline-block;
+          padding: 0.35rem 0.75rem;
+        }
+
+        .services-contact-link:hover {
+          color: var(--tt-accent);
+          transform: translateY(-1px);
         }
 
         /* ======================================================
@@ -699,24 +729,68 @@ export default function Services() {
           }
 
           .package-petal-flower {
-            width: 320px;
-            height: 320px;
+            width: 300px;
+            height: 300px;
           }
 
           .benefits-circle-outer-wrapper {
-            width: 310px;
-            height: 310px;
+            width: 270px;
+            height: 270px;
           }
 
           .benefits-pink-circle-card {
-            width: 290px;
-            height: 290px;
+            width: 250px;
+            height: 250px;
           }
 
           .benefits-circle-white-leaf {
-            width: 200px;
-            right: -15px;
+            width: 170px;
+            right: -10px;
             bottom: -5px;
+          }
+
+          .benefits-floating-pill-badge {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -18px;
+            white-space: nowrap;
+            padding: 0.65rem 1.15rem;
+            gap: 10px;
+            border-radius: 999px;
+            width: auto;
+            max-width: 90vw;
+          }
+
+          .benefits-floating-pill-badge strong {
+            font-size: 0.88rem;
+            white-space: nowrap;
+          }
+
+          .benefits-floating-pill-badge span {
+            font-size: 0.68rem;
+            white-space: nowrap;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .benefits-circle-outer-wrapper {
+            width: 235px;
+            height: 235px;
+          }
+
+          .benefits-pink-circle-card {
+            width: 215px;
+            height: 215px;
+          }
+
+          .benefits-floating-pill-badge {
+            bottom: -15px;
+            padding: 0.55rem 0.9rem;
+            gap: 8px;
+          }
+
+          .benefits-floating-pill-badge strong {
+            font-size: 0.82rem;
           }
         }
       `}</style>
@@ -960,9 +1034,9 @@ export default function Services() {
           <p className='eyebrow'>Ready when you are</p>
           <h2>Reserve your pet’s next visit.</h2>
           <PlaceholderCopy short />
-          <div className='editorial-actions center-action'>
+          <div className='services-cta-actions'>
             <BookButton serviceId={selected?.id}>Book an appointment</BookButton>
-            <Link className='editorial-text-link' to='/contact'>Contact Us</Link>
+            <Link className='services-contact-link' to='/contact'>Contact Us</Link>
           </div>
         </div>
       </section>
