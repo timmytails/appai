@@ -57,12 +57,10 @@ const getSenderAddress = () => {
 
 /**
  * Unified email sender:
- * 1. Brevo REST API (HTTPS port 443 - Recommended for Render Free Tier)
- * 2. Resend REST API (HTTPS port 443)
- * 3. Direct SMTP via Nodemailer / Gmail App Password (with fast timeout fallback)
- *
- * NOTE: To show timmytails.cs@gmail.com as the FROM address via Brevo,
- * verify that sender email in your Brevo dashboard → Settings → Senders & Domains.
+ * 0. Gmail API via OAuth2 (HTTPS port 443) — sends from real timmytails.cs@gmail.com, zero branding
+ * 1. Brevo REST API (HTTPS port 443) — fallback for Render Free Tier
+ * 2. Resend REST API (HTTPS port 443) — fallback
+ * 3. Direct SMTP via Nodemailer / Gmail App Password — local fallback
  */
 const sendMailViaHttpOrSmtp = async ({ to, name, subject, html, text }) => {
     if (!to) {
@@ -72,8 +70,87 @@ const sendMailViaHttpOrSmtp = async ({ to, name, subject, html, text }) => {
 
     const brevoApiKey = cleanEnv(process.env.BREVO_API_KEY)
     const resendApiKey = cleanEnv(process.env.RESEND_API_KEY)
+    const gmailClientId = cleanEnv(process.env.GMAIL_CLIENT_ID)
+    const gmailClientSecret = cleanEnv(process.env.GMAIL_CLIENT_SECRET)
+    const gmailRefreshToken = cleanEnv(process.env.GMAIL_REFRESH_TOKEN)
+    const senderUser = cleanEnv(process.env.SMTP_USER) || 'timmytails.cs@gmail.com'
 
-    // Strategy 1: Brevo REST API (HTTPS Port 443)
+    // Strategy 0: Gmail API via OAuth2 (HTTPS Port 443)
+    // Uses dedicated timmytails-mailer project credentials.
+    // Sends from real timmytails.cs@gmail.com — no third-party branding whatsoever.
+    if (gmailClientId && gmailClientSecret && gmailRefreshToken) {
+        try {
+            // Step 1: Exchange refresh token for a short-lived access token
+            const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    client_id: gmailClientId,
+                    client_secret: gmailClientSecret,
+                    refresh_token: gmailRefreshToken,
+                    grant_type: 'refresh_token'
+                }),
+                signal: AbortSignal.timeout(8000)
+            })
+            const tokenData = await tokenRes.json().catch(() => ({}))
+            const accessToken = tokenData.access_token
+
+            if (accessToken) {
+                // Step 2: Build RFC 2822 raw email message
+                const boundary = `----=_Part_${Date.now()}`
+                const rawParts = [
+                    `From: Timmy Tails Pet Grooming <${senderUser}>`,
+                    `To: ${to}`,
+                    `Subject: ${subject}`,
+                    'MIME-Version: 1.0',
+                    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+                    '',
+                    `--${boundary}`,
+                    'Content-Type: text/plain; charset=UTF-8',
+                    '',
+                    text || subject,
+                    `--${boundary}`,
+                    'Content-Type: text/html; charset=UTF-8',
+                    '',
+                    html,
+                    `--${boundary}--`
+                ].join('\r\n')
+
+                const rawEncoded = Buffer.from(rawParts)
+                    .toString('base64')
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=+$/, '')
+
+                // Step 3: Send via Gmail API
+                const sendRes = await fetch(
+                    `https://gmail.googleapis.com/gmail/v1/users/${encodeURIComponent(senderUser)}/messages/send`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ raw: rawEncoded }),
+                        signal: AbortSignal.timeout(10000)
+                    }
+                )
+                const sendData = await sendRes.json().catch(() => ({}))
+                if (sendRes.ok) {
+                    console.log(`[MAILER] Email delivered to ${to} via Gmail API (OAuth2), id:`, sendData.id)
+                    return { delivered: true, messageId: sendData.id, provider: 'gmail-api' }
+                } else {
+                    console.warn(`[MAILER] Gmail API rejected (${sendRes.status}):`, sendData?.error?.message || JSON.stringify(sendData))
+                }
+            } else {
+                console.warn('[MAILER] Gmail API token refresh failed:', tokenData?.error_description || tokenData?.error)
+            }
+        } catch (gmailErr) {
+            console.warn('[MAILER] Gmail API strategy failed:', gmailErr.message)
+        }
+    }
+
+    // Strategy 1: Brevo REST API (HTTPS Port 443) — fallback
 
     if (brevoApiKey) {
         try {
