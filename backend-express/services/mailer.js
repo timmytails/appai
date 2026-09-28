@@ -264,7 +264,7 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
     const timeSlot = `${appointment.time} – ${appointment.endTime || ''}`
     const priceFormatted = Number(appointment.price || 0).toLocaleString('en-PH')
 
-    const subject = `🐾 Reminder: Your grooming appointment for ${petName} is TODAY at ${appointment.time}`
+    const subject = `Reminder: Your grooming appointment for ${petName} is TODAY at ${appointment.time}`
 
     const html = `
 <!DOCTYPE html>
@@ -281,7 +281,7 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
       <table role="presentation" width="100%" style="max-width:580px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#C25E2B;padding:28px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:0.5px;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:0.5px;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#FFE9DF;font-size:14px;font-weight:500;">Same-Day Appointment Reminder</p>
           </td>
         </tr>
@@ -297,7 +297,7 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
 
             <div style="background-color:#FFF5F0;border:2px solid #E06D38;border-radius:12px;padding:18px 20px;margin:24px 0;">
               <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#B3471A;text-transform:uppercase;letter-spacing:0.5px;">
-                ⚠️ Important Salon Policy Notice
+                Warning: Important Salon Policy Notice
               </p>
               <p style="margin:0;font-size:15px;font-weight:600;line-height:1.5;color:#93330C;">
                 Please arrive 5–10 minutes before ${appointment.time} or the slot will be automatically cancelled and will open to others.
@@ -305,7 +305,7 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
             </div>
 
             <h3 style="margin:24px 0 12px 0;font-size:16px;color:#261C14;border-bottom:1px solid #F0E6DC;padding-bottom:8px;">
-              📋 Appointment Details
+               Appointment Details
             </h3>
             <table role="presentation" width="100%" cellspacing="0" cellpadding="6" style="font-size:14px;color:#4A3B32;">
               <tr>
@@ -335,7 +335,7 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
             </table>
 
             <div style="margin-top:28px;padding:16px;background-color:#FAF7F2;border-radius:10px;font-size:13px;color:#68594E;line-height:1.5;">
-              <p style="margin:0 0 6px 0;font-weight:700;color:#261C14;">📍 Salon Address &amp; Guidelines:</p>
+              <p style="margin:0 0 6px 0;font-weight:700;color:#261C14;"> Salon Address &amp; Guidelines:</p>
               <p style="margin:0 0 6px 0;">Tangos, Baliuag City, Bulacan</p>
               <p style="margin:0;">Please bring your pet on a leash or inside a pet carrier, and ensure vaccinations are up to date.</p>
             </div>
@@ -361,13 +361,13 @@ const sendAppointmentReminderTodayEmail = async ({ to, name, appointment }) => {
 `
 
     const text = `
-🐾 TIMMY TAILS PET GROOMING - APPOINTMENT TODAY REMINDER
+ TIMMY TAILS PET GROOMING - APPOINTMENT TODAY REMINDER
 
 Hello ${clientName},
 
 Today is the day! This is a reminder that ${petName} is scheduled for grooming today at Timmy Tails.
 
-⚠️ IMPORTANT NOTICE:
+Warning: IMPORTANT NOTICE:
 Please arrive 5-10 minutes before ${appointment.time} or the slot will be automatically cancelled and will open to others.
 
 APPOINTMENT DETAILS:
@@ -408,8 +408,8 @@ const sendAppointmentConfirmedEmail = async ({ to, name, appointment, isToday = 
     const priceFormatted = Number(appointment.price || 0).toLocaleString('en-PH')
 
     const subject = isToday
-        ? `🐾 Booking Confirmed: Your appointment for ${petName} is TODAY at ${appointment.time}`
-        : `🐾 Booking Confirmed: Grooming appointment for ${petName} on ${appointment.date}`
+        ? ` Booking Confirmed: Your appointment for ${petName} is TODAY at ${appointment.time}`
+        : ` Booking Confirmed: Grooming appointment for ${petName} on ${appointment.date}`
 
     const html = `
 <!DOCTYPE html>
@@ -426,7 +426,7 @@ const sendAppointmentConfirmedEmail = async ({ to, name, appointment, isToday = 
       <table role="presentation" width="100%" style="max-width:580px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#2B4C3F;padding:28px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#D8E5DF;font-size:14px;">Appointment Booking Confirmation</p>
           </td>
         </tr>
@@ -443,7 +443,7 @@ const sendAppointmentConfirmedEmail = async ({ to, name, appointment, isToday = 
             ${isToday ? `
             <div style="background-color:#FFF5F0;border:2px solid #E06D38;border-radius:12px;padding:18px 20px;margin:24px 0;">
               <p style="margin:0 0 8px 0;font-size:14px;font-weight:700;color:#B3471A;text-transform:uppercase;">
-                ⚠️ Note for Today's Appointment
+                Warning: Note for Today's Appointment
               </p>
               <p style="margin:0;font-size:15px;font-weight:600;line-height:1.5;color:#93330C;">
                 Please arrive 5–10 minutes before ${appointment.time} or the slot will be automatically cancelled and will open to others.
@@ -458,7 +458,7 @@ const sendAppointmentConfirmedEmail = async ({ to, name, appointment, isToday = 
             `}
 
             <h3 style="margin:24px 0 12px 0;font-size:16px;color:#261C14;border-bottom:1px solid #F0E6DC;padding-bottom:8px;">
-              📋 Booking Summary
+               Booking Summary
             </h3>
             <table role="presentation" width="100%" cellspacing="0" cellpadding="6" style="font-size:14px;color:#4A3B32;">
               <tr>
@@ -488,7 +488,7 @@ const sendAppointmentConfirmedEmail = async ({ to, name, appointment, isToday = 
             </table>
 
             <div style="margin-top:28px;padding:16px;background-color:#FAF7F2;border-radius:10px;font-size:13px;color:#68594E;line-height:1.5;">
-              <p style="margin:0 0 6px 0;font-weight:700;color:#261C14;">📍 Salon Address:</p>
+              <p style="margin:0 0 6px 0;font-weight:700;color:#261C14;"> Salon Address:</p>
               <p style="margin:0;">Tangos, Baliuag City, Bulacan, Philippines</p>
             </div>
           </td>
@@ -524,16 +524,16 @@ const sendOtpEmail = async ({ to, name, code, purpose }) => {
         return { delivered: false, skipped: true }
     }
 
-    let subject = `🐾 Your TimmyTails Verification Code: ${code}`
+    let subject = `Your TimmyTails Verification Code: ${code}`
     let title = 'Verification Code'
     let description = 'Use the 6-digit code below to complete your registration with TimmyTails Pet Grooming Salon.'
 
     if (purpose === 'reset_password') {
-        subject = `🔐 Your TimmyTails Password Reset Code: ${code}`
+        subject = `Your TimmyTails Password Reset Code: ${code}`
         title = 'Password Reset Code'
         description = 'We received a request to reset your TimmyTails account password. Use the verification code below to set a new password.'
     } else if (purpose === 'complete_profile') {
-        subject = `🐾 Complete Your TimmyTails Profile: ${code}`
+        subject = `Complete Your TimmyTails Profile: ${code}`
         title = 'Profile Verification Code'
         description = 'Use the verification code below to verify your email and complete your TimmyTails customer profile.'
     }
@@ -555,7 +555,7 @@ const sendOtpEmail = async ({ to, name, code, purpose }) => {
       <table role="presentation" width="100%" style="max-width:540px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#33332F;padding:26px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">🐾 TimmyTails</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;"> TimmyTails</h1>
             <p style="margin:6px 0 0 0;color:#E1DAD4;font-size:13px;font-weight:500;">Pet Grooming Salon</p>
           </td>
         </tr>
@@ -617,7 +617,7 @@ const sendWelcomeEmail = async ({ to, name }) => {
     if (!to) return { delivered: false, skipped: true }
 
     const clientName = name || 'Valued Customer'
-    const subject = `🐾 Welcome to TimmyTails Pet Grooming Salon, ${clientName}!`
+    const subject = `Welcome to TimmyTails Pet Grooming Salon, ${clientName}!`
 
     const html = `
 <!DOCTYPE html>
@@ -634,7 +634,7 @@ const sendWelcomeEmail = async ({ to, name }) => {
       <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#2B4C3F;padding:32px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:0.5px;">🐾 Welcome to TimmyTails</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:0.5px;"> Welcome to TimmyTails</h1>
             <p style="margin:6px 0 0 0;color:#D8E5DF;font-size:14px;font-weight:500;">Premium AI-Assisted Pet Grooming Salon</p>
           </td>
         </tr>
@@ -649,7 +649,7 @@ const sendWelcomeEmail = async ({ to, name }) => {
             </p>
 
             <div style="background-color:#FAF7F2;border:1px solid #E5D6C5;border-radius:12px;padding:20px;margin:24px 0;">
-              <h3 style="margin:0 0 12px 0;font-size:15px;color:#261C14;">✨ What you can do with your account:</h3>
+              <h3 style="margin:0 0 12px 0;font-size:15px;color:#261C14;"> What you can do with your account:</h3>
               <ul style="margin:0;padding-left:20px;color:#4A3B32;font-size:14px;line-height:1.7;">
                 <li>Book grooming appointments easily online</li>
                 <li>Preview AI hairstyle simulations for your pet</li>
@@ -658,7 +658,7 @@ const sendWelcomeEmail = async ({ to, name }) => {
               </ul>
             </div>
 
-            <p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#261C14;">📍 Visit Us:</p>
+            <p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#261C14;"> Visit Us:</p>
             <p style="margin:0 0 24px 0;font-size:14px;color:#68594E;line-height:1.5;">
               Tangos, Baliuag City, Bulacan, Philippines<br>
               Open Daily: 9:00 AM – 6:00 PM
@@ -701,7 +701,7 @@ const sendAppointmentCancelledEmail = async ({ to, name, appointment, reason }) 
 
     const clientName = name || appointment.ownerName || 'Valued Customer'
     const petName = appointment.petName || 'your pet'
-    const subject = `🐾 Appointment Cancelled: ${petName}'s grooming on ${appointment.date}`
+    const subject = `Appointment Cancelled: ${petName}'s grooming on ${appointment.date}`
 
     const html = `
 <!DOCTYPE html>
@@ -714,7 +714,7 @@ const sendAppointmentCancelledEmail = async ({ to, name, appointment, reason }) 
       <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#B3471A;padding:26px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#FFE9DF;font-size:13px;">Appointment Cancellation Notice</p>
           </td>
         </tr>
@@ -764,7 +764,7 @@ const sendAppointmentRescheduledEmail = async ({ to, name, appointment }) => {
 
     const clientName = name || appointment.ownerName || 'Valued Customer'
     const petName = appointment.petName || 'your pet'
-    const subject = `🐾 Appointment Rescheduled: ${petName}'s grooming is now on ${appointment.date} at ${appointment.time}`
+    const subject = `Appointment Rescheduled: ${petName}'s grooming is now on ${appointment.date} at ${appointment.time}`
 
     const html = `
 <!DOCTYPE html>
@@ -777,7 +777,7 @@ const sendAppointmentRescheduledEmail = async ({ to, name, appointment }) => {
       <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#2B4C3F;padding:26px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#D8E5DF;font-size:13px;">Appointment Rescheduled</p>
           </td>
         </tr>
@@ -788,7 +788,7 @@ const sendAppointmentRescheduledEmail = async ({ to, name, appointment }) => {
               Your grooming appointment for <strong>${petName}</strong> has been successfully rescheduled to:
             </p>
             <div style="background-color:#F5FAF7;border:1px solid #A3D4BE;border-radius:10px;padding:16px;margin:18px 0;">
-              <p style="margin:0 0 6px 0;font-size:15px;color:#1B4332;font-weight:700;">📅 ${appointment.date}</p>
+              <p style="margin:0 0 6px 0;font-size:15px;color:#1B4332;font-weight:700;"> ${appointment.date}</p>
               <p style="margin:0;font-size:15px;color:#1B4332;font-weight:700;">⏰ ${appointment.time} – ${appointment.endTime || ''}</p>
             </div>
             <p style="margin:16px 0 0 0;font-size:14px;color:#4A3B32;line-height:1.6;">
@@ -827,7 +827,7 @@ const sendAppointmentInProgressEmail = async ({ to, name, appointment }) => {
     const clientName = name || appointment.ownerName || 'Valued Customer'
     const petName = appointment.petName || 'your pet'
     const serviceName = appointment.service || 'grooming session'
-    const subject = `🐾 ${petName}'s ${serviceName} has started at Timmy Tails!`
+    const subject = `${petName}'s ${serviceName} has started at Timmy Tails!`
 
     const html = `
 <!DOCTYPE html>
@@ -840,7 +840,7 @@ const sendAppointmentInProgressEmail = async ({ to, name, appointment }) => {
       <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#1D5B96;padding:26px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#E6F0FA;font-size:13px;">Service In Progress</p>
           </td>
         </tr>
@@ -851,7 +851,7 @@ const sendAppointmentInProgressEmail = async ({ to, name, appointment }) => {
               Great news! Our grooming team has just started working with <strong>${petName}</strong> for their <strong>${serviceName}</strong>${appointment.haircutStyle ? ` (${appointment.haircutStyle})` : ''}.
             </p>
             <div style="background-color:#F0F7FD;border-left:4px solid #1D5B96;padding:14px 18px;border-radius:6px;margin:18px 0;">
-              <p style="margin:0 0 6px 0;font-size:14px;color:#1D5B96;font-weight:700;">✂️ Status: In Service</p>
+              <p style="margin:0 0 6px 0;font-size:14px;color:#1D5B96;font-weight:700;">️ Status: In Service</p>
               <p style="margin:0;font-size:13px;color:#33506B;">We are taking wonderful care of ${petName}. We will notify you as soon as the grooming session is completed and ready for pickup!</p>
             </div>
           </td>
@@ -886,7 +886,7 @@ const sendAppointmentCompletedEmail = async ({ to, name, appointment }) => {
 
     const clientName = name || appointment.ownerName || 'Valued Customer'
     const petName = appointment.petName || 'your pet'
-    const subject = `🐾 Thank you for visiting Timmy Tails! ${petName}'s grooming is complete`
+    const subject = `Thank you for visiting Timmy Tails! ${petName}'s grooming is complete`
 
     const html = `
 <!DOCTYPE html>
@@ -899,7 +899,7 @@ const sendAppointmentCompletedEmail = async ({ to, name, appointment }) => {
       <table role="presentation" width="100%" style="max-width:560px;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid #E5D6C5;">
         <tr>
           <td style="background-color:#2B4C3F;padding:26px 24px;text-align:center;">
-            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">🐾 Timmy Tails Pet Grooming</h1>
+            <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;"> Timmy Tails Pet Grooming</h1>
             <p style="margin:6px 0 0 0;color:#D8E5DF;font-size:13px;">Grooming Session Completed</p>
           </td>
         </tr>
