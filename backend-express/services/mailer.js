@@ -57,9 +57,12 @@ const getSenderAddress = () => {
 
 /**
  * Unified email sender:
- * 1. Brevo REST API (HTTPS port 443 - Recommended for Render Free Tier to bypass SMTP port blocking)
+ * 1. Brevo REST API (HTTPS port 443 - Recommended for Render Free Tier)
  * 2. Resend REST API (HTTPS port 443)
- * 3. Direct SMTP via Nodemailer (with fast timeout fallback)
+ * 3. Direct SMTP via Nodemailer / Gmail App Password (with fast timeout fallback)
+ *
+ * NOTE: To show timmytails.cs@gmail.com as the FROM address via Brevo,
+ * verify that sender email in your Brevo dashboard → Settings → Senders & Domains.
  */
 const sendMailViaHttpOrSmtp = async ({ to, name, subject, html, text }) => {
     if (!to) {
@@ -71,6 +74,7 @@ const sendMailViaHttpOrSmtp = async ({ to, name, subject, html, text }) => {
     const resendApiKey = cleanEnv(process.env.RESEND_API_KEY)
 
     // Strategy 1: Brevo REST API (HTTPS Port 443)
+
     if (brevoApiKey) {
         try {
             const senderUser = cleanEnv(process.env.SMTP_USER) || 'timmytails.cs@gmail.com'
@@ -855,6 +859,69 @@ const sendAppointmentCompletedEmail = async ({ to, name, appointment }) => {
     })
 }
 
+/**
+ * Send auto-acknowledgement email to customer when they submit the contact form.
+ * Uses the existing Gmail SMTP (timmytails.cs@gmail.com) — no Brevo needed.
+ */
+const sendContactAcknowledgementEmail = async ({ to, name, message }) => {
+    const subject = 'We received your message — Timmy Tails Pet Grooming'
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>${subject}</title></head>
+<body style="margin:0;padding:0;background-color:#F5EFE6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#2C221E;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F5EFE6;padding:32px 16px;">
+  <tr>
+    <td align="center">
+      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#FFFFFF;border-radius:12px;overflow:hidden;border:1px solid #E5D6C5;box-shadow:0 4px 16px rgba(44,34,30,0.06);">
+        <tr>
+          <td style="background-color:#2C221E;padding:24px 32px;text-align:center;">
+            <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;font-weight:normal;color:#FFFFFF;letter-spacing:1px;">Timmy Tails</h1>
+            <p style="margin:6px 0 0;font-size:12px;color:#D4A373;text-transform:uppercase;letter-spacing:2px;font-weight:600;">Pet Grooming Salon</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:32px;">
+            <p style="margin:0 0 16px;font-size:16px;font-weight:600;color:#2C221E;">Hello ${name || 'Valued Client'},</p>
+            <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#5C4B40;">
+              Thank you for reaching out to <strong>Timmy Tails Pet Grooming Salon</strong>! We have received your message and will get back to you within <strong>24 hours</strong>.
+            </p>
+            <div style="background-color:#FAF7F2;border-left:4px solid #D4A373;border-radius:6px;padding:18px 20px;margin:20px 0;font-size:14px;line-height:1.7;color:#2C221E;white-space:pre-wrap;">${message}</div>
+            <p style="margin:20px 0 0;font-size:14px;line-height:1.6;color:#5C4B40;">
+              In the meantime, you can also reach us at:
+            </p>
+            <ul style="margin:12px 0 0;padding-left:20px;font-size:14px;color:#5C4B40;line-height:1.8;">
+              <li>📍 Tangos, Baliuag City, Bulacan, Philippines</li>
+              <li>📞 +63 975 669 2647</li>
+              <li>📧 timmytails.cs@gmail.com</li>
+            </ul>
+            <p style="margin:28px 0 0;font-size:14px;color:#2C221E;">
+              Warm regards,<br>
+              <strong>Timmy Tails Salon Team</strong>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background-color:#FAF7F2;padding:16px 24px;text-align:center;font-size:12px;color:#8C7A6D;border-top:1px solid #E5D6C5;">
+            <p style="margin:0;">© ${new Date().getFullYear()} Timmy Tails Pet Grooming Salon • Baliuag City, Bulacan</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+`
+    return sendMailViaHttpOrSmtp({
+        to,
+        name,
+        subject,
+        html,
+        text: `Hello ${name || 'Valued Client'},\n\nThank you for contacting Timmy Tails Pet Grooming Salon! We have received your message and will get back to you within 24 hours.\n\nYour message:\n${message}\n\nWarm regards,\nTimmy Tails Salon Team`
+    })
+}
+
 const sendContactReplyEmail = async ({ to, name, subject, message, originalInquiry }) => {
     const emailSubject = subject || 'Response from Timmy Tails Pet Grooming Salon'
     const html = `
@@ -924,6 +991,7 @@ module.exports = {
     sendAppointmentCompletedEmail,
     sendWelcomeEmail,
     sendOtpEmail,
+    sendContactAcknowledgementEmail,
     sendContactReplyEmail,
     sendMailViaHttpOrSmtp,
     closeTransporter

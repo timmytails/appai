@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
 const Contact = require('../models/Contact')
+const { sendContactAcknowledgementEmail } = require('../services/mailer')
 
 // @route   POST /api/contact
-// @desc    Submit a contact message
+// @desc    Submit a contact message and send auto-acknowledgement email to the customer
 // @access  Public
 router.post(
     '/',
@@ -38,6 +39,13 @@ router.post(
 
         try {
             await Contact.create({ name, email, phone: phone || '', message })
+
+            // Fire-and-forget: send acknowledgement email via Gmail SMTP (timmytails.cs@gmail.com).
+            // Email delivery failure is non-fatal — the form submission still succeeds.
+            sendContactAcknowledgementEmail({ to: email, name, message }).catch((err) => {
+                console.warn('[CONTACT] Auto-acknowledgement email failed (non-fatal):', err?.message || err)
+            })
+
             res.status(201).json({
                 success: true,
                 message: "Thank you for your message! We'll get back to you within 24 hours."
